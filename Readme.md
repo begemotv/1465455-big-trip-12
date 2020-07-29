@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Vitaliy Avdyeyev](https://up.htmlacademy.ru/ecmascript/12/user/1465455).
-* Наставник: `Неизвестно`.
+* Наставник: `Kate Savasteeva`.
 
 ---
 
