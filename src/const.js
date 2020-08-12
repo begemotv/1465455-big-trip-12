@@ -28,7 +28,10 @@ export const eventOffers = [
   {name: `Add luggage`, price: 30, offerType: `luggage`},
   {name: `Switch to comfort class`, price: 100, offerType: `upgrade`},
   {name: `Add meal`, price: 15, offerType: `food`},
-  {name: `Choose seats`, price: 5, offerType: `seats`}
+  {name: `Choose seats`, price: 5, offerType: `seats`},
+  {name: `Add wine`, price: 10, offerType: `food`},
+  {name: `Switch to first class`, price: 300, offerType: `upgrade`},
+  {name: `Get blanket`, price: 12, offerType: `upgrade`}
 ];
 
 export const eventDestinationDescriptions = [

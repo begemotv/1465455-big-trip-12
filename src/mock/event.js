@@ -2,18 +2,13 @@ import {eventTypes} from "../const.js";
 import {eventCities} from "../const.js";
 import {eventOffers} from "../const.js";
 import {eventDestinationDescriptions} from "../const.js";
-
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
+import {getRandomInteger} from "../utils.js";
 
 const generateEventType = () => {
   const randomIndex = getRandomInteger(0, eventTypes.length - 1);
+  const randomType = eventTypes[randomIndex].name + eventTypes[randomIndex].placeholder;
 
-  return eventTypes[randomIndex];
+  return randomType;
 };
 
 const generateCity = () => {
@@ -22,27 +17,52 @@ const generateCity = () => {
   return eventCities[randomIndex];
 };
 
-const generateEventStartDate = () => {
-  const eventStartDate = new Date().toLocaleString(`en-US`, {hour: `2-digit`, minute:`2-digit`};
-  console.log(eventStartDate);
+// const generateEventStartDate = () => {
+//   const eventStartDate = new Date();
+//   console.log(eventStartDate);
 
-  return eventStartDate;
-};
+//   return eventStartDate;
+// };
 
-const generateEventEndDate = () => {
-  const eventEndDate = new Date();
+// const generateEventEndDate = () => {
+//   const eventEndDate = new Date();
 
-  return eventEndDate;
-};
+//   return eventEndDate;
+// };
+
+const generateOffer = () => { // !!!!!! собрать объект, чтобы из него забрать атуальные моки (чтобы оффер и прайс брались из моков и тип был одной цены всегда)
+  const randomIndex = getRandomInteger(1, eventOffers.length - 1);
+  const eventOffer = eventOffer[randomIndex]; 
+}
 
 const generateEventOffers = () => {
-  const randomIndex = getRandomInteger(1, eventOffers.length - 1);
+  const randomIndex = getRandomInteger(1, 3);
   let randomOffers = [];
   for (let i = 0; i < randomIndex; i++) {
     randomOffers.push(eventOffers[i].name);
   }
 
-  return randomOffers;
+  return randomOffersType;
+};
+
+const generateEventOffersName = () => {
+  const randomIndex = getRandomInteger(1, eventOffers.length - 1);
+  let randomOffersType = [];
+  for (let i = 0; i < randomIndex; i++) {
+    randomOffersType.push(eventOffers[i].name);
+  }
+
+  return randomOffersType;
+};
+
+const generateEventOffersPrice = () => {
+  const randomIndex = getRandomInteger(1, eventOffers.length - 1);
+  let randomOffersPrice = [];
+  for (let i = 0; i < randomIndex; i++) {
+    randomOffersPrice.push(eventOffers[i].price);
+  }
+
+  return randomOffersPrice;
 };
 
 const generateEventDescriptions = () => {
@@ -59,7 +79,7 @@ const generateEventPhotos = () => {
     eventDestinationPhotos.push(photo);
   }
   return eventDestinationPhotos;
-}
+};
 
 export const generateEvent = () => {
   return {
@@ -68,7 +88,10 @@ export const generateEvent = () => {
     // eventStartDate:
     // eventEndDate:
     price: getRandomInteger(20, 200),
-    offers: generateEventOffers(),
+    offers: {
+      name: generateEventOffersName(),
+      price: generateEventOffersPrice(),
+    },
     destination: {
       description: generateEventDescriptions(),
       photos: generateEventPhotos(),

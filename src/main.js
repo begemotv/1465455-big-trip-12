@@ -9,9 +9,10 @@ import {createEventTemplate} from "./view/event.js";
 
 import {generateEvent} from "./mock/event.js";
 
-const EVENTS_COUNT = 3;
+const EVENTS_COUNT = 15;
 
 const events = new Array(EVENTS_COUNT).fill().map(generateEvent);
+console.log(events);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -22,7 +23,7 @@ const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); /
 const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-controls`); // Меню контейнер
 const contentContainer = siteMainElement.querySelector(`.trip-events`); // Сортировка и контент
 
-render(destinationPriceContainer, createDestinationPriceTemplate(), `afterbegin`);
+render(destinationPriceContainer, createDestinationPriceTemplate(events), `afterbegin`);
 render(menuElementContainer, createMenuElementTemplate(), `beforeend`);
 render(menuElementContainer, createFilterElementTemplate(), `beforeend`);
 render(contentContainer, createSortingElementTemplate(), `beforeend`);
@@ -34,8 +35,7 @@ render(travelPointsListContainer, createEventEditTemplate(), `beforeend`);
 
 const destinationDescriptionContainer = contentContainer.querySelector(`.event__details`);
 
-render(destinationDescriptionContainer, createDestinationDescription(), `beforeend`);
+render(destinationDescriptionContainer, createDestinationDescription(events), `beforeend`);
 for (let i = 0; i < EVENTS_COUNT; i++) {
   render(travelPointsListContainer, createEventTemplate(events[i]), `beforeend`);
 }
-
