@@ -1,35 +1,23 @@
-import {getRandomInteger} from "../utils.js";
-import {eventOffers} from "../const.js";
+const createOffer = (event) => {
+  const {name, price} = event;
 
-const createOffer = (event) => { // изменить используя моки
-  const {offers} = event;
-  console.log(event);
-  console.log(offers);
-//   const offers = eventOffers.map(({name, price}) => `<li class="event__offer">
-//   <span class="event__offer-title">${name}</span>
-//   &plus;
-//   &euro;&nbsp;<span class="event__offer-price">${price}</span>
-//  </li>`);
+  const offerToShow = `<li class="event__offer">
+    <span class="event__offer-title">${name}</span>
+    &plus;
+    &euro;&nbsp;<span class="event__offer-price">${price}</span>
+  </li>`;
 
-  const offersToShow = [];
-  for (let i = 0; i < getRandomInteger(1, 3); i++) {
-    const randomIndex = getRandomInteger(1, offers.length - 1);
-    offersToShow.push(offers.splice(randomIndex, 1));
-  }
-  return offersToShow; 
+  return offerToShow;
 };
 
 export const createEventTemplate = (event) => {
-  const {type, city, price} = event;
-  // let arr = [];
-  // arr.push(city);
-  // console.log(arr);
+  const {type, city, price, offers} = event;
+
   let offerMock = [];
-  for (let i = 0; i < getRandomInteger(1, 3); i++) {
-    let offer = createOffer(event);
+  for (let i = 0; i < offers.length; i++) {
+    let offer = createOffer(offers[i]);
     offerMock.push(offer);
   } // пока что вылезает запятая в верстке. как от нее избавиться?
-  console.log(offerMock);
 
   return (
     `<li class="trip-events__item">

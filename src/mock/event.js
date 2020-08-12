@@ -30,39 +30,39 @@ const generateCity = () => {
 //   return eventEndDate;
 // };
 
-const generateOffer = () => { // !!!!!! собрать объект, чтобы из него забрать атуальные моки (чтобы оффер и прайс брались из моков и тип был одной цены всегда)
-  const randomIndex = getRandomInteger(1, eventOffers.length - 1);
-  const eventOffer = eventOffer[randomIndex]; 
-}
+// const generateOffer = () => { // !!!!!! собрать объект, чтобы из него забрать атуальные моки (чтобы оффер и прайс брались из моков одним объектом и тип связан с ценой парой)
+//   const randomIndex = getRandomInteger(1, eventOffers.length - 1);
+//   return eventOffers[randomIndex];
+// };
+
+// const generateEventOffersName = () => {
+//   const randomIndex = getRandomInteger(1, eventOffers.length - 1);
+//   let randomOffersType = [];
+//   for (let i = 0; i < randomIndex; i++) {
+//     randomOffersType.push(eventOffers[i].name);
+//   }
+
+//   return randomOffersType;
+// };
+
+// const generateEventOffersPrice = () => {
+//   const randomIndex = getRandomInteger(1, eventOffers.length - 1);
+//   let randomOffersPrice = [];
+//   for (let i = 0; i < randomIndex; i++) {
+//     randomOffersPrice.push(eventOffers[i].price);
+//   }
+
+//   return randomOffersPrice;
+// };
 
 const generateEventOffers = () => {
   const randomIndex = getRandomInteger(1, 3);
   let randomOffers = [];
   for (let i = 0; i < randomIndex; i++) {
-    randomOffers.push(eventOffers[i].name);
+    randomOffers.push(eventOffers[i]);
   }
 
-  return randomOffersType;
-};
-
-const generateEventOffersName = () => {
-  const randomIndex = getRandomInteger(1, eventOffers.length - 1);
-  let randomOffersType = [];
-  for (let i = 0; i < randomIndex; i++) {
-    randomOffersType.push(eventOffers[i].name);
-  }
-
-  return randomOffersType;
-};
-
-const generateEventOffersPrice = () => {
-  const randomIndex = getRandomInteger(1, eventOffers.length - 1);
-  let randomOffersPrice = [];
-  for (let i = 0; i < randomIndex; i++) {
-    randomOffersPrice.push(eventOffers[i].price);
-  }
-
-  return randomOffersPrice;
+  return randomOffers;
 };
 
 const generateEventDescriptions = () => {
@@ -88,13 +88,19 @@ export const generateEvent = () => {
     // eventStartDate:
     // eventEndDate:
     price: getRandomInteger(20, 200),
-    offers: {
-      name: generateEventOffersName(),
-      price: generateEventOffersPrice(),
-    },
+    offers: generateEventOffers(),
     destination: {
       description: generateEventDescriptions(),
       photos: generateEventPhotos(),
     },
   };
 };
+
+// offers: {
+//   name: generateEventOffersName(),
+//   price: generateEventOffersPrice(),
+// },
+// destination: {
+//   description: generateEventDescriptions(),
+//   photos: generateEventPhotos(),
+// },
