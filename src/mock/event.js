@@ -1,74 +1,36 @@
-import {eventTypes} from "../const.js";
-import {eventCities} from "../const.js";
-import {eventOffers} from "../const.js";
-import {eventDestinationDescriptions} from "../const.js";
+import {EVENTTYPES} from "../const.js";
+import {EVENTCITIES} from "../const.js";
+import {EVENTOFFERS} from "../const.js";
+import {EVENTDESCRIPTION} from "../const.js";
 import {getRandomInteger} from "../utils.js";
 
 const generateEventType = () => {
-  const randomIndex = getRandomInteger(0, eventTypes.length - 1);
-  const randomType = eventTypes[randomIndex].name + eventTypes[randomIndex].placeholder;
+  const randomIndex = getRandomInteger(0, EVENTTYPES.length - 1);
+  const randomType = EVENTTYPES[randomIndex].name + EVENTTYPES[randomIndex].placeholder;
 
   return randomType;
 };
 
 const generateCity = () => {
-  const randomIndex = getRandomInteger(0, eventCities.length - 1);
+  const randomIndex = getRandomInteger(0, EVENTCITIES.length - 1);
 
-  return eventCities[randomIndex];
+  return EVENTCITIES[randomIndex];
 };
-
-// const generateEventStartDate = () => {
-//   const eventStartDate = new Date();
-//   console.log(eventStartDate);
-
-//   return eventStartDate;
-// };
-
-// const generateEventEndDate = () => {
-//   const eventEndDate = new Date();
-
-//   return eventEndDate;
-// };
-
-// const generateOffer = () => { // !!!!!! собрать объект, чтобы из него забрать атуальные моки (чтобы оффер и прайс брались из моков одним объектом и тип связан с ценой парой)
-//   const randomIndex = getRandomInteger(1, eventOffers.length - 1);
-//   return eventOffers[randomIndex];
-// };
-
-// const generateEventOffersName = () => {
-//   const randomIndex = getRandomInteger(1, eventOffers.length - 1);
-//   let randomOffersType = [];
-//   for (let i = 0; i < randomIndex; i++) {
-//     randomOffersType.push(eventOffers[i].name);
-//   }
-
-//   return randomOffersType;
-// };
-
-// const generateEventOffersPrice = () => {
-//   const randomIndex = getRandomInteger(1, eventOffers.length - 1);
-//   let randomOffersPrice = [];
-//   for (let i = 0; i < randomIndex; i++) {
-//     randomOffersPrice.push(eventOffers[i].price);
-//   }
-
-//   return randomOffersPrice;
-// };
 
 const generateEventOffers = () => {
   const randomIndex = getRandomInteger(1, 3);
   let randomOffers = [];
   for (let i = 0; i < randomIndex; i++) {
-    randomOffers.push(eventOffers[i]);
+    randomOffers.push(EVENTOFFERS[i]);
   }
 
   return randomOffers;
 };
 
 const generateEventDescriptions = () => {
-  const randomIndex = getRandomInteger(0, eventDestinationDescriptions.length - 1);
+  const randomIndex = getRandomInteger(0, EVENTDESCRIPTION.length - 1);
 
-  return eventDestinationDescriptions[randomIndex];
+  return EVENTDESCRIPTION[randomIndex];
 };
 
 const generateEventPhotos = () => {
@@ -78,15 +40,43 @@ const generateEventPhotos = () => {
     let photo = `http://picsum.photos/248/152?r=${Math.random()}`;
     eventDestinationPhotos.push(photo);
   }
+
   return eventDestinationPhotos;
 };
 
+const generateStartDate = () => {
+  const randomStartDate = new Date(2020, getRandomInteger(0, 5), getRandomInteger(0, 27), 10, 45);
+
+  return randomStartDate;
+};
+
+const generateEndDate = (startDate) => {
+  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, getRandomInteger(0, 27), getRandomInteger(0, 20), 10);
+
+  return randomEndDate;
+};
+
+const generateStartTime = (startDate) => {
+  return startDate.toLocaleTimeString().slice(0, -6);
+};
+const generateEndTime = (endDate) => {
+  return endDate.toLocaleTimeString().slice(0, -6);
+};
+
 export const generateEvent = () => {
+  const startDate = generateStartDate();
+  const endDate = generateEndDate(startDate);
+  const startTime = generateStartTime(startDate);
+  const endTime = generateEndTime(endDate);
+
   return {
     type: generateEventType(),
     city: generateCity(),
-    // eventStartDate:
-    // eventEndDate:
+    startDate,
+    endDate,
+    startTime, // пока без 0, если время < 10:00. добавлю проверку
+    endTime,
+    // duration, WIP
     price: getRandomInteger(20, 200),
     offers: generateEventOffers(),
     destination: {
@@ -95,12 +85,3 @@ export const generateEvent = () => {
     },
   };
 };
-
-// offers: {
-//   name: generateEventOffersName(),
-//   price: generateEventOffersPrice(),
-// },
-// destination: {
-//   description: generateEventDescriptions(),
-//   photos: generateEventPhotos(),
-// },

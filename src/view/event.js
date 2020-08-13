@@ -1,37 +1,68 @@
-const createOffer = (event) => {
+const createEventOffer = (event) => {
   const {name, price} = event;
 
-  const offerToShow = `<li class="event__offer">
+  return (
+    `<li class="event__offer">
     <span class="event__offer-title">${name}</span>
     &plus;
     &euro;&nbsp;<span class="event__offer-price">${price}</span>
-  </li>`;
-
-  return offerToShow;
+  </li>`);
 };
 
-export const createEventTemplate = (event) => {
-  const {type, city, price, offers} = event;
+const createOfferMarkup = (event) => {
+  const {offers} = event;
 
   let offerMock = [];
   for (let i = 0; i < offers.length; i++) {
-    let offer = createOffer(offers[i]);
+    let offer = createEventOffer(offers[i]);
     offerMock.push(offer);
-  } // пока что вылезает запятая в верстке. как от нее избавиться?
+  }
+  return offerMock.join(``);
+};
+
+const generateStartDate = (date) => {
+  const startYear = date.getFullYear();
+  const startMonth = date.getMonth();
+  const startDay = date.getDate();
+  if (startMonth <= 9) {
+    return startYear + `-` + `0` + startMonth + `-` + startDay;
+  } else {
+    return startYear + `-` + startMonth + `-` + startDay;
+  }
+};
+
+const generateEndDate = (date) => {
+  const endYear = date.getFullYear();
+  const endMonth = date.getMonth();
+  const endDay = date.getDate();
+  if (endMonth <= 9) {
+    return endYear + `-` + `0` + endMonth + `-` + endDay;
+  } else {
+    return endYear + `-` + endMonth + `-` + endDay;
+  }
+};
+
+export const createEventTemplate = (event) => {
+  const {type, city, price, startDate, endDate, startTime, endTime} = event;
+  const offerMarkup = createOfferMarkup(event);
+  const eventStartDate = generateStartDate(startDate);
+  const eventEndDate = generateEndDate(endDate);
+  const eventTypeUpper = type.slice(0, -3);
+  const eventType = eventTypeUpper.toLowerCase();
 
   return (
     `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="img/icons/sightseeing.png" alt="Event type icon">
+        <img class="event__type-icon" width="42" height="42" src="img/icons/${eventType}.png" alt="Event type icon">
       </div>
       <h3 class="event__title">${type} ${city}</h3>
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-19T11:20">14:20</time>
+          <time class="event__start-time" datetime="${eventStartDate}T${startTime}">${startTime}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-19T13:00">13:00</time>
+          <time class="event__end-time" datetime="${eventEndDate}T${endTime}">${endTime}</time>
         </p>
         <p class="event__duration">1H 20M</p>
       </div>
@@ -42,7 +73,7 @@ export const createEventTemplate = (event) => {
 
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        ${offerMock}
+        ${offerMarkup}
       </ul>
 
       <button class="event__rollup-btn" type="button">

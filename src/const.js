@@ -1,17 +1,17 @@
-export const eventTypes = [
-  {name: `Taxi`, placeholder: ` to`},
-  {name: `Bus`, placeholder: ` to`},
-  {name: `Train`, placeholder: ` to`},
-  {name: `Ship`, placeholder: ` to`},
-  {name: `Transport`, placeholder: ` to`},
-  {name: `Drive`, placeholder: ` to`},
-  {name: `Flight`, placeholder: ` to`},
-  {name: `Check-in`, placeholder: ` in`},
-  {name: `Sightseeing`, placeholder: ` in`},
-  {name: `Restaurant`, placeholder: ` in`},
+export const EVENTTYPES = [
+  {name: `Taxi`, placeholder: ` to`, type: `transfer`},
+  {name: `Bus`, placeholder: ` to`, type: `transfer`},
+  {name: `Train`, placeholder: ` to`, type: `transfer`},
+  {name: `Ship`, placeholder: ` to`, type: `transfer`},
+  {name: `Transport`, placeholder: ` to`, type: `transfer`},
+  {name: `Drive`, placeholder: ` to`, type: `transfer`},
+  {name: `Flight`, placeholder: ` to`, type: `transfer`},
+  {name: `Check-in`, placeholder: ` in`, type: `activity`},
+  {name: `Sightseeing`, placeholder: ` in`, type: `activity`},
+  {name: `Restaurant`, placeholder: ` in`, type: `activity`},
 ];
 
-export const eventCities = [
+export const EVENTCITIES = [
   `Bari`,
   `Catania`,
   `Bologna`,
@@ -24,17 +24,15 @@ export const eventCities = [
   `Helsinki`
 ];
 
-export const eventOffers = [
-  {name: `Add luggage`, price: 30, offerType: `luggage`},
-  {name: `Switch to comfort class`, price: 100, offerType: `upgrade`},
-  {name: `Add meal`, price: 15, offerType: `food`},
-  {name: `Choose seats`, price: 5, offerType: `seats`},
-  {name: `Add wine`, price: 10, offerType: `food`},
-  {name: `Switch to first class`, price: 300, offerType: `upgrade`},
-  {name: `Get blanket`, price: 12, offerType: `upgrade`}
+export const EVENTOFFERS = [
+  {name: `Add luggage`, price: 30, offerClass: `luggage`},
+  {name: `Switch to comfort class`, price: 100, offerClass: `upgrade`},
+  {name: `Add meal`, price: 15, offerClass: `food`},
+  {name: `Choose seats`, price: 5, offerClass: `seats`},
+  {name: `Add wine`, price: 10, offerClass: `food`}
 ];
 
-export const eventDestinationDescriptions = [
+export const EVENTDESCRIPTION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
   `Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,

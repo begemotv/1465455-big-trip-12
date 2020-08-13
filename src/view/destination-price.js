@@ -5,16 +5,16 @@ export const createDestinationPriceTemplate = (events) => {
 
   let route;
   if (events.length > 3) {
-    route = `${cityFirst} &mdash; ... &mdash; ${cityLast}`
+    route = `${cityFirst} &mdash; ... &mdash; ${cityLast}`;
   } else if (events.length === 2) {
-    route = `${cityFirst} &mdash; ${citySecond} &mdash; ${cityLast}`
+    route = `${cityFirst} &mdash; ${citySecond} &mdash; ${cityLast}`;
   } else if (events.length === 1) {
-    route = `${cityFirst}`
+    route = `${cityFirst}`;
   } else {
-    route = `Choose destination`
+    route = `Choose destination`;
   }
 
-  let price = 0;
+  let price = 0; // еще не учитывает цену дополнительных offers
   for (let i = 0; i < events.length; i++) {
     price += events[i].price;
   }

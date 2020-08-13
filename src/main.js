@@ -30,11 +30,14 @@ render(contentContainer, createEventListTemplate(), `beforeend`);
 
 const travelPointsListContainer = contentContainer.querySelector(`.trip-events__list`);
 
-render(travelPointsListContainer, createEventEditTemplate(), `beforeend`);
+render(travelPointsListContainer, createEventEditTemplate(events[0]), `beforeend`);
 
 const destinationDescriptionContainer = contentContainer.querySelector(`.event__details`);
 
 render(destinationDescriptionContainer, createDestinationDescription(events), `beforeend`);
-for (let i = 0; i < EVENTS_COUNT; i++) {
+for (let i = 1; i < EVENTS_COUNT; i++) {
   render(travelPointsListContainer, createEventTemplate(events[i]), `beforeend`);
 }
+
+// остались проблемы с 1) форматом дат; 2) продолжительностью путешествия; 3) разбивкой точек маршрута по контейнерам дат и привязка дат контейнеров к мокам; 4) добавлением special offers к стоимости; 5) рефакторинг
+// думаю справлюсь, но наверняка есть много фидбека по структуре и читаемости
