@@ -20,33 +20,27 @@ const createOfferMarkup = (event) => {
   return offerMock.join(``);
 };
 
-const generateStartDate = (date) => {
-  const startYear = date.getFullYear();
-  const startMonth = date.getMonth();
-  const startDay = date.getDate();
-  if (startMonth <= 9) {
-    return startYear + `-` + `0` + startMonth + `-` + startDay;
-  } else {
-    return startYear + `-` + startMonth + `-` + startDay;
-  }
-};
+const generateDate = (date) => {
+  const datetime = new Date(date);
+  let month = `` + (datetime.getMonth() + 1);
+  let day = `` + datetime.getDate();
+  let year = datetime.getFullYear();
 
-const generateEndDate = (date) => {
-  const endYear = date.getFullYear();
-  const endMonth = date.getMonth();
-  const endDay = date.getDate();
-  if (endMonth <= 9) {
-    return endYear + `-` + `0` + endMonth + `-` + endDay;
-  } else {
-    return endYear + `-` + endMonth + `-` + endDay;
+  if (month.length < 2) {
+    month = `0` + month;
   }
+  if (day.length < 2) {
+    day = `0` + day;
+  }
+
+  return [year, month, day].join(`-`);
 };
 
 export const createEventTemplate = (event) => {
-  const {type, city, price, startDate, endDate, startTime, endTime} = event;
+  const {type, city, price, startDate, endDate, startTime, endTime, duration} = event;
   const offerMarkup = createOfferMarkup(event);
-  const eventStartDate = generateStartDate(startDate);
-  const eventEndDate = generateEndDate(endDate);
+  const eventStartDate = generateDate(startDate);
+  const eventEndDate = generateDate(endDate);
   const eventTypeUpper = type.slice(0, -3);
   const eventType = eventTypeUpper.toLowerCase();
 
@@ -64,7 +58,7 @@ export const createEventTemplate = (event) => {
           &mdash;
           <time class="event__end-time" datetime="${eventEndDate}T${endTime}">${endTime}</time>
         </p>
-        <p class="event__duration">1H 20M</p>
+        <p class="event__duration">${duration}</p>
       </div>
 
       <p class="event__price">

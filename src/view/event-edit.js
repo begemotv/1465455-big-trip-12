@@ -73,26 +73,20 @@ const createTypeActivityTemplateMarkup = (types) => {
   return typeActivityMock.join(``);
 };
 
-const generateStartDate = (date) => {
-  const startYear = date.getFullYear();
-  const startMonth = date.getMonth();
-  const startDay = date.getDate();
-  if (startMonth <= 9) {
-    return startDay + `/` + `0` + startMonth + `/` + startYear;
-  } else {
-    return startDay + `/` + startMonth + `/` + startYear;
-  }
-};
+const generateDate = (date) => {
+  const datetime = new Date(date);
+  let month = `` + (datetime.getMonth() + 1);
+  let day = `` + datetime.getDate();
+  let year = datetime.getFullYear().toString().substr(2, 2);
 
-const generateEndDate = (date) => {
-  const endYear = date.getFullYear();
-  const endMonth = date.getMonth();
-  const endDay = date.getDate();
-  if (endMonth <= 9) {
-    return endDay + `/` + `0` + endMonth + `/` + endYear;
-  } else {
-    return endDay + `/` + endMonth + `/` + endYear;
+  if (month.length < 2) {
+    month = `0` + month;
   }
+  if (day.length < 2) {
+    day = `0` + day;
+  }
+
+  return [day, month, year].join(`/`);
 };
 
 export const createEventEditTemplate = (event) => {
@@ -100,8 +94,8 @@ export const createEventEditTemplate = (event) => {
   const eventOffersTemplate = createOfferTemplateMarkup(offers);
   const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(EVENTTYPES);
   const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(EVENTTYPES);
-  const eventStartDate = generateStartDate(startDate);
-  const eventEndDate = generateEndDate(endDate);
+  const eventStartDate = generateDate(startDate);
+  const eventEndDate = generateDate(endDate);
 
   return (
     `<li class="trip-events__item">

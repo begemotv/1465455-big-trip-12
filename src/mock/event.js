@@ -54,27 +54,67 @@ const generateEndDate = (startDate) => {
   return randomEndDate;
 };
 
-const generateStartTime = (startDate) => {
-  return startDate.toLocaleTimeString().slice(0, -6);
+const generateTime = (startDate) => {
+  const datetime = new Date(startDate);
+  let hours = `` + datetime.getHours();
+  let minutes = `` + datetime.getDate();
+
+  if (hours.length < 2) {
+    hours = `0` + hours;
+  }
+  if (minutes.length < 2) {
+    minutes = `0` + minutes;
+  }
+
+  return [hours, minutes].join(`:`);
 };
-const generateEndTime = (endDate) => {
-  return endDate.toLocaleTimeString().slice(0, -6);
+
+const generateDuration = (startDate, endDate) => {
+  const start = new Date(startDate);
+  let startHours = start.getHours();
+  let startMinutes = start.getMinutes();
+  const end = new Date(endDate);
+  let endHours = end.getHours();
+  let endMinutes = end.getMinutes();
+
+  if (startHours > endHours) {
+    endHours += 24;
+  }
+
+  if (startMinutes > endMinutes) {
+    endMinutes += 60;
+  }
+
+  let durationHours = endHours - startHours;
+  let durationMinutes = endMinutes = startMinutes;
+
+  let duration = ``;
+
+  if (durationHours === 0) {
+    duration = `${durationMinutes}M`;
+  } else if (durationMinutes === 0) {
+    duration = `${durationHours}H`;
+  } else {
+    duration = `${durationHours}H ${durationMinutes}M`;
+  }
+  return duration;
 };
 
 export const generateEvent = () => {
   const startDate = generateStartDate();
   const endDate = generateEndDate(startDate);
-  const startTime = generateStartTime(startDate);
-  const endTime = generateEndTime(endDate);
+  const startTime = generateTime(startDate);
+  const endTime = generateTime(endDate);
+  const duration = generateDuration(startDate, endDate);
 
   return {
     type: generateEventType(),
     city: generateCity(),
     startDate,
     endDate,
-    startTime, // пока без 0, если время < 10:00. добавлю проверку
+    startTime,
     endTime,
-    // duration, WIP
+    duration,
     price: getRandomInteger(20, 200),
     offers: generateEventOffers(),
     destination: {
