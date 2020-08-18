@@ -129,24 +129,23 @@ export const createEventEditHeaderTemplate = (event) => {
   
   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
   <button class="event__reset-btn" type="reset">Cancel</button>
-  </header>`)
-}
+  </header>`);
+};
 
-export default class editHeader {
+export default class EditEventHeader {
   constructor(event) {
     this._element = null;
     this.event = event;
   }
 
   _getTemplate() {
-    createEventEditHeaderTemplate(this.event);
+    return createEventEditHeaderTemplate(this.event);
   }
 
   getElement() {
     if (!this._element) {
       this._element = createElement(this._getTemplate());
     }
-
     return this._element;
   }
 
