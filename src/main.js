@@ -1,7 +1,7 @@
 import {createDestinationPriceTemplate} from "./view/destination-price.js";
 import MenuView from "./view/menu.js";
 import Filter from "./view/filter.js";
-import SortingView from "./view/sorting.js";
+import SortView from "./view/sort.js";
 import EventList from "./view/event-list.js";
 import {createEventEditTemplate} from "./view/event-edit.js";
 import {createDestinationDescription} from "./view/destination-description.js";
@@ -23,12 +23,11 @@ const contentContainer = siteMainElement.querySelector(`.trip-events`); // Со�
 renderTemplate(destinationPriceContainer, createDestinationPriceTemplate(events, dates), `afterbegin`);
 renderElement(menuElementContainer, new MenuView().getElement(), RenderPosition.BEFOREEND);
 renderElement(menuElementContainer, new Filter().getElement(), RenderPosition.BEFOREEND);
-renderElement(contentContainer, new SortingView().getElement(), RenderPosition.BEFOREEND);
+renderElement(contentContainer, new SortView().getElement(), RenderPosition.BEFOREEND);
+renderTemplate(contentContainer, createEventEditTemplate(events[0]), `beforeend`);
 renderElement(contentContainer, new EventList(dates).getElement(), RenderPosition.BEFOREEND);
 
 const travelPointsListContainer = contentContainer.querySelector(`.trip-events__list`);
-
-renderTemplate(travelPointsListContainer, createEventEditTemplate(events[0]), `beforeend`);
 
 const destinationDescriptionContainer = contentContainer.querySelector(`.event__details`);
 
