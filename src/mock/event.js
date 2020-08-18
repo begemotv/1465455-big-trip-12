@@ -23,8 +23,15 @@ const generateEventOffers = () => {
   for (let i = 0; i < randomIndex; i++) {
     randomOffers.push(EVENTOFFERS[i]);
   }
-
   return randomOffers;
+};
+
+const generateEventOffersPrice = (offers) => {
+  let offersPrice = 0;
+  for (let i = 0; i < offers.length; i++) {
+    offersPrice += offers[i].price;
+  }
+  return offersPrice;
 };
 
 const generateEventDescriptions = () => {
@@ -45,19 +52,18 @@ const generateEventPhotos = () => {
 };
 
 const generateStartDate = () => {
-  const randomStartDate = new Date(2020, getRandomInteger(1, 11), getRandomInteger(1, 23), 10, 45);
+  const randomStartDate = new Date(2020, getRandomInteger(1, 11), getRandomInteger(1, 23), getRandomInteger(0, 23), getRandomInteger(0, 59));
   return randomStartDate;
 };
 
 const generateEndDate = (startDate) => {
-  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + getRandomInteger(3, 5), getRandomInteger(0, 20), 10);
+  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + getRandomInteger(3, 5), getRandomInteger(0, 23), getRandomInteger(0, 59));
   return randomEndDate;
 };
 
-const generateTime = (startDate) => {
-  const datetime = new Date(startDate);
-  let hours = `` + datetime.getHours();
-  let minutes = `` + datetime.getDate();
+const generateTime = (date) => {
+  let hours = date.getHours().toString();
+  let minutes = date.getMinutes().toString();
 
   if (hours.length < 2) {
     hours = `0` + hours;
@@ -70,13 +76,10 @@ const generateTime = (startDate) => {
 };
 
 const generateDuration = (startDate, endDate) => {
-  const start = new Date(startDate);
-  let startHours = start.getHours();
-  let startMinutes = start.getMinutes();
-  const end = new Date(endDate);
-  let endHours = end.getHours();
-  let endMinutes = end.getMinutes();
-
+  let startHours = startDate.getHours();
+  let startMinutes = startDate.getMinutes();
+  let endHours = endDate.getHours();
+  let endMinutes = endDate.getMinutes();
   if (startHours > endHours) {
     endHours += 24;
   }
@@ -86,7 +89,7 @@ const generateDuration = (startDate, endDate) => {
   }
 
   let durationHours = endHours - startHours;
-  let durationMinutes = endMinutes = startMinutes;
+  let durationMinutes = endMinutes - startMinutes;
 
   let duration = ``;
 
@@ -106,17 +109,20 @@ export const generateEvent = () => {
   const startTime = generateTime(startDate);
   const endTime = generateTime(endDate);
   const duration = generateDuration(startDate, endDate);
+  const offers = generateEventOffers();
+  const offersPrice = generateEventOffersPrice(offers);
 
   return {
     type: generateEventType(),
     city: generateCity(),
-    startDate,
-    endDate,
+    startDate, // не понимаю насколько это нужно в рамках моков
+    endDate, // не понимаю насколько это нужно в рамках моков
     startTime,
     endTime,
     duration,
     price: getRandomInteger(20, 200),
-    offers: generateEventOffers(),
+    offers,
+    offersPrice,
     destination: {
       description: generateEventDescriptions(),
       photos: generateEventPhotos(),

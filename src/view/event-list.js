@@ -1,10 +1,9 @@
 import {createElement} from "../utils.js";
 
 const generateDatetime = (date) => {
-  const datetime = new Date(date);
-  let month = `` + (datetime.getMonth() + 1);
-  let day = `` + datetime.getDate();
-  let year = datetime.getFullYear();
+  let month = (date.getMonth() + 1).toString();
+  let day = date.getDate().toString();
+  let year = date.getFullYear();
 
   if (month.length < 2) {
     month = `0` + month;
@@ -19,16 +18,11 @@ const generateDatetime = (date) => {
 const generateDate = (date) => {
   const monthNames = [`JAN`, `FEB`, `MAR`, `APR`, `MAY`, `JUN`,
     `JUL`, `AUG`, `SEP`, `OCT`, `NOV`, `DEC`];
-  const dateHuman = new Date(date);
-  let day = dateHuman.getDate();
-  let month = monthNames[dateHuman.getMonth()];
-
-  if (day.length < 2) {
-    day = `0` + day;
-  }
+  let day = date.getDate();
+  let month = monthNames[date.getMonth()];
 
   return `${month} ${day}`;
-}
+};
 
 const createEventListContainer = (date, index) => {
   const datetime = generateDatetime(date);

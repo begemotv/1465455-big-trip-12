@@ -8,20 +8,19 @@ import {createDestinationDescription} from "./view/destination-description.js";
 import {createEventTemplate} from "./view/event.js";
 import {generateEvent} from "./mock/event.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
-import {generateDates} from "./mock/dates.js"
+import {generateDates} from "./mock/dates.js";
 
 const EVENTS_COUNT = 15;
 
 const events = new Array(EVENTS_COUNT).fill().map(generateEvent);
 const dates = generateDates();
-console.log(dates);
 
 const siteMainElement = document.querySelector(`.page-body`); // 1 раз обращаемся к document
 const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); // Маршрут и стоимость
 const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-controls`); // Меню контейнер
 const contentContainer = siteMainElement.querySelector(`.trip-events`); // Сортировка и контент
 
-renderTemplate(destinationPriceContainer, createDestinationPriceTemplate(events), `afterbegin`);
+renderTemplate(destinationPriceContainer, createDestinationPriceTemplate(events, dates), `afterbegin`);
 renderElement(menuElementContainer, new MenuView().getElement(), RenderPosition.BEFOREEND);
 renderElement(menuElementContainer, new Filter().getElement(), RenderPosition.BEFOREEND);
 renderElement(contentContainer, new SortingView().getElement(), RenderPosition.BEFOREEND);

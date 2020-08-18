@@ -74,10 +74,9 @@ const createTypeActivityTemplateMarkup = (types) => {
 };
 
 const generateDate = (date) => {
-  const datetime = new Date(date);
-  let month = `` + (datetime.getMonth() + 1);
-  let day = `` + datetime.getDate();
-  let year = datetime.getFullYear().toString().substr(2, 2);
+  let month = (date.getMonth() + 1).toString();
+  let day = date.getDate().toString();
+  let year = date.getFullYear().toString().substr(2, 2);
 
   if (month.length < 2) {
     month = `0` + month;
@@ -96,6 +95,7 @@ export const createEventEditTemplate = (event) => {
   const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(EVENTTYPES);
   const eventStartDate = generateDate(startDate);
   const eventEndDate = generateDate(endDate);
+  const typeName = type.slice(0, -3).toLowerCase();
 
   return (
     `<li class="trip-events__item">
@@ -104,7 +104,7 @@ export const createEventEditTemplate = (event) => {
           <div class="event__type-wrapper">
             <label class="event__type  event__type-btn" for="event-type-toggle-1">
               <span class="visually-hidden">Choose event type</span>
-              <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
+              <img class="event__type-icon" width="17" height="17" src="img/icons/${typeName}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
