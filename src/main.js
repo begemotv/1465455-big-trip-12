@@ -13,27 +13,29 @@ import EventEditView from "./view/event-edit.js";
 // import EventEditDescriptionView from "./view/event-edit-description.js";
 import {generateEvent} from "./mock/event.js";
 import {generateDates} from "./mock/dates.js";
+import {render, RenderPosition} from "./utils.js";
 
 const EVENTS_COUNT = 15;
 
 const events = new Array(EVENTS_COUNT).fill().map(generateEvent);
-
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
+const dates = generateDates();
 
 const siteMainElement = document.querySelector(`.page-body`); // 1 раз обращаемся к document
 const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); // Маршрут и стоимость
 const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-controls`); // Меню контейнер
 const contentContainer = siteMainElement.querySelector(`.trip-events`); // Сортировка и контент
 
-render(destinationPriceContainer, createDestinationPriceTemplate(events), `afterbegin`);
-render(menuElementContainer, createMenuElementTemplate(), `beforeend`);
-render(menuElementContainer, createFilterElementTemplate(), `beforeend`);
-render(contentContainer, createSortingElementTemplate(), `beforeend`);
-render(contentContainer, createEventListTemplate(), `beforeend`);
+const renderEvent = (eventListElement, event) => {
+  const eventComponent = new EventView(event);
+  const eventEditComponent = new EventEditView(event);
 
-const travelPointsListContainer = contentContainer.querySelector(`.trip-events__list`);
+  const replaceEventToForm = () => {
+    eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  };
+
+  const replaceFormToEvent = () => {
+    eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  };
 
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape` || evt.key === `Esc`) {
