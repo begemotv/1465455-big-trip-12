@@ -1,6 +1,9 @@
 import {createElement} from "../utils.js";
+<<<<<<< HEAD
 import {BLANK_EVENT} from "../const.js";
 import {BLANK_DATES} from "../const.js";
+=======
+>>>>>>> module4-task1
 
 const generateDate = (dates) => {
   const {startDate, endDate} = dates;
@@ -32,6 +35,7 @@ const generateRoute = (events) => {
 };
 
 const createTripRouteDatesTemplate = (events, dates) => {
+<<<<<<< HEAD
   let route = ``;
   if (events !== BLANK_EVENT) {
     route = generateRoute(events);
@@ -41,6 +45,10 @@ const createTripRouteDatesTemplate = (events, dates) => {
   if (dates !== BLANK_DATES) {
     dateInterval = generateDate(dates);
   }
+=======
+  const route = generateRoute(events);
+  const dateInterval = generateDate(dates);
+>>>>>>> module4-task1
 
   return (
     `<div class="trip-info__main">
@@ -53,8 +61,13 @@ const createTripRouteDatesTemplate = (events, dates) => {
 export default class TripRouteDates {
   constructor(events, dates) {
     this._element = null;
+<<<<<<< HEAD
     this._events = events || BLANK_EVENT;
     this._dates = dates || BLANK_DATES;
+=======
+    this._events = events;
+    this._dates = dates;
+>>>>>>> module4-task1
   }
 
   _getTemplate() {
