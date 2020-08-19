@@ -39,11 +39,11 @@ const createEventEditDestinationDescription = (event) => {
 export default class EventEditDescription {
   constructor(event) {
     this._element = null;
-    this.event = event;
+    this._event = event;
   }
 
   _getTemplate() {
-    return createEventEditDestinationDescription(this.event);
+    return createEventEditDestinationDescription(this._event);
   }
 
   getElement() {

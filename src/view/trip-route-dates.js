@@ -30,8 +30,6 @@ const generateRoute = (events) => {
 };
 
 const createTripRouteDatesTemplate = (events, dates) => {
-  console.log(dates)
-  console.log(events)
   const route = generateRoute(events);
   const dateInterval = generateDate(dates);
 
@@ -46,12 +44,12 @@ const createTripRouteDatesTemplate = (events, dates) => {
 export default class TripRouteDates {
   constructor(events, dates) {
     this._element = null;
-    this.events = events;
-    this.dates = dates;
+    this._events = events;
+    this._dates = dates;
   }
 
   _getTemplate() {
-    return createTripRouteDatesTemplate(this.events, this.dates);
+    return createTripRouteDatesTemplate(this._events, this._dates);
   }
 
   getElement() {

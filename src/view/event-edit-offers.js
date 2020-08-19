@@ -44,11 +44,11 @@ const createEventEditOffersTemplate = (event) => {
 export default class EventEditOffers {
   constructor(event) {
     this._element = null;
-    this.event = event;
+    this._event = event;
   }
 
   _getTemplate() {
-    return createEventEditOffersTemplate(this.event);
+    return createEventEditOffersTemplate(this._event);
   }
 
   getElement() {

@@ -1,3 +1,5 @@
+import {createElement} from "../utils.js";
+
 const createEventOffer = (event) => {
   const {name, price} = event;
 
@@ -35,7 +37,7 @@ const generateDate = (date) => {
   return [year, month, day].join(`-`);
 };
 
-export const createEventTemplate = (event) => {
+const createEventTemplate = (event) => {
   const {type, city, price, startDate, endDate, startTime, endTime, duration} = event;
   const offerMarkup = createOfferMarkup(event);
   const eventStartDate = generateDate(startDate);
@@ -76,3 +78,27 @@ export const createEventTemplate = (event) => {
   </li>`
   );
 };
+
+
+export default class Event {
+  constructor(event) {
+    this._element = null;
+    this._event = event;
+  }
+
+  _getTemplate() {
+    return createEventTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this._getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -29,12 +29,11 @@ const createTripPriceTemplate = (events) => {
 export default class TripPrice {
   constructor(events) {
     this._element = null;
-    this.events = events;
+    this._events = events;
   }
 
   _getTemplate() {
-    console.log(this.events)
-    return createTripPriceTemplate(this.events);
+    return createTripPriceTemplate(this._events);
   }
 
   getElement() {
