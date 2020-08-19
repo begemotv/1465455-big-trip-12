@@ -1,14 +1,3 @@
-<<<<<<< Updated upstream
-import {createDestinationPriceTemplate} from "./view/destination-price.js";
-import {createMenuElementTemplate} from "./view/menu.js";
-import {createFilterElementTemplate} from "./view/filter.js";
-import {createSortingElementTemplate} from "./view/sorting.js";
-import {createEventListTemplate} from "./view/event-list.js";
-import {createEventEditTemplate} from "./view/event-edit.js";
-import {createDestinationDescription} from "./view/destination-description.js";
-import {createEventTemplate} from "./view/event.js";
-
-=======
 import TripInfoView from "./view/trip-info.js";
 import TripRouteDatesView from "./view/trip-route-dates.js";
 import TripPriceView from "./view/trip-price.js";
@@ -22,7 +11,6 @@ import EventEditView from "./view/event-edit.js";
 // import EditEventHeaderView from "./view/event-edit-header.js";
 // import EventEditOffersView from "./view/event-edit-offers.js";
 // import EventEditDescriptionView from "./view/event-edit-description.js";
->>>>>>> Stashed changes
 import {generateEvent} from "./mock/event.js";
 
 const EVENTS_COUNT = 15;
@@ -46,19 +34,6 @@ render(contentContainer, createEventListTemplate(), `beforeend`);
 
 const travelPointsListContainer = contentContainer.querySelector(`.trip-events__list`);
 
-<<<<<<< Updated upstream
-render(travelPointsListContainer, createEventEditTemplate(events[0]), `beforeend`);
-
-const destinationDescriptionContainer = contentContainer.querySelector(`.event__details`);
-
-render(destinationDescriptionContainer, createDestinationDescription(events), `beforeend`);
-for (let i = 1; i < EVENTS_COUNT; i++) {
-  render(travelPointsListContainer, createEventTemplate(events[i]), `beforeend`);
-}
-
-// остались проблемы с 1) форматом дат; 2) продолжительностью путешествия; 3) разбивкой точек маршрута по контейнерам дат и привязка дат контейнеров к мокам; 4) добавлением special offers к стоимости; 5) рефакторинг
-// думаю справлюсь, но наверняка есть много фидбека по структуре и читаемости
-=======
   const onEscKeyDown = (evt) => {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
@@ -119,4 +94,3 @@ render(menuElementContainer, new MenuView().getElement(), RenderPosition.BEFOREE
 render(menuElementContainer, new FilterView().getElement(), RenderPosition.BEFOREEND);
 
 renderBoard(contentContainer, events);
->>>>>>> Stashed changes
