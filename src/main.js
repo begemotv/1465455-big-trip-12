@@ -7,9 +7,9 @@ import SortView from "./view/sort.js";
 import EventView from "./view/event.js";
 import EventListView from "./view/event-list.js";
 import EventEditView from "./view/event-edit.js";
-import EditEventHeaderView from "./view/event-edit-header.js";
-import EventEditOffersView from "./view/event-edit-offers.js";
-import EventEditDescriptionView from "./view/event-edit-description.js";
+// import EditEventHeaderView from "./view/event-edit-header.js";
+// import EventEditOffersView from "./view/event-edit-offers.js";
+// import EventEditDescriptionView from "./view/event-edit-description.js";
 import {generateEvent} from "./mock/event.js";
 import {generateDates} from "./mock/dates.js";
 import {render, RenderPosition} from "./utils.js";
@@ -27,6 +27,23 @@ const contentContainer = siteMainElement.querySelector(`.trip-events`); // Со�
 const renderEvent = (eventListElement, event) => {
   const eventComponent = new EventView(event);
   const eventEditComponent = new EventEditView(event);
+
+  const replaceEventToForm = () => {
+    eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  };
+
+  const replaceFormToEvent = () => {
+    eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  };
+
+  eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceEventToForm();
+  });
+
+  eventEditComponent.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceFormToEvent();
+  });
 
   render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
@@ -61,7 +78,7 @@ if (eventsRemainder === 0) {
 }
 
 let temparray = [];
-for (let i = 0, j = 0; i < EVENTS_COUNT, j < travelDaysCount; i += eventsToRenderPerDay, j++) {
+for (let i = 0, j = 0; j < travelDaysCount; i += eventsToRenderPerDay, j++) {
   temparray = events.slice(i, i + eventsToRenderPerDay);
   for (let k = 0; k < temparray.length; k++) {
     renderEvent(travelPointsListContainer[j], temparray[k]);
