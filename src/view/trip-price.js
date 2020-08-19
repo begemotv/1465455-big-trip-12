@@ -1,8 +1,5 @@
 import {createElement} from "../utils.js";
-<<<<<<< HEAD
 import {BLANK_EVENT} from "../const.js";
-=======
->>>>>>> module4-task1
 
 const calculateEventsPrice = (events) => {
   let priceEvents = 0;
@@ -21,14 +18,10 @@ const calculateOffersPrice = (events) => {
 };
 
 const createTripPriceTemplate = (events) => {
-<<<<<<< HEAD
   let price = 0;
   if (events !== BLANK_EVENT) {
     price = calculateEventsPrice(events) + calculateOffersPrice(events);
   }
-=======
-  const price = calculateEventsPrice(events) + calculateOffersPrice(events);
->>>>>>> module4-task1
 
   return (
     `<p class="trip-info__cost">
@@ -40,11 +33,7 @@ const createTripPriceTemplate = (events) => {
 export default class TripPrice {
   constructor(events) {
     this._element = null;
-<<<<<<< HEAD
     this._events = events || BLANK_EVENT;
-=======
-    this._events = events;
->>>>>>> module4-task1
   }
 
   _getTemplate() {
