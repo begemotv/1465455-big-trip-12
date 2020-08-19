@@ -44,3 +44,25 @@ export const EVENTDESCRIPTION = [
   `Nunc fermentum tortor ac porta dapibus.`,
   `In rutrum ac purus sit amet tempus.`,
 ];
+
+export const BLANK_EVENT = {
+  type: ``,
+  city: ``,
+  startDate: ``,
+  endDate: ``,
+  startTime: ``,
+  endTime: ``,
+  duration: ``,
+  price: ``,
+  offers: ``,
+  offersPrice: ``,
+  destination: {
+    description: ``,
+    photos: ``,
+  },
+};
+
+export const BLANK_DATES = {
+  startDate: ``,
+  endDate: ``
+};
