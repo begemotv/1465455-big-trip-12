@@ -12,6 +12,7 @@ import EventEditView from "./view/event-edit.js";
 // import EventEditOffersView from "./view/event-edit-offers.js";
 // import EventEditDescriptionView from "./view/event-edit-description.js";
 import {generateEvent} from "./mock/event.js";
+import {generateDates} from "./mock/dates.js";
 
 const EVENTS_COUNT = 15;
 
