@@ -65,7 +65,7 @@ const generateDate = (date) => {
   return [day, month, year].join(`/`);
 };
 
-export const createEventEditHeaderTemplate = (event) => {
+const createEventEditHeaderTemplate = (event) => {
   const {type, city, price, startDate, endDate, startTime, endTime} = event;
   const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(EVENTTYPES);
   const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(EVENTTYPES);

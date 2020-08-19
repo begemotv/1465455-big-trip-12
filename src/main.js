@@ -1,4 +1,6 @@
-import {createDestinationPriceTemplate} from "./view/destination-price.js";
+import TripInfoView from "./view/trip-info.js";
+import TripRouteDatesView from "./view/trip-route-dates.js";
+import TripPriceView from "./view/trip-price.js";
 import MenuView from "./view/menu.js";
 import Filter from "./view/filter.js";
 import SortView from "./view/sort.js";
@@ -22,7 +24,11 @@ const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); /
 const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-controls`); // Меню контейнер
 const contentContainer = siteMainElement.querySelector(`.trip-events`); // Сортировка и контент
 
-renderTemplate(destinationPriceContainer, createDestinationPriceTemplate(events, dates), `afterbegin`);
+const tripInfoComponent = new TripInfoView();
+renderElement(destinationPriceContainer, tripInfoComponent.getElement(), RenderPosition.AFTERBEGIN);
+renderElement(tripInfoComponent.getElement(), new TripRouteDatesView(events, dates).getElement(), RenderPosition.BEFOREEND);
+renderElement(tripInfoComponent.getElement(), new TripPriceView(events).getElement(), RenderPosition.BEFOREEND);
+
 renderElement(menuElementContainer, new MenuView().getElement(), RenderPosition.BEFOREEND);
 renderElement(menuElementContainer, new Filter().getElement(), RenderPosition.BEFOREEND);
 renderElement(contentContainer, new SortView().getElement(), RenderPosition.BEFOREEND);

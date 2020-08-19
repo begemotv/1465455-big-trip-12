@@ -24,7 +24,7 @@ const createOfferTemplateMarkup = (offers) => {
   return offerMock.join(``);
 };
 
-export const createEventEditOffersTemplate = (event) => {
+const createEventEditOffersTemplate = (event) => {
   const {offers} = event;
   const eventOffersTemplate = createOfferTemplateMarkup(offers);
 
