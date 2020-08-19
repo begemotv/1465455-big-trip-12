@@ -24,12 +24,12 @@ const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); /
 const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-controls`); // Меню контейнер
 const contentContainer = siteMainElement.querySelector(`.trip-events`); // Сортировка и контент
 
-// const renderTask = (eventListElement, event) => {
-//   const eventComponent = new EventView(event);
-//   const eventEditComponent = new EventEditView(event);
+const renderEvent = (eventListElement, event) => {
+  const eventComponent = new EventView(event);
+  const eventEditComponent = new EventEditView(event);
 
-//   render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
-// };
+  render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+};
 
 const tripInfoComponent = new TripInfoView();
 render(destinationPriceContainer, tripInfoComponent.getElement(), RenderPosition.AFTERBEGIN);
@@ -40,34 +40,31 @@ render(menuElementContainer, new MenuView().getElement(), RenderPosition.BEFOREE
 render(menuElementContainer, new FilterView().getElement(), RenderPosition.BEFOREEND);
 render(contentContainer, new SortView().getElement(), RenderPosition.BEFOREEND);
 
-const eventEditComponent = new EventEditView(events[0]);
-render(contentContainer, eventEditComponent.getElement(), RenderPosition.BEFOREEND);
-render(eventEditComponent.getElement(), new EditEventHeaderView(events[0]).getElement(), RenderPosition.BEFOREEND);
+// const eventEditComponent = new EventEditView(events[0]);
+// render(contentContainer, eventEditComponent.getElement(), RenderPosition.BEFOREEND);
+// render(eventEditComponent.getElement(), new EditEventHeaderView(events[0]).getElement(), RenderPosition.BEFOREEND);
 
-const eventEditDetailsComponent = new EventEditOffersView(events[0]);
-render(eventEditComponent.getElement(), eventEditDetailsComponent.getElement(), RenderPosition.BEFOREEND);
-render(eventEditDetailsComponent.getElement(), new EventEditDescriptionView(events[0]).getElement(), RenderPosition.BEFOREEND);
+// const eventEditDetailsComponent = new EventEditOffersView(events[0]);
+// render(eventEditComponent.getElement(), eventEditDetailsComponent.getElement(), RenderPosition.BEFOREEND);
+// render(eventEditDetailsComponent.getElement(), new EventEditDescriptionView(events[0]).getElement(), RenderPosition.BEFOREEND);
 
 render(contentContainer, new EventListView(dates).getElement(), RenderPosition.BEFOREEND);
 
 const travelPointsListContainer = contentContainer.querySelectorAll(`.trip-events__list`);
 const travelDaysCount = travelPointsListContainer.length;
-const eventsToRender = EVENTS_COUNT - 1;
-let eventsRemainder = eventsToRender % travelDaysCount;
+let eventsRemainder = EVENTS_COUNT % travelDaysCount;
 let eventsToRenderPerDay = 0;
 if (eventsRemainder === 0) {
-  eventsToRenderPerDay = eventsToRender / travelDaysCount;
+  eventsToRenderPerDay = EVENTS_COUNT / travelDaysCount;
 } else {
-  const eventsToRenderPerDayEqual = Math.floor(eventsToRender / (travelDaysCount - 1));
-  eventsRemainder = eventsToRender - (eventsToRenderPerDayEqual * (travelDaysCount - 1));
-  eventsToRenderPerDay = (eventsToRender - eventsRemainder) / (travelDaysCount - 1);
+  eventsToRenderPerDay = (EVENTS_COUNT - eventsRemainder) / (travelDaysCount - 1);
 }
 
-let chunk = eventsToRenderPerDay;
 let temparray = [];
-for (let i = 0, j = 0; i < eventsToRender, j < travelDaysCount; i += chunk, j++) {
-  temparray = events.slice(i, i + chunk);
+for (let i = 0, j = 0; i < EVENTS_COUNT, j < travelDaysCount; i += eventsToRenderPerDay, j++) {
+  temparray = events.slice(i, i + eventsToRenderPerDay);
   for (let k = 0; k < temparray.length; k++) {
-    render(travelPointsListContainer[j], new EventView(temparray[k]).getElement(), RenderPosition.BEFOREEND);
+    renderEvent(travelPointsListContainer[j], temparray[k]);
   }
 }
+
