@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 import {BLANK_EVENT} from "../const.js";
 import {BLANK_DATES} from "../const.js";
 
@@ -50,26 +50,15 @@ const createTripRouteDatesTemplate = (events, dates) => {
   );
 };
 
-export default class TripRouteDates {
+export default class TripRouteDates extends AbstractView {
   constructor(events, dates) {
-    this._element = null;
+    super();
     this._events = events || BLANK_EVENT;
     this._dates = dates || BLANK_DATES;
   }
 
   _getTemplate() {
     return createTripRouteDatesTemplate(this._events, this._dates);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

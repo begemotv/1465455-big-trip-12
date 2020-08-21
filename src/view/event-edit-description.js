@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 const createPhoto = (photo) => {
 
@@ -36,25 +36,13 @@ const createEventEditDestinationDescription = (event) => {
   );
 };
 
-export default class EventEditDescription {
+export default class EventEditDescription extends AbstractView {
   constructor(event) {
-    this._element = null;
+    super();
     this._event = event;
   }
 
   _getTemplate() {
     return createEventEditDestinationDescription(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 import {BLANK_EVENT} from "../const.js";
 
 const calculateEventsPrice = (events) => {
@@ -30,26 +30,14 @@ const createTripPriceTemplate = (events) => {
   );
 };
 
-export default class TripPrice {
+export default class TripPrice extends AbstractView {
   constructor(events) {
-    this._element = null;
+    super();
     this._events = events || BLANK_EVENT;
   }
 
   _getTemplate() {
     return createTripPriceTemplate(this._events);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

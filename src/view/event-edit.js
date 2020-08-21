@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 import {EVENTTYPES} from "../const.js";
 
 const createOfferTemplate = (offer) => {
@@ -179,25 +179,13 @@ const createEventEditTemplate = (event) => {
   );
 };
 
-export default class EventEdit {
+export default class EventEdit extends AbstractView {
   constructor(event) {
-    this._element = null;
+    super();
     this._event = event;
   }
 
   _getTemplate() {
     return createEventEditTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this._getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
