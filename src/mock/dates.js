@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../utils.js";
+import {getRandomInteger} from "../utils/common.js";
 
 const generateStartDate = () => {
   const randomStartDate = new Date(2020, getRandomInteger(1, 11), getRandomInteger(1, 23), 10, 45);

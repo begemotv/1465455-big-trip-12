@@ -13,7 +13,7 @@ import EventEditView from "./view/event-edit.js";
 // import EventEditDescriptionView from "./view/event-edit-description.js";
 import {generateEvent} from "./mock/event.js";
 import {generateDates} from "./mock/dates.js";
-import {render, RenderPosition} from "./utils.js";
+import {render, RenderPosition, replace} from "./utils/render.js";
 
 const EVENTS_COUNT = 15;
 
@@ -30,11 +30,11 @@ const renderEvent = (eventListElement, event) => {
   const eventEditComponent = new EventEditView(event);
 
   const replaceEventToForm = () => {
-    eventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+    replace(eventEditComponent, eventComponent);
   };
 
   const replaceFormToEvent = () => {
-    eventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+    replace(eventComponent, eventEditComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -45,32 +45,31 @@ const renderEvent = (eventListElement, event) => {
     }
   };
 
-  eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  eventComponent.setEditClickHandler(() => {
     replaceEventToForm();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  eventEditComponent.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
+  eventEditComponent.setFormSubmitHandler(() => {
     replaceFormToEvent();
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  render(eventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+  render(eventListElement, eventComponent, RenderPosition.BEFOREEND);
 };
 
 const renderBoard = (contentContainerAll, eventsTrip) => {
   if (eventsTrip.length === 0) {
-    render(contentContainerAll, new NoEventsView().getElement(), RenderPosition.BEFOREEND);
-    render(tripInfoComponent.getElement(), new TripRouteDatesView().getElement(), RenderPosition.BEFOREEND);
-    render(tripInfoComponent.getElement(), new TripPriceView().getElement(), RenderPosition.BEFOREEND);
+    render(contentContainerAll, new NoEventsView(), RenderPosition.BEFOREEND);
+    render(tripInfoComponent, new TripRouteDatesView(), RenderPosition.BEFOREEND);
+    render(tripInfoComponent, new TripPriceView(), RenderPosition.BEFOREEND);
     return;
   }
 
-  render(tripInfoComponent.getElement(), new TripRouteDatesView(eventsTrip, dates).getElement(), RenderPosition.BEFOREEND);
-  render(tripInfoComponent.getElement(), new TripPriceView(eventsTrip).getElement(), RenderPosition.BEFOREEND);
-  render(contentContainerAll, new SortView().getElement(), RenderPosition.BEFOREEND);
-  render(contentContainerAll, new EventListView(dates).getElement(), RenderPosition.BEFOREEND);
+  render(tripInfoComponent, new TripRouteDatesView(eventsTrip, dates), RenderPosition.BEFOREEND);
+  render(tripInfoComponent, new TripPriceView(eventsTrip), RenderPosition.BEFOREEND);
+  render(contentContainerAll, new SortView(), RenderPosition.BEFOREEND);
+  render(contentContainerAll, new EventListView(dates), RenderPosition.BEFOREEND);
 
   const travelPointsListContainer = contentContainerAll.querySelectorAll(`.trip-events__list`);
   const travelDaysCount = travelPointsListContainer.length;
@@ -92,8 +91,8 @@ const renderBoard = (contentContainerAll, eventsTrip) => {
 };
 
 const tripInfoComponent = new TripInfoView();
-render(destinationPriceContainer, tripInfoComponent.getElement(), RenderPosition.AFTERBEGIN);
-render(menuElementContainer, new MenuView().getElement(), RenderPosition.BEFOREEND);
-render(menuElementContainer, new FilterView().getElement(), RenderPosition.BEFOREEND);
+render(destinationPriceContainer, tripInfoComponent, RenderPosition.AFTERBEGIN);
+render(menuElementContainer, new MenuView(), RenderPosition.BEFOREEND);
+render(menuElementContainer, new FilterView(), RenderPosition.BEFOREEND);
 
 renderBoard(contentContainer, events);

@@ -2,7 +2,7 @@ import {EVENTTYPES} from "../const.js";
 import {EVENTCITIES} from "../const.js";
 import {EVENTOFFERS} from "../const.js";
 import {EVENTDESCRIPTION} from "../const.js";
-import {getRandomInteger} from "../utils.js";
+import {getRandomInteger} from "../utils/common.js";
 
 const generateEventType = () => {
   const randomIndex = getRandomInteger(0, EVENTTYPES.length - 1);

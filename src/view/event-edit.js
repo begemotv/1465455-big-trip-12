@@ -123,20 +123,20 @@ const createEventEditTemplate = (event) => {
         <img class="event__type-icon" width="17" height="17" src="img/icons/${typeName}.png" alt="Event type icon">
       </label>
       <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
-    
+
       <div class="event__type-list">
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Transfer</legend>
           ${eventTypesTransferTemplate}
         </fieldset>
-    
+
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Activity</legend>
           ${eventTypesActivityTemplate}
         </fieldset>
       </div>
     </div>
-    
+
     <div class="event__field-group  event__field-group--destination">
       <label class="event__label  event__type-output" for="event-destination-1">
       ${type}
@@ -149,7 +149,7 @@ const createEventEditTemplate = (event) => {
         <option value="Saint Petersburg"></option>
       </datalist>
     </div>
-    
+
     <div class="event__field-group  event__field-group--time">
       <label class="visually-hidden" for="event-start-time-1">
         From
@@ -161,7 +161,7 @@ const createEventEditTemplate = (event) => {
       </label>
       <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${eventEndDate} ${endTime}">
     </div>
-    
+
     <div class="event__field-group  event__field-group--price">
       <label class="event__label" for="event-price-1">
         <span class="visually-hidden">Price</span>
@@ -169,7 +169,7 @@ const createEventEditTemplate = (event) => {
       </label>
       <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
     </div>
-    
+
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
     <button class="event__reset-btn" type="reset">Cancel</button>
     </header>
@@ -183,9 +183,21 @@ export default class EventEdit extends AbstractView {
   constructor(event) {
     super();
     this._event = event;
+
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
   }
 
   _getTemplate() {
     return createEventEditTemplate(this._event);
+  }
+
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
+  }
+
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
   }
 }
