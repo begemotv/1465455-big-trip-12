@@ -1,26 +1,31 @@
 import EventListView from "../view/event-list.js";
 import SortView from "../view/sort.js";
-import NoEventsView from "../view/no-task.js";
+import NoEventsView from "../view/no-events.js";
 import EventView from "../view/event.js";
 import EventEditView from "../view/event-edit.js";
+import TripInfoView from "../view/trip-info.js";
+import TripPriceView from "../view/trip-price.js";
+import TripRouteDatesView from "../view/trip-route-dates.js";
 import {render, RenderPosition, replace} from "../utils/render.js";
 
 export default class Trip {
-  constructor(tripContainer, tripDates) {
+  constructor(tripContainer, destinationPriceContainer, tripDates) {
     this._tripContainer = tripContainer;
+    this._destinationPriceContainer = destinationPriceContainer;
     this._tripDates = tripDates;
 
     this._sortComponent = new SortView();
     this._eventListComponent = new EventListView(this._tripDates);
     this._noEventsComponent = new NoEventsView();
+    this._tripInfoComponent = new TripInfoView();
   }
 
   init(tripEvents) {
     this._tripEvents = tripEvents.slice();
 
-    render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
+    render(this._destinationPriceContainer, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
 
-    this._renderBoard();
+    this._renderTrip();
   }
 
   _renderSort() {
@@ -66,10 +71,23 @@ export default class Trip {
   // }
 
   _renderNoEvents() {
+    this._tripPriceComponent = new TripPriceView();
+    this._tripRouteDatesComponent = new TripRouteDatesView();
+
+    render(this._tripInfoComponent, this._tripRouteDatesComponent, RenderPosition.BEFOREEND);
+    render(this._tripInfoComponent, this._tripPriceComponent, RenderPosition.BEFOREEND);
     render(this._tripContainer, this._noEventsComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _renderEventList() {
+  _renderEventList() { // пока моки есть не знаю как убрать эту логику показа по дням
+    render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
+
+    this._tripPriceComponent = new TripPriceView(this._tripEvents);
+    this._tripRouteDatesComponent = new TripRouteDatesView(this._tripEvents, this._tripDates);
+
+    render(this._tripInfoComponent, this._tripRouteDatesComponent, RenderPosition.BEFOREEND);
+    render(this._tripInfoComponent, this._tripPriceComponent, RenderPosition.BEFOREEND);
+
     const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
     const travelDaysCount = travelPointsListContainer.length;
     let eventsRemainder = this._tripEvents.length % travelDaysCount;
@@ -92,7 +110,7 @@ export default class Trip {
   }
 
   _renderTrip() {
-    if (this._tripEvents === 0) {
+    if (this._tripEvents.length === 0) {
       this._renderNoEvents();
       return;
     }
