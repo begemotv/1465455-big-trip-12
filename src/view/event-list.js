@@ -55,6 +55,7 @@ const getDates = (startDate, endDate) => {
 
 const createEventListMarkup = (dates) => {
   const {startDate, endDate} = dates;
+  // 
   let eventListDates = getDates(startDate, endDate); // возвращается массив дат (endDate-startDate)
   let eventListMock = [];
   for (let i = 0; i < eventListDates.length; i++) {

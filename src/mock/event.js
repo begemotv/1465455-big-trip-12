@@ -4,6 +4,8 @@ import {EVENTOFFERS} from "../const.js";
 import {EVENTDESCRIPTION} from "../const.js";
 import {getRandomInteger} from "../utils/common.js";
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 const generateEventType = () => {
   const randomIndex = getRandomInteger(0, EVENTTYPES.length - 1);
   const randomType = EVENTTYPES[randomIndex].name + EVENTTYPES[randomIndex].placeholder;
@@ -18,7 +20,7 @@ const generateCity = () => {
 };
 
 const generateEventOffers = () => {
-  const randomIndex = getRandomInteger(1, 3);
+  const randomIndex = getRandomInteger(0, 2);
   let randomOffers = [];
   for (let i = 0; i < randomIndex; i++) {
     randomOffers.push(EVENTOFFERS[i]);
@@ -113,6 +115,7 @@ export const generateEvent = () => {
   const offersPrice = generateEventOffersPrice(offers);
 
   return {
+    id: generateId(),
     type: generateEventType(),
     city: generateCity(),
     startDate, // не понимаю насколько это нужно в рамках моков

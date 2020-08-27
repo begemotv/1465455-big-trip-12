@@ -6,17 +6,21 @@ import TripInfoView from "../view/trip-info.js";
 import TripPriceView from "../view/trip-price.js";
 import TripRouteDatesView from "../view/trip-route-dates.js";
 import {render, RenderPosition} from "../utils/render.js";
+import {updateItem} from "../utils/common.js";
 
 export default class Trip {
   constructor(tripContainer, destinationPriceContainer, tripDates) {
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
     this._tripDates = tripDates;
+    this._eventPresenter = {};
 
     this._sortComponent = new SortView();
     this._eventListComponent = new EventListView(this._tripDates);
     this._noEventsComponent = new NoEventsView();
     this._tripInfoComponent = new TripInfoView();
+
+    this._handleEventChange = this._handleEventChange.bind(this);
   }
 
   init(tripEvents) {
@@ -27,13 +31,20 @@ export default class Trip {
     this._renderTrip();
   }
 
+  _handleEventChange(updatedEvent) {
+    this._boardTasks = updateItem(this._boardTasks, updatedEvent);
+    this._sourcedBoardTasks = updateItem(this._sourcedBoardTasks, updatedEvent);
+    this._taskPresenter[updatedEvent.id].init(updatedEvent);
+  }
+
   _renderSort() {
     render(this._tripContainer, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderEvent(eventListContainer, event) {
-    const eventPresenter = new EventPresenter(eventListContainer);
+    const eventPresenter = new EventPresenter(eventListContainer, this._handleEventChange);
     eventPresenter.init(event);
+    this._eventPresenter[event.id] = eventPresenter;
   }
 
   // _renderEvents() {
@@ -78,6 +89,13 @@ export default class Trip {
     }
 
     // this._renderEvents(0, Math.min(this._tripEvents.length, TASK_COUNT_PER_STEP));
+  }
+
+  _clearTaskList() {
+    Object
+      .values(this._eventPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._eventPresenter = {};
   }
 
   _renderTrip() {
