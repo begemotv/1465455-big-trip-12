@@ -1,16 +1,17 @@
 import AbstractView from "./abstract.js";
 import {BLANK_EVENT} from "../const.js";
-import {BLANK_DATES} from "../const.js";
 
-const generateDate = (dates) => {
-  const {startDate, endDate} = dates;
+const generateDate = (events) => {
+  const startDate = events[0].startDate;
+  const endDate = events[events.length - 1].endDate;
   const monthNames = [`JAN`, `FEB`, `MAR`, `APR`, `MAY`, `JUN`,
     `JUL`, `AUG`, `SEP`, `OCT`, `NOV`, `DEC`];
   let startDay = startDate.getDate();
-  let month = monthNames[startDate.getMonth()];
+  let startMonth = monthNames[startDate.getMonth()];
   let endDay = endDate.getDate();
+  let endMonth = monthNames[endDate.getMonth()];
 
-  return `${month} ${startDay}&nbsp;&mdash;&nbsp;${endDay}`;
+  return `${startMonth} ${startDay}&nbsp;&mdash;&nbsp;${endMonth} ${endDay}`;
 };
 
 const generateRoute = (events) => {
@@ -31,15 +32,12 @@ const generateRoute = (events) => {
   return route;
 };
 
-const createTripRouteDatesTemplate = (events, dates) => {
+const createTripRouteDatesTemplate = (events) => {
   let route = ``;
+  let dateInterval = ``;
   if (events !== BLANK_EVENT) {
     route = generateRoute(events);
-  }
-
-  let dateInterval = ``;
-  if (dates !== BLANK_DATES) {
-    dateInterval = generateDate(dates);
+    dateInterval = generateDate(events);
   }
 
   return (
@@ -51,14 +49,14 @@ const createTripRouteDatesTemplate = (events, dates) => {
 };
 
 export default class TripRouteDates extends AbstractView {
-  constructor(events, dates) {
+  constructor(events) {
     super();
     this._events = events || BLANK_EVENT;
-    this._dates = dates || BLANK_DATES;
+    // this._dates = dates || BLANK_DATES;
   }
 
   _getTemplate() {
-    return createTripRouteDatesTemplate(this._events, this._dates);
+    return createTripRouteDatesTemplate(this._events);
   }
 }
 

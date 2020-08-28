@@ -24,17 +24,31 @@ export const EVENTCITIES = [
   `Helsinki`
 ];
 
+export const EVENTOFFERCLASS = {
+  taxi: ``,
+  bus: ``,
+  train: [`upgrade`],
+  ship: [`upgrade`],
+  transport: ``,
+  drive: ``,
+  flight: [`upgrade`, `flight`],
+  checkin: [`sightseeing`],
+  sightseeing: [`sightseeing`],
+  restaurant: [`restaurant`]
+}
+
 export const EVENTOFFERS = [
-  {name: `Add luggage`, price: 30, offerClass: `luggage`},
-  {name: `Add sport inventory`, price: 50, offerClass: `luggage`},
-  {name: `Add blanket`, price: 10, offerClass: `upgrade`},
-  {name: `Add excursion`, price: 45, offerClass: `upgrade`},
-  {name: `Switch to comfort class`, price: 100, offerClass: `upgrade`},
-  {name: `Add meal`, price: 15, offerClass: `food`},
-  {name: `Choose seats`, price: 5, offerClass: `seats`},
-  {name: `Add wine`, price: 10, offerClass: `food`},
+  {name: `Add luggage`, price: 30, offerClass: `flight`},
+  {name: `Non-smoking driver`, price: 20, offerClass: `taxi`},
+  {name: `Add sport inventory`, price: 50, offerClass: `flight`},
+  {name: `Add blanket`, price: 10, offerClass: `flight`},
+  {name: `Add excursion`, price: 45, offerClass: `sightseeing`},
+  {name: `Switch to first class`, price: 100, offerClass: `upgrade`},
+  {name: `Add meal`, price: 15, offerClass: `upgrade`},
+  {name: `Choose seats`, price: 5, offerClass: `upgrade`},
   {name: `Book a table`, price: 5, offerClass: `restaurant`},
-  {name: `Buy city guide`, price: 5, offerClass: `upgrade`},
+  {name: `Buy a rose`, price: 15, offerClass: `restaurant`},
+  {name: `Buy city guide`, price: 5, offerClass: `sightseeing`},
 ];
 
 export const EVENTDESCRIPTION = [

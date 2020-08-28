@@ -9,14 +9,13 @@ import {render, RenderPosition} from "../utils/render.js";
 import {updateItem} from "../utils/common.js";
 
 export default class Trip {
-  constructor(tripContainer, destinationPriceContainer, tripDates) {
+  constructor(tripContainer, destinationPriceContainer) {
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
-    this._tripDates = tripDates;
     this._eventPresenter = {};
 
     this._sortComponent = new SortView();
-    this._eventListComponent = new EventListView(this._tripDates);
+
     this._noEventsComponent = new NoEventsView();
     this._tripInfoComponent = new TripInfoView();
 
@@ -61,34 +60,35 @@ export default class Trip {
     render(this._tripContainer, this._noEventsComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _renderEventList() { // пока моки есть не знаю как убрать эту логику показа по дням
+  _renderEventList() {
+    this._eventListComponent = new EventListView(this._tripEvents);
     render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
     this._tripPriceComponent = new TripPriceView(this._tripEvents);
-    this._tripRouteDatesComponent = new TripRouteDatesView(this._tripEvents, this._tripDates);
+    this._tripRouteDatesComponent = new TripRouteDatesView(this._tripEvents);
 
     render(this._tripInfoComponent, this._tripRouteDatesComponent, RenderPosition.BEFOREEND);
     render(this._tripInfoComponent, this._tripPriceComponent, RenderPosition.BEFOREEND);
 
     const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
-    const travelDaysCount = travelPointsListContainer.length;
-    let eventsRemainder = this._tripEvents.length % travelDaysCount;
-    let eventsToRenderPerDay = 0;
-    if (eventsRemainder === 0) {
-      eventsToRenderPerDay = this._tripEvents.length / travelDaysCount;
-    } else {
-      eventsToRenderPerDay = (this._tripEvents.length - eventsRemainder) / (travelDaysCount - 1);
+
+    for (let i = 0; i < this._tripEvents.length; i++) {
+      this._renderEvent(travelPointsListContainer[i], this._tripEvents[i]);
     }
 
-    let temparray = [];
-    for (let i = 0, j = 0; j < travelDaysCount; i += eventsToRenderPerDay, j++) {
-      temparray = this._tripEvents.slice(i, i + eventsToRenderPerDay);
-      for (let k = 0; k < temparray.length; k++) {
-        this._renderEvent(travelPointsListContainer[j], temparray[k]);
-      }
-    }
-
-    // this._renderEvents(0, Math.min(this._tripEvents.length, TASK_COUNT_PER_STEP));
+    // for (let i = 1, j = 0; i < this._tripEvents.length + 1; i++) {
+    //   let currentEvent = this._tripEvents[i].startDate.getDate();
+    //   let previousEvent = this._tripEvents[i - 1].startDate.getDate();
+    //   if (i === 1) {
+    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+    //   }
+    //   if (currentEvent === previousEvent) {
+    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+    //   } else {
+    //     j++;
+    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+    //   }
+    // }
   }
 
   _clearTaskList() {
