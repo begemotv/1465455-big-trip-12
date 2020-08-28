@@ -10,7 +10,6 @@ const calculateEventsPrice = (events) => {
 };
 
 const calculateOffersPrice = (events) => {
-  console.log(events)
   let priceOffers = 0;
   for (let i = 0; i < events.length; i++) {
     priceOffers += events[i].offersPrice;

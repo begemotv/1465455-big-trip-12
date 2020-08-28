@@ -8,6 +8,7 @@ import {render, RenderPosition} from "./utils/render.js";
 const EVENTS_COUNT = 15;
 
 const events = new Array(EVENTS_COUNT).fill().map(generateEvent);
+console.log(events)
 const dates = generateDates();
 
 const siteMainElement = document.querySelector(`.page-body`);

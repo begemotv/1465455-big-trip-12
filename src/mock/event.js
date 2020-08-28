@@ -54,12 +54,54 @@ const generateEventPhotos = () => {
 };
 
 const generateStartDate = () => {
-  const randomStartDate = new Date(2020, getRandomInteger(1, 11), getRandomInteger(1, 23), getRandomInteger(0, 23), getRandomInteger(0, 59));
+  const maxDaysGap = 7;
+  const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
+  const randomStartDate = new Date();
+
+  randomStartDate.setHours(getRandomInteger(0, 23), getRandomInteger(0, 59));
+
+  randomStartDate.setDate(randomStartDate.getDate() + daysGap);
+
   return randomStartDate;
 };
 
 const generateEndDate = (startDate) => {
-  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + getRandomInteger(3, 5), getRandomInteger(0, 23), getRandomInteger(0, 59));
+  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + getRandomInteger(0, 1), startDate.getHours() + getRandomInteger(0, 23), getRandomInteger(0, 59));
+
+  const month28 = 1;
+  const month30 = [0, 2, 4, 6, 8, 10];
+  const month31 = [3, 5, 7, 9, 11];
+
+  if (randomEndDate.getMinutes() > 59) {
+    randomEndDate.setHours(randomEndDate.getHours() + 1);
+    randomEndDate.setMinutes(randomEndDate.getMinutes() - 60);
+  }
+  if (randomEndDate.getHours() > 23) {
+    randomEndDate.setDay(randomEndDate.getDay() + 1);
+    randomEndDate.setHours(randomEndDate.setHours() - 24);
+  }
+
+  if (randomEndDate.getMonth() === month28) {
+    if (randomEndDate.getDay() > 28) {
+      randomEndDate.setMonth(randomEndDate.getMonth() + 1);
+      randomEndDate.setDay(randomEndDate.getDay() - 28);
+    }
+  }
+
+  if (month30.includes(randomEndDate.getMonth())) {
+    if (randomEndDate.getDay() > 30) {
+      randomEndDate.setMonth(randomEndDate.getMonth() + 1);
+      randomEndDate.setDay(randomEndDate.getDay() - 30);
+    }
+  }
+
+  if (month31.includes(randomEndDate.getMonth())) {
+    if (randomEndDate.getDay() > 31) {
+      randomEndDate.setMonth(randomEndDate.getMonth() + 1);
+      randomEndDate.setDay(randomEndDate.getDay() - 31);
+    }
+  }
+
   return randomEndDate;
 };
 
@@ -78,10 +120,30 @@ const generateTime = (date) => {
 };
 
 const generateDuration = (startDate, endDate) => {
+  let startMonth = startDate.getMonth();
+  let startDay = startDate.getDate();
   let startHours = startDate.getHours();
   let startMinutes = startDate.getMinutes();
+  let endDay = endDate.getDate();
   let endHours = endDate.getHours();
   let endMinutes = endDate.getMinutes();
+
+  const month28 = 1;
+  const month30 = [0, 2, 4, 6, 8, 10];
+  const month31 = [3, 5, 7, 9, 11];
+
+  if (startDay > endDay) {
+    if (startMonth === month28) {
+      endDay += 28;
+    }
+    if (month30.includes(startMonth)) {
+      endDay += 30;
+    }
+    if (month31.includes(startMonth)) {
+      endDay += 31;
+    }
+  }
+
   if (startHours > endHours) {
     endHours += 24;
   }
@@ -90,18 +152,26 @@ const generateDuration = (startDate, endDate) => {
     endMinutes += 60;
   }
 
+  let durationDays = endDay - startDay;
   let durationHours = endHours - startHours;
   let durationMinutes = endMinutes - startMinutes;
 
   let duration = ``;
 
-  if (durationHours === 0) {
-    duration = `${durationMinutes}M`;
-  } else if (durationMinutes === 0) {
-    duration = `${durationHours}H`;
+  if (durationDays === 0) {
+    if (durationHours === 0) {
+      duration = `${durationMinutes}M`;
+    } else {
+      duration = `${durationHours}H ${durationMinutes}M`;
+    }
   } else {
-    duration = `${durationHours}H ${durationMinutes}M`;
+    if (durationHours === 0) {
+      duration = `${durationDays}D ${durationMinutes}M`;
+    } else {
+      duration = `${durationDays}D ${durationHours}H ${durationMinutes}M`;
+    }
   }
+
   return duration;
 };
 
