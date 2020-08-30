@@ -66,7 +66,7 @@ const generateStartDate = () => {
 };
 
 const generateEndDate = (startDate) => {
-  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + getRandomInteger(0, 1), startDate.getHours() + getRandomInteger(0, 23), getRandomInteger(0, 59));
+  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startDate.getHours() + getRandomInteger(0, 23), getRandomInteger(0, 59));
 
   const month28 = 1;
   const month30 = [0, 2, 4, 6, 8, 10];

@@ -41,7 +41,6 @@ export const EVENTOFFERS = [
   {name: `Add luggage`, price: 30, offerClass: `flight`},
   {name: `Non-smoking driver`, price: 20, offerClass: `taxi`},
   {name: `Add sport inventory`, price: 50, offerClass: `flight`},
-  {name: `Add blanket`, price: 10, offerClass: `flight`},
   {name: `Add excursion`, price: 45, offerClass: `sightseeing`},
   {name: `Switch to first class`, price: 100, offerClass: `upgrade`},
   {name: `Add meal`, price: 15, offerClass: `upgrade`},
