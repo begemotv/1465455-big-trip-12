@@ -2,8 +2,7 @@ import MenuView from "./view/menu.js";
 import FilterView from "./view/filter.js";
 import TripPresenter from "./presenter/trip.js";
 import {generateEvent} from "./mock/event.js";
-import {generateOffers} from "./mock/offers.js";
-// import {generateDates} from "./mock/dates.js";
+// import {generateOffers} from "./mock/offers.js";
 import {render, RenderPosition} from "./utils/render.js";
 
 const EVENTS_COUNT = 15;
@@ -12,7 +11,7 @@ const events = new Array(EVENTS_COUNT)
   .fill()
   .map(generateEvent)
   .sort((a, b) => a.startDate - b.startDate);
-const offers = generateOffers();
+// const offers = generateOffers();
 
 const siteMainElement = document.querySelector(`.page-body`);
 const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); // Маршрут и стоимость
