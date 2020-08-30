@@ -51,6 +51,7 @@ const getDates = (events) => {
 
 const createEventListMarkup = (events) => {
   let eventListDates = getDates(events);
+  console.log(eventListDates)
   let eventListMock = [];
   for (let i = 0; i < eventListDates.length; i++) {
     let eventListElement = createEventListContainer(eventListDates[i], i);
