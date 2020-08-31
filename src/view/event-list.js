@@ -46,9 +46,6 @@ const getDates = (events) => {
   for (let i = 0; i < events.length - 1; i++) {
     let currentDate = events[i].startDate.getDate();
     let nextDate = events[i + 1].startDate.getDate();
-    if (i === 0) {
-      dates.push(events[i].startDate);
-    }
     if (i === (events.length - 1) && currentDate !== nextDate) {
       dates.push(events[events.length - 1].startDate);
     }

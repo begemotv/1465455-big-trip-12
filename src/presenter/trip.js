@@ -77,6 +77,7 @@ export default class Trip {
       let nextEvent = this._tripEvents[i + 1].startDate.getDate();
       if (i === 0) {
         this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+        i++;
       }
       if (currentEvent === nextEvent) {
         this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
