@@ -66,3 +66,9 @@ export const BLANK_DATES = {
   startDate: ``,
   endDate: ``
 };
+
+export const SortType = {
+  EVENT: `event`,
+  TIME: `time`,
+  PRICE: `price`
+};
