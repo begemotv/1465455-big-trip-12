@@ -72,10 +72,6 @@ export default class Trip {
 
     const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
 
-    // for (let i = 0; i < this._tripEvents.length; i++) {
-    //   this._renderEvent(travelPointsListContainer[i], this._tripEvents[i]);
-    // }
-
     for (let i = 0, j = 0; i < this._tripEvents.length - 1; i++) {
       let currentEvent = this._tripEvents[i].startDate.getDate();
       let nextEvent = this._tripEvents[i + 1].startDate.getDate();
