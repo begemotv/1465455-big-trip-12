@@ -43,15 +43,24 @@ const createEventListContainer = (date, index) => {
 
 const getDates = (events) => {
   let dates = [];
-  for (let i = 0; i < events.length; i++) {
-    dates.push(events[i].startDate);
+  for (let i = 0; i < events.length - 1; i++) {
+    let currentDate = events[i].startDate.getDate();
+    let nextDate = events[i + 1].startDate.getDate();
+    if (i === 0) {
+      dates.push(events[i].startDate);
+    }
+    if (i === (events.length - 1) && currentDate !== nextDate) {
+      dates.push(events[events.length - 1].startDate);
+    }
+    if (currentDate !== nextDate) {
+      dates.push(events[i].startDate);
+    }
   }
   return dates;
 };
 
 const createEventListMarkup = (events) => {
   let eventListDates = getDates(events);
-  console.log(eventListDates)
   let eventListMock = [];
   for (let i = 0; i < eventListDates.length; i++) {
     let eventListElement = createEventListContainer(eventListDates[i], i);

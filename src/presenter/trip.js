@@ -76,13 +76,13 @@ export default class Trip {
     //   this._renderEvent(travelPointsListContainer[i], this._tripEvents[i]);
     // }
 
-    for (let i = 1, j = 0; i < this._tripEvents.length + 1; i++) {
+    for (let i = 0, j = 0; i < this._tripEvents.length - 1; i++) {
       let currentEvent = this._tripEvents[i].startDate.getDate();
-      let previousEvent = this._tripEvents[i - 1].startDate.getDate();
-      if (i === 1) {
+      let nextEvent = this._tripEvents[i + 1].startDate.getDate();
+      if (i === 0) {
         this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
       }
-      if (currentEvent === previousEvent) {
+      if (currentEvent === nextEvent) {
         this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
       } else {
         j++;
