@@ -19,7 +19,6 @@ export default class Trip {
     this._eventPresenter = {};
 
     this._sortComponent = new SortView();
-
     this._noEventsComponent = new NoEventsView();
     this._tripInfoComponent = new TripInfoView();
 
@@ -69,25 +68,10 @@ export default class Trip {
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
-  _clearEventList() {
-    this._eventListComponent.getElement().innerHTML = ``;
-  }
-
-  // _clearTaskList() {
-  //   Object
-  //     .values(this._eventPresenter)
-  //     .forEach((presenter) => presenter.destroy());
-  //   this._eventPresenter = {};
-  // }
-
   _handleEventChange(updatedEvent) {
     this._boardTasks = updateItem(this._boardTasks, updatedEvent);
     this._sourcedBoardTasks = updateItem(this._sourcedBoardTasks, updatedEvent);
     this._taskPresenter[updatedEvent.id].init(updatedEvent);
-  }
-
-  _renderSort() {
-    render(this._tripContainer, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderEvent(eventListContainer, event) {
@@ -110,27 +94,38 @@ export default class Trip {
     render(this._tripContainer, this._noEventsComponent, RenderPosition.AFTERBEGIN);
   }
 
+  _clearEventList() {
+    this._eventListComponent.getElement().innerHTML = ``;
+  }
+
+  // _clearTaskList() {
+  //   Object
+  //     .values(this._eventPresenter)
+  //     .forEach((presenter) => presenter.destroy());
+  //   this._eventPresenter = {};
+  // }
+
   _renderEventList() {
-    for (let i = 0; i < this._tripEvents.length; i++) {
-      this._renderEvent(this._eventListComponent, this._tripEvents[i]);
-    }
-
-    // const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
-
-    // for (let i = 0, j = 0; i < this._tripEvents.length - 1; i++) {
-    //   let currentEvent = this._tripEvents[i].startDate.getDate();
-    //   let nextEvent = this._tripEvents[i + 1].startDate.getDate();
-    //   if (i === 0) {
-    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
-    //     i++;
-    //   }
-    //   if (currentEvent === nextEvent) {
-    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
-    //   } else {
-    //     j++;
-    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
-    //   }
+    // for (let i = 0; i < this._tripEvents.length; i++) {
+    //   this._renderEvent(this._eventListComponent, this._tripEvents[i]);
     // }
+
+    const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
+
+    for (let i = 0, j = 0; i < this._tripEvents.length - 1; i++) {
+      let currentEvent = this._tripEvents[i].startDate.getDate();
+      let nextEvent = this._tripEvents[i + 1].startDate.getDate();
+      if (i === 0) {
+        this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+        i++;
+      }
+      if (currentEvent === nextEvent) {
+        this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+      } else {
+        j++;
+        this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+      }
+    }
   }
 
   _renderTripInfo() {
