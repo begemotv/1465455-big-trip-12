@@ -7,12 +7,15 @@ import TripInfoView from "../view/trip-info.js";
 import TripPriceView from "../view/trip-price.js";
 import TripRouteDatesView from "../view/trip-route-dates.js";
 import {render, RenderPosition, replace} from "../utils/render.js";
+import {sortByTime, sortByPrice} from "../utils/event.js";
+import {SortType} from "../const.js";
 
 export default class Trip {
   constructor(tripContainer, destinationPriceContainer, tripDates) {
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
     this._tripDates = tripDates;
+    this._currentSortType = SortType.DEFAULT;
 
     this._sortComponent = new SortView();
     this._eventListComponent = new EventListView(this._tripDates);
@@ -24,16 +27,36 @@ export default class Trip {
 
   init(tripEvents) {
     this._tripEvents = tripEvents.slice();
+    this._sourcedTripEvents = tripEvents.slice();
 
     render(this._destinationPriceContainer, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
 
     this._renderTrip();
   }
 
+  _sortEvents(sortType) {
+    switch (sortType) {
+      case SortType.TIME:
+        this._tripEvents.sort(sortByTime);
+        break;
+      case SortType.PRICE:
+        this._tripEvents.sort(sortByPrice);
+        break;
+      default:
+        this._tripEvents = this._sourcedTripEvents.slice();
+    }
+
+    this._currentSortType = sortType;
+  }
+
   _handleSortTypeChange(sortType) {
-    // - Сортируем задачи
-    // - Очищаем список
-    // - Рендерим список заново
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._sortEvents(sortType);
+    this._clearEventList();
+    this._renderEventList();
   }
 
   _renderSort() {
@@ -88,14 +111,20 @@ export default class Trip {
     render(this._tripContainer, this._noEventsComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _renderEventList() { // пока моки есть не знаю как убрать эту логику показа по дням
-    render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
+  _clearEventList() {
+    this._eventListComponent.getElement().innerHTML = ``;
+  }
 
+  _renderTripInfo() {
     this._tripPriceComponent = new TripPriceView(this._tripEvents);
     this._tripRouteDatesComponent = new TripRouteDatesView(this._tripEvents, this._tripDates);
 
     render(this._tripInfoComponent, this._tripRouteDatesComponent, RenderPosition.BEFOREEND);
     render(this._tripInfoComponent, this._tripPriceComponent, RenderPosition.BEFOREEND);
+  }
+
+  _renderEventList() { // пока моки есть не знаю как убрать эту логику показа по дням
+    render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
     const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
     const travelDaysCount = travelPointsListContainer.length;
@@ -124,6 +153,7 @@ export default class Trip {
       return;
     }
 
+    this._renderTripInfo();
     this._renderSort();
     this._renderEventList();
   }
