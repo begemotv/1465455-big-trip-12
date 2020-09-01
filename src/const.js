@@ -35,7 +35,7 @@ export const EVENTOFFERCLASS = {
   checkin: [`sightseeing`],
   sightseeing: [`sightseeing`],
   restaurant: [`restaurant`]
-}
+};
 
 export const EVENTOFFERS = [
   {name: `Add luggage`, price: 30, offerClass: `flight`},
@@ -83,4 +83,10 @@ export const BLANK_EVENT = {
 export const BLANK_DATES = {
   startDate: ``,
   endDate: ``
+};
+
+export const SortType = {
+  DEFAULT: `default`,
+  TIME: `time`,
+  PRICE: `price`
 };
