@@ -127,24 +127,20 @@ export default class Trip {
     render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
     const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
-    const travelDaysCount = travelPointsListContainer.length;
-    let eventsRemainder = this._tripEvents.length % travelDaysCount;
-    let eventsToRenderPerDay = 0;
-    if (eventsRemainder === 0) {
-      eventsToRenderPerDay = this._tripEvents.length / travelDaysCount;
-    } else {
-      eventsToRenderPerDay = (this._tripEvents.length - eventsRemainder) / (travelDaysCount - 1);
-    }
-
-    let temparray = [];
-    for (let i = 0, j = 0; j < travelDaysCount; i += eventsToRenderPerDay, j++) {
-      temparray = this._tripEvents.slice(i, i + eventsToRenderPerDay);
-      for (let k = 0; k < temparray.length; k++) {
-        this._renderEvent(travelPointsListContainer[j], temparray[k]);
+    for (let i = 0, j = 0; i < this._tripEvents.length - 1; i++) {
+      let currentEvent = this._tripEvents[i].startDate.getDate();
+      let nextEvent = this._tripEvents[i + 1].startDate.getDate();
+      if (i === 0) {
+        this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+        i++;
+      }
+      if (currentEvent === nextEvent) {
+        this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+      } else {
+        j++;
+        this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
       }
     }
-
-    // this._renderEvents(0, Math.min(this._tripEvents.length, TASK_COUNT_PER_STEP));
   }
 
   _renderTrip() {
