@@ -41,6 +41,17 @@ const createEventListContainer = (date, index) => {
   </li>`);
 };
 
+const createEventListContainerSort = () => {
+  return (
+    `<li class="trip-days__item  day">
+    <div class="day__info">
+    </div>
+
+    <ul class="trip-events__list">
+    </ul>
+  </li>`);
+};
+
 const getDates = (events) => {
   let dates = [];
   for (let i = 0; i < events.length - 1; i++) {
@@ -67,7 +78,13 @@ const createEventListMarkup = (events) => {
 };
 
 const generateEventListTemplate = (events) => {
-  const eventListMarkup = createEventListMarkup(events);
+  console.log(events)
+  let eventListMarkup = ``;
+  if (events === undefined) {
+    eventListMarkup = createEventListContainerSort();
+  } else {
+    eventListMarkup = createEventListMarkup(events);
+  }
 
   return (
     `<ul class="trip-days">

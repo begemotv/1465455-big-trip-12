@@ -7,7 +7,7 @@ export default class Event {
     this._eventListContainer = eventListContainer;
     this._changeData = changeData;
 
-    this._eventComponent = null;
+    this._eventComponent = null; // пока null потому что дальше проверка создавать ее или она уже есть
     this._eventEditComponent = null;
 
     this._handleEditClick = this._handleEditClick.bind(this);
