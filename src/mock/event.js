@@ -186,6 +186,7 @@ export const generateEvent = () => {
 
   return {
     id: generateId(),
+    isFavorite: false,
     type: generateEventType(),
     city: generateCity(),
     startDate, // не понимаю насколько это нужно в рамках моков
