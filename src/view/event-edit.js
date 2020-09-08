@@ -211,6 +211,7 @@ export default class EventEdit extends AbstractView {
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
+    console.log(this._callback)
     this._callback.favoriteClick();
   }
 

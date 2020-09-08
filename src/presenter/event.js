@@ -76,9 +76,9 @@ export default class Event {
     this._changeData(
         Object.assign(
             {},
-            this._task,
+            this.event,
             {
-              isFavorite: !this._task.isFavorite
+              isFavorite: !this.event.isFavorite
             }
         )
     );

@@ -50,7 +50,6 @@ export default class Sort extends AbstractView {
   }
 
   _sortTypeChangeHandler(evt) {
-    console.log(evt.target.tagName === `LABEL`)
     if (evt.target.tagName !== `LABEL`) {
       return;
     }

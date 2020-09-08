@@ -5,7 +5,7 @@ import EventPresenter from "../presenter/event.js";
 import TripInfoView from "../view/trip-info.js";
 import TripPriceView from "../view/trip-price.js";
 import TripRouteDatesView from "../view/trip-route-dates.js";
-import {render, RenderPosition} from "../utils/render.js";
+import {render, RenderPosition, remove} from "../utils/render.js";
 import {updateItem} from "../utils/common.js";
 import {sortByTime, sortByPrice} from "../utils/event.js";
 import {SortType} from "../const.js";
@@ -66,9 +66,9 @@ export default class Trip {
   }
 
   _handleEventChange(updatedEvent) {
-    this._boardTasks = updateItem(this._boardTasks, updatedEvent);
-    this._sourcedBoardTasks = updateItem(this._sourcedBoardTasks, updatedEvent);
-    this._taskPresenter[updatedEvent.id].init(updatedEvent);
+    this._tripEvents = updateItem(this._tripEvents, updatedEvent);
+    this._sourcedTripEvents = updateItem(this._sourcedTripEvents, updatedEvent);
+    this._eventPresenter[updatedEvent.id].init(updatedEvent);
   }
 
   _renderEvent(eventListContainer, event) {
@@ -91,16 +91,17 @@ export default class Trip {
     render(this._tripContainer, this._noEventsComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _clearEventList() {
-    this._eventListComponent.getElement().innerHTML = ``;
+  _clearEventList() { // есть проблема. здесь без _destroyEventList не очищаются контейнеры дней. но с _destroyEventList вызов обзервера у каждого ивента становится чрезмерным, так как и без него все очищается. как правильно подойти к этой ситуации?
+    Object
+      .values(this._eventPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._destroyEventList();
+    this._eventPresenter = {};
   }
 
-  // _clearTaskList() {
-  //   Object
-  //     .values(this._eventPresenter)
-  //     .forEach((presenter) => presenter.destroy());
-  //   this._eventPresenter = {};
-  // }
+  _destroyEventList() { // добавил метод, чтобы удалять контейнеры для дней при сортировке
+    remove(this._eventListComponent);
+  }
 
   _renderEventList() {
     if (this._currentSortType === `default`) {

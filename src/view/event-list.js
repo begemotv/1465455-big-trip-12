@@ -78,7 +78,6 @@ const createEventListMarkup = (events) => {
 };
 
 const generateEventListTemplate = (events) => {
-  console.log(events)
   let eventListMarkup = ``;
   if (events === undefined) {
     eventListMarkup = createEventListContainerSort();
