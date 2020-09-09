@@ -38,7 +38,7 @@ const generateDate = (date) => {
 };
 
 const createEventTemplate = (event) => {
-  const {type, city, price, startDate, endDate, startTime, endTime, duration} = event;
+  const {type, destination, price, startDate, endDate, startTime, endTime, duration} = event;
   const offerMarkup = createOfferMarkup(event);
   const eventStartDate = generateDate(startDate);
   const eventEndDate = generateDate(endDate);
@@ -51,7 +51,7 @@ const createEventTemplate = (event) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${eventType}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} ${city}</h3>
+      <h3 class="event__title">${type} ${destination.name}</h3>
 
       <div class="event__schedule">
         <p class="event__time">

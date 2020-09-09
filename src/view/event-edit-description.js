@@ -18,8 +18,6 @@ const createPhotosMarkup = (event) => {
 
 const createEventEditDestinationDescription = (event) => {
   const {destination} = event;
-  // const randomIndex = getRandomInteger(1, events.length - 1);
-  // const destinationDescription = events[randomIndex].destination.description;
   const photosMarkup = createPhotosMarkup(event);
 
   return (

@@ -15,9 +15,9 @@ const generateDate = (events) => {
 };
 
 const generateRoute = (events) => {
-  const cityFirst = events[0].city;
-  const citySecond = events[1].city;
-  const cityLast = events[events.length - 1].city;
+  const cityFirst = events[0].destination.name;
+  const citySecond = events[1].destination.name;
+  const cityLast = events[events.length - 1].destination.name;
 
   let route = ``;
   if (events.length > 3) {

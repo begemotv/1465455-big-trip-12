@@ -37,20 +37,35 @@ const generateEventOffersPrice = (offers) => {
 };
 
 const generateEventDescriptions = () => {
-  const randomIndex = getRandomInteger(0, EVENTDESCRIPTION.length - 1);
+  const textLength = getRandomInteger(3, 5);
 
-  return EVENTDESCRIPTION[randomIndex];
-};
-
-const generateEventPhotos = () => {
-  let eventDestinationPhotos = [];
-
-  for (let i = 0; i < getRandomInteger(1, 4); i++) {
-    let photo = `http://picsum.photos/248/152?r=${Math.random()}`;
-    eventDestinationPhotos.push(photo);
+  let description = ``;
+  for (let i = 0; i < textLength; i++) {
+    description += ` ${EVENTDESCRIPTION[getRandomInteger(0, EVENTDESCRIPTION.length - 1)]}`;
   }
 
-  return eventDestinationPhotos;
+  return description;
+};
+
+const generatePhoto = () => {
+  const src = `http://picsum.photos/248/152?r=${Math.random()}`;
+  const description = EVENTDESCRIPTION[getRandomInteger(0, EVENTDESCRIPTION.length - 1)];
+
+  return {
+    src,
+    description
+  }
+}
+
+const generateEventPhotos = () => {
+  const photosCount = getRandomInteger(3, 5);
+  let eventPhotos = [];
+
+  for (let i = 0; i < photosCount; i++) {
+    eventPhotos.push(generatePhoto());
+  }
+
+  return eventPhotos;
 };
 
 const generateStartDate = () => {
@@ -188,9 +203,8 @@ export const generateEvent = () => {
     id: generateId(),
     isFavorite: false,
     type: generateEventType(),
-    city: generateCity(),
-    startDate, // не понимаю насколько это нужно в рамках моков
-    endDate, // не понимаю насколько это нужно в рамках моков
+    startDate,
+    endDate,
     startTime,
     endTime,
     duration,
@@ -198,6 +212,7 @@ export const generateEvent = () => {
     offers,
     offersPrice,
     destination: {
+      name: generateCity(),
       description: generateEventDescriptions(),
       photos: generateEventPhotos(),
     },
