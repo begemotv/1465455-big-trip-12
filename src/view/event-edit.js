@@ -1,6 +1,9 @@
 import SmartView from "./smart.js";
 import {cities, getOffers, Destinations} from "../mock/event.js";
 import {eventTypes} from "../mock/offers.js";
+import flatpickr from "flatpickr";
+
+import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 
 const createOfferTemplate = (offer) => {
   const {name, price, offerClass, isActive} = offer;
@@ -229,11 +232,13 @@ export default class EventEdit extends SmartView {
   constructor(event) {
     super();
     this._data = EventEdit.parseEventToData(event);
+    this._datepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._eventTypeChangeHandler = this._eventTypeChangeHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
+    this._dateChangeHandler = this._dateChangeHandler.bind(this);
 
     this._setInnerHandlers();
   }
