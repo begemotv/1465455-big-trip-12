@@ -107,4 +107,3 @@ export const EventOfferTypes = new Map([
 ]);
 
 export const eventTypes = Array.from(EventOfferTypes.keys());
-

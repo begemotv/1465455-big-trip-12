@@ -1,6 +1,6 @@
 import AbstractView from "./abstract.js";
 import {EVENTTYPES} from "../const.js";
-import {cities, getOffers} from "../mock/event.js";
+import {cities, getOffers, Destinations} from "../mock/event.js";
 import {eventTypes} from "../mock/offers.js";
 
 const createOfferTemplate = (offer) => {
@@ -44,11 +44,10 @@ const createEventEditOffersTemplate = (offers) => {
 };
 
 const createTypeTransferTemplate = (type) => {
-  const {name} = type;
   return (
     `<div class="event__type-item">
-    <input id="event-type-${name.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${name.toLowerCase()}">
-    <label class="event__type-label  event__type-label--${name.toLowerCase()}" for="event-type-${name.toLowerCase()}-1">${name}</label>
+    <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
+    <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
   </div>`);
 };
 
@@ -56,7 +55,7 @@ const createTypeTransferTemplateMarkup = (types) => {
   let typesTransfer = [];
   for (let i = 0; i < types.length; i++) {
     if (types[i].type === `transfer`) {
-      typesTransfer.push(types[i]);
+      typesTransfer.push(types[i].name);
     }
   }
   let typeTransferMock = [];
@@ -68,12 +67,10 @@ const createTypeTransferTemplateMarkup = (types) => {
 };
 
 const createTypeActivityTemplate = (type) => {
-  const {name} = type;
-
   return (
     `<div class="event__type-item">
-    <input id="event-type-${name.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${name.toLowerCase()}">
-    <label class="event__type-label  event__type-label--${name.toLowerCase()}" for="event-type-${name.toLowerCase()}-1">${name}</label>
+    <input id="event-type-${type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
+    <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type.toLowerCase()}-1">${type}</label>
   </div>`);
 };
 
@@ -81,7 +78,7 @@ const createTypeActivityTemplateMarkup = (types) => {
   let typesActivity = [];
   for (let i = 0; i < types.length; i++) {
     if (types[i].type === `activity`) {
-      typesActivity.push(types[i]);
+      typesActivity.push(types[i].name);
     }
   }
   let typeActivityMock = [];
@@ -123,7 +120,6 @@ const createPhotosMarkup = (destination) => {
 };
 
 const createCityMarkup = (city) => {
-  console.log(city)
   return (
     `<option value="${city}"></option>`);
 }
@@ -139,8 +135,8 @@ const createDestinationListMarkup = () => {
 
 const createEventEditTemplate = (data) => {
   const {type, price, startDate, endDate, startTime, endTime, offers, destination, isFavorite} = data;
-  const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(EVENTTYPES);
-  const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(EVENTTYPES);
+  const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(eventTypes);
+  const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(eventTypes);
   const eventStartDate = generateDate(startDate);
   const eventEndDate = generateDate(endDate);
   const eventOffers = createEventEditOffersTemplate(offers);
@@ -248,21 +244,27 @@ export default class EventEdit extends AbstractView {
     return createEventEditTemplate(this._data);
   }
 
-  updateData(update) {
+  updateData(update, justDataUpdating) {
     if (!update) {
       return;
     }
-
+    console.log(this._data)
     this._data = Object.assign(
         {},
         this._data,
         update
     );
+    console.log(this._data)
+
+    if (justDataUpdating) {
+      return;
+    }
 
     this.updateElement();
   }
 
   updateElement() {
+    console.log(`yes`)
     let prevElement = this.getElement();
     const parent = prevElement.parentElement;
     this.removeElement();
@@ -271,6 +273,8 @@ export default class EventEdit extends AbstractView {
 
     parent.replaceChild(newElement, prevElement);
     prevElement = null;
+
+    this.restoreHandlers();
   }
 
   _formSubmitHandler(evt) {
@@ -285,26 +289,30 @@ export default class EventEdit extends AbstractView {
 
   _eventTypeChangeHandler(evt) {
     evt.preventDefault();
-    const tmpEventType = eventTypes.find((eventType) => eventType.value === evt.target.value);
+    const tmpEventType = eventTypes.find((eventType) => eventType.name === evt.target.value);
     const tmpOffers = getOffers(tmpEventType);
     this.updateData({
-      eventType: tmpEventType,
+      type: tmpEventType,
       offers: tmpOffers
     },
-    true);
-
-    this._init(this._data);
+    false);
   }
 
   _destinationChangeHandler(evt) {
     evt.preventDefault();
+    const tmpDescription = Destinations.get(evt.target.value).description;
+    console.log(tmpDescription)
+    const tmpPhotos = Destinations.get(evt.target.value).photos;
+    console.log(tmpPhotos)
     if (cities.includes(evt.target.value)) {
       this.updateData({
-        city: evt.target.value
+        destination: {
+          name: evt.target.value,
+          description: tmpDescription,
+          photos: tmpPhotos
+        }
       },
-      true);
-
-      this._init(this._data);
+      false);
     }
   }
 

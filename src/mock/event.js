@@ -184,7 +184,7 @@ const generateDuration = (startDate, endDate) => {
   return duration;
 };
 
-export const destinations = new Map([
+export const Destinations = new Map([
   [`Bari`, {
     description: generateEventDescriptions(),
     photos: generateEventPhotos(),
@@ -223,7 +223,7 @@ export const destinations = new Map([
   }]
 ]);
 
-export const cities = Array.from(destinations.keys());
+export const cities = Array.from(Destinations.keys());
 
 export const eventTypes = Array.from(EventOfferTypes.keys());
 
@@ -244,10 +244,10 @@ export const generateEvent = () => {
   const endTime = generateTime(endDate);
   const duration = generateDuration(startDate, endDate);
   const type = getRandomEventType();
-  const tmpCities = Array.from(destinations.keys());
+  const tmpCities = Array.from(Destinations.keys());
   const name = tmpCities[getRandomInteger(0, tmpCities.length - 1)]
-  const description = destinations.get(name).description;
-  const photos = destinations.get(name).photos;
+  const description = Destinations.get(name).description;
+  const photos = Destinations.get(name).photos;
   let offers = [];
   const offersTemp = getOffers(type);
   for (let i = 0; i < offersTemp.length; i++) {
