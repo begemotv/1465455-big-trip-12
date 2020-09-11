@@ -17,7 +17,7 @@ export const EventOfferTypes = new Map([
       placeholder: ` to`,
       type: `transfer`,
     }, []
-  ], 
+  ],
   [
     {
       name: `Train`,

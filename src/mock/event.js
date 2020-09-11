@@ -245,7 +245,7 @@ export const generateEvent = () => {
   const duration = generateDuration(startDate, endDate);
   const type = getRandomEventType();
   const tmpCities = Array.from(Destinations.keys());
-  const name = tmpCities[getRandomInteger(0, tmpCities.length - 1)]
+  const name = tmpCities[getRandomInteger(0, tmpCities.length - 1)];
   const description = Destinations.get(name).description;
   const photos = Destinations.get(name).photos;
   let offers = [];

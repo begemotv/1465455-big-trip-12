@@ -13,10 +13,11 @@ const createEventOffer = (event) => {
 
 const createOfferMarkup = (event) => {
   const {offers} = event;
+  const offersActive = offers.filter((offer) => offer.isActive === true);
 
   let offerMock = [];
-  for (let i = 0; i < offers.length; i++) {
-    let offer = createEventOffer(offers[i]);
+  for (let i = 0; i < offersActive.length; i++) {
+    let offer = createEventOffer(offersActive[i]);
     offerMock.push(offer);
   }
   return offerMock.join(``);

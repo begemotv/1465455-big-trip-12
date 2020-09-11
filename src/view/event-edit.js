@@ -1,5 +1,4 @@
-import AbstractView from "./abstract.js";
-import {EVENTTYPES} from "../const.js";
+import SmartView from "./smart.js";
 import {cities, getOffers, Destinations} from "../mock/event.js";
 import {eventTypes} from "../mock/offers.js";
 
@@ -7,9 +6,8 @@ const createOfferTemplate = (offer) => {
   const {name, price, offerClass, isActive} = offer;
 
   return (
-    `<div class="event__available-offers">
-  <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClass}-1" type="checkbox" name="event-offer-${offerClass}" ${isActive === true ? `checked` : ``}>
+    `<div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClass}-1" type="checkbox" name="event-offer-${offerClass}" ${isActive ? `checked` : ``}>
     <label class="event__offer-label" for="event-offer-${offerClass}-1">
       <span class="event__offer-title">${name}</span>
       &plus;
@@ -122,7 +120,7 @@ const createPhotosMarkup = (destination) => {
 const createCityMarkup = (city) => {
   return (
     `<option value="${city}"></option>`);
-}
+};
 
 const createDestinationListMarkup = () => {
   let citiesMock = [];
@@ -227,7 +225,7 @@ const createEventEditTemplate = (data) => {
   );
 };
 
-export default class EventEdit extends AbstractView {
+export default class EventEdit extends SmartView {
   constructor(event) {
     super();
     this._data = EventEdit.parseEventToData(event);
@@ -242,39 +240,6 @@ export default class EventEdit extends AbstractView {
 
   _getTemplate() {
     return createEventEditTemplate(this._data);
-  }
-
-  updateData(update, justDataUpdating) {
-    if (!update) {
-      return;
-    }
-    console.log(this._data)
-    this._data = Object.assign(
-        {},
-        this._data,
-        update
-    );
-    console.log(this._data)
-
-    if (justDataUpdating) {
-      return;
-    }
-
-    this.updateElement();
-  }
-
-  updateElement() {
-    console.log(`yes`)
-    let prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.getElement();
-
-    parent.replaceChild(newElement, prevElement);
-    prevElement = null;
-
-    this.restoreHandlers();
   }
 
   _formSubmitHandler(evt) {
@@ -301,9 +266,7 @@ export default class EventEdit extends AbstractView {
   _destinationChangeHandler(evt) {
     evt.preventDefault();
     const tmpDescription = Destinations.get(evt.target.value).description;
-    console.log(tmpDescription)
     const tmpPhotos = Destinations.get(evt.target.value).photos;
-    console.log(tmpPhotos)
     if (cities.includes(evt.target.value)) {
       this.updateData({
         destination: {
@@ -338,6 +301,12 @@ export default class EventEdit extends AbstractView {
   restoreHandlers() {
     this._setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
+  reset(event) {
+    this.updateData(
+        EventEdit.parseEventToData(event)
+    );
   }
 
   static parseEventToData(event) {
