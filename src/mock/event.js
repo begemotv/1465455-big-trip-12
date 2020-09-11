@@ -1,40 +1,34 @@
-import {EVENTTYPES} from "../const.js";
-import {EVENTCITIES} from "../const.js";
-import {EVENTOFFERS} from "../const.js";
+// import {EVENTTYPES} from "../const.js";
+// import {EVENTOFFERS} from "../const.js";
 import {EVENTDESCRIPTION} from "../const.js";
 import {getRandomInteger} from "../utils/common.js";
+import {EventOfferTypes} from "./offers.js";
 
 const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
-const generateEventType = () => {
-  const randomIndex = getRandomInteger(0, EVENTTYPES.length - 1);
-  const randomType = EVENTTYPES[randomIndex].name + EVENTTYPES[randomIndex].placeholder;
+// const generateEventType = () => {
+//   const randomIndex = getRandomInteger(0, EVENTTYPES.length - 1);
+//   const randomType = EVENTTYPES[randomIndex].name + EVENTTYPES[randomIndex].placeholder;
 
-  return randomType;
-};
+//   return randomType;
+// };
 
-const generateCity = () => {
-  const randomIndex = getRandomInteger(0, EVENTCITIES.length - 1);
+// const generateEventOffers = () => {
+//   const randomIndex = getRandomInteger(0, 2);
+//   let randomOffers = [];
+//   for (let i = 0; i < randomIndex; i++) {
+//     randomOffers.push(EVENTOFFERS[i]);
+//   }
+//   return randomOffers;
+// };
 
-  return EVENTCITIES[randomIndex];
-};
-
-const generateEventOffers = () => {
-  const randomIndex = getRandomInteger(0, 2);
-  let randomOffers = [];
-  for (let i = 0; i < randomIndex; i++) {
-    randomOffers.push(EVENTOFFERS[i]);
-  }
-  return randomOffers;
-};
-
-const generateEventOffersPrice = (offers) => {
-  let offersPrice = 0;
-  for (let i = 0; i < offers.length; i++) {
-    offersPrice += offers[i].price;
-  }
-  return offersPrice;
-};
+// const generateEventOffersPrice = (offers) => {
+//   let offersPrice = 0;
+//   for (let i = 0; i < offers.length; i++) {
+//     offersPrice += offers[i].price;
+//   }
+//   return offersPrice;
+// };
 
 const generateEventDescriptions = () => {
   const textLength = getRandomInteger(3, 5);
@@ -54,8 +48,8 @@ const generatePhoto = () => {
   return {
     src,
     description
-  }
-}
+  };
+};
 
 const generateEventPhotos = () => {
   const photosCount = getRandomInteger(3, 5);
@@ -190,19 +184,85 @@ const generateDuration = (startDate, endDate) => {
   return duration;
 };
 
+export const destinations = new Map([
+  [`Bari`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Catania`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Bologna`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Oslo`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Paris`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Lisbon`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Porto`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Prague`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }],
+  [`Helsinki`, {
+    description: generateEventDescriptions(),
+    photos: generateEventPhotos(),
+  }]
+]);
+
+export const cities = Array.from(destinations.keys());
+
+export const eventTypes = Array.from(EventOfferTypes.keys());
+
+const getRandomEventType = () => {
+  return eventTypes[getRandomInteger(0, eventTypes.length - 1)];
+};
+
+export const getOffers = (type) => {
+  return EventOfferTypes.has(type)
+    ? EventOfferTypes.get(type)
+    : null;
+};
+
 export const generateEvent = () => {
   const startDate = generateStartDate();
   const endDate = generateEndDate(startDate);
   const startTime = generateTime(startDate);
   const endTime = generateTime(endDate);
   const duration = generateDuration(startDate, endDate);
-  const offers = generateEventOffers();
-  const offersPrice = generateEventOffersPrice(offers);
+  const type = getRandomEventType();
+  const tmpCities = Array.from(destinations.keys());
+  const name = tmpCities[getRandomInteger(0, tmpCities.length - 1)]
+  const description = destinations.get(name).description;
+  const photos = destinations.get(name).photos;
+  let offers = [];
+  const offersTemp = getOffers(type);
+  for (let i = 0; i < offersTemp.length; i++) {
+    offers[i] = {
+      name: offersTemp[i].name,
+      price: offersTemp[i].price,
+      offerClass: offersTemp[i].offerClass,
+      isActive: Boolean(getRandomInteger(0, 1))
+    };
+  }
 
   return {
     id: generateId(),
     isFavorite: false,
-    type: generateEventType(),
+    type,
     startDate,
     endDate,
     startTime,
@@ -210,11 +270,10 @@ export const generateEvent = () => {
     duration,
     price: getRandomInteger(20, 200),
     offers,
-    offersPrice,
     destination: {
-      name: generateCity(),
-      description: generateEventDescriptions(),
-      photos: generateEventPhotos(),
+      name,
+      description,
+      photos
     },
   };
 };

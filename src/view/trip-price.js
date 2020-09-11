@@ -9,18 +9,24 @@ const calculateEventsPrice = (events) => {
   return priceEvents;
 };
 
-const calculateOffersPrice = (events) => {
-  let priceOffers = 0;
-  for (let i = 0; i < events.length; i++) {
-    priceOffers += events[i].offersPrice;
-  }
-  return priceOffers;
-};
+// const calculateOfferPrice = (event) => {
+//   const {offers} = event;
+//   console.log(offers)
+//   let priceOffers = 0;
+//   for (let i = 0; i < events.length; i++) {
+//     priceOffers += events[i].offersPrice;
+//   }
+//   return priceOffers;
+// };
 
 const createTripPriceTemplate = (events) => {
   let price = 0;
+  // let offerPrice = 0;
+  // for (let i = 0; i < events.length; i++) {
+  //   offerPrice += calculateOfferPrice(events[i]);
+  // }
   if (events !== BLANK_EVENT) {
-    price = calculateEventsPrice(events) + calculateOffersPrice(events);
+    price = calculateEventsPrice(events); // + offerPrice;
   }
 
   return (

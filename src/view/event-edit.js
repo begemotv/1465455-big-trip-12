@@ -1,13 +1,15 @@
 import AbstractView from "./abstract.js";
 import {EVENTTYPES} from "../const.js";
+import {cities, getOffers} from "../mock/event.js";
+import {eventTypes} from "../mock/offers.js";
 
 const createOfferTemplate = (offer) => {
-  const {name, price, offerClass} = offer;
+  const {name, price, offerClass, isActive} = offer;
 
   return (
     `<div class="event__available-offers">
   <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClass}-1" type="checkbox" name="event-offer-${offerClass}" checked>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerClass}-1" type="checkbox" name="event-offer-${offerClass}" ${isActive === true ? `checked` : ``}>
     <label class="event__offer-label" for="event-offer-${offerClass}-1">
       <span class="event__offer-title">${name}</span>
       &plus;
@@ -120,15 +122,30 @@ const createPhotosMarkup = (destination) => {
   return photosMock.join(``);
 };
 
-const createEventEditTemplate = (event) => {
-  const {type, price, startDate, endDate, startTime, endTime, offers, destination, isFavorite} = event;
+const createCityMarkup = (city) => {
+  console.log(city)
+  return (
+    `<option value="${city}"></option>`);
+}
+
+const createDestinationListMarkup = () => {
+  let citiesMock = [];
+  for (let i = 0; i < cities.length; i++) {
+    let city = createCityMarkup(cities[i]);
+    citiesMock.push(city);
+  }
+  return citiesMock.join(``);
+};
+
+const createEventEditTemplate = (data) => {
+  const {type, price, startDate, endDate, startTime, endTime, offers, destination, isFavorite} = data;
   const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(EVENTTYPES);
   const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(EVENTTYPES);
   const eventStartDate = generateDate(startDate);
   const eventEndDate = generateDate(endDate);
-  const typeName = type.slice(0, -3).toLowerCase();
   const eventOffers = createEventEditOffersTemplate(offers);
   const photosMarkup = createPhotosMarkup(destination);
+  const destinationList = createDestinationListMarkup();
   return (
     `<li class="trip-events__item">
     <form class="trip-events__item  event  event--edit" action="#" method="get">
@@ -136,7 +153,7 @@ const createEventEditTemplate = (event) => {
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
         <span class="visually-hidden">Choose event type</span>
-        <img class="event__type-icon" width="17" height="17" src="img/icons/${typeName}.png" alt="Event type icon">
+        <img class="event__type-icon" width="17" height="17" src="${type.icon}" alt="${type.type}">
       </label>
       <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -155,14 +172,11 @@ const createEventEditTemplate = (event) => {
 
     <div class="event__field-group  event__field-group--destination">
       <label class="event__label  event__type-output" for="event-destination-1">
-      ${type}
+      ${type.name}${type.placeholder}
       </label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
       <datalist id="destination-list-1">
-        <option value="Amsterdam"></option>
-        <option value="Geneva"></option>
-        <option value="Chamonix"></option>
-        <option value="Saint Petersburg"></option>
+      ${destinationList}
       </datalist>
     </div>
 
@@ -224,6 +238,10 @@ export default class EventEdit extends AbstractView {
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._eventTypeChangeHandler = this._eventTypeChangeHandler.bind(this);
+    this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
+
+    this._setInnerHandlers();
   }
 
   _getTemplate() {
@@ -257,13 +275,37 @@ export default class EventEdit extends AbstractView {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(this._event);
+    this._callback.formSubmit(this._data);
   }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
-    console.log(this._callback)
     this._callback.favoriteClick();
+  }
+
+  _eventTypeChangeHandler(evt) {
+    evt.preventDefault();
+    const tmpEventType = eventTypes.find((eventType) => eventType.value === evt.target.value);
+    const tmpOffers = getOffers(tmpEventType);
+    this.updateData({
+      eventType: tmpEventType,
+      offers: tmpOffers
+    },
+    true);
+
+    this._init(this._data);
+  }
+
+  _destinationChangeHandler(evt) {
+    evt.preventDefault();
+    if (cities.includes(evt.target.value)) {
+      this.updateData({
+        city: evt.target.value
+      },
+      true);
+
+      this._init(this._data);
+    }
   }
 
   setFavoriteClickHandler(callback) {
@@ -274,6 +316,20 @@ export default class EventEdit extends AbstractView {
   setFormSubmitHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector(`.event__type-list`)
+      .addEventListener(`change`, this._eventTypeChangeHandler);
+    this.getElement()
+      .querySelector(`#event-destination-1`)
+      .addEventListener(`input`, this._destinationChangeHandler);
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
   }
 
   static parseEventToData(event) {

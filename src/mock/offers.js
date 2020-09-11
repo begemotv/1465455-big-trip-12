@@ -1,4 +1,4 @@
-export const offerTypes = new Map([
+export const EventOfferTypes = new Map([
   [
     {
       name: `Taxi`,
@@ -105,3 +105,6 @@ export const offerTypes = new Map([
     ]
   ]
 ]);
+
+export const eventTypes = Array.from(EventOfferTypes.keys());
+
