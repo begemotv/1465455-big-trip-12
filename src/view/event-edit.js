@@ -1,6 +1,8 @@
 import SmartView from "./smart.js";
 import {cities, getOffers, Destinations} from "../mock/event.js";
 import {eventTypes} from "../mock/offers.js";
+import {formatEventInputDate} from "../utils/date-time.js";
+
 import flatpickr from "flatpickr";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
@@ -90,21 +92,6 @@ const createTypeActivityTemplateMarkup = (types) => {
   return typeActivityMock.join(``);
 };
 
-const generateDate = (date) => {
-  let month = (date.getMonth() + 1).toString();
-  let day = date.getDate().toString();
-  let year = date.getFullYear().toString().substr(2, 2);
-
-  if (month.length < 2) {
-    month = `0` + month;
-  }
-  if (day.length < 2) {
-    day = `0` + day;
-  }
-
-  return [day, month, year].join(`/`);
-};
-
 const createPhoto = (photo) => {
   const {src, description} = photo;
   return (
@@ -138,8 +125,8 @@ const createEventEditTemplate = (data) => {
   const {type, price, startDate, endDate, startTime, endTime, offers, destination, isFavorite} = data;
   const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(eventTypes);
   const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(eventTypes);
-  const eventStartDate = generateDate(startDate);
-  const eventEndDate = generateDate(endDate);
+  const eventStartDate = formatEventInputDate(startDate);
+  const eventEndDate = formatEventInputDate(endDate);
   const eventOffers = createEventEditOffersTemplate(offers);
   const photosMarkup = createPhotosMarkup(destination);
   const destinationList = createDestinationListMarkup();
@@ -232,15 +219,20 @@ export default class EventEdit extends SmartView {
   constructor(event) {
     super();
     this._data = EventEdit.parseEventToData(event);
-    this._datepicker = null;
+
+    this._startDatepicker = null;
+    this._endDatepicker = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._eventTypeChangeHandler = this._eventTypeChangeHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
-    this._dateChangeHandler = this._dateChangeHandler.bind(this);
+    this._startDateTimeChangeHandler = this._startDateTimeChangeHandler.bind(this);
+    this._endDateTimeChangeHandler = this._endDateTimeChangeHandler.bind(this);
 
     this._setInnerHandlers();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
   }
 
   _getTemplate() {
@@ -305,7 +297,71 @@ export default class EventEdit extends SmartView {
 
   restoreHandlers() {
     this._setInnerHandlers();
+    this._setStartDatepicker();
+    this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
+  _startDateTimeChangeHandler(selectedDates) {
+    const selectedDate = selectedDates[0];
+
+    this.updateData({
+      startDate: selectedDate,
+      endDate: this._data.endDate
+    }, false);
+
+    this._endDatepicker.config.minDate = selectedDate;
+  }
+
+  _endDateTimeChangeHandler(selectedDates) {
+    const selectedDate = selectedDates[0];
+
+    this.updateData({
+      startDate: this._data.startDate,
+      endDate: selectedDate
+    }, false);
+
+    this._startDatepicker.config.maxDate = selectedDate;
+  }
+
+  _setStartDatepicker() {
+    if (this._startDatepicker) {
+      this._startDatepicker.destroy();
+      this._startDatepicker = null;
+    }
+
+    this._startDatepicker = flatpickr(
+        this.getElement().querySelector(`#event-start-time-1`),
+        {
+          maxDate: this._data.endDate,
+          enableTime: true,
+          // eslint-disable-next-line camelcase
+          time_24hr: true,
+          allowInput: false,
+          dateFormat: `d/m/y H:i`,
+          onChange: this._startDateTimeChangeHandler
+        }
+    );
+  }
+
+  _setEndDatepicker() {
+    if (this._endDatepicker) {
+      this._endDatepicker.destroy();
+      this._endDatepicker = null;
+    }
+
+    this._endDatepicker = flatpickr(
+        this.getElement().querySelector(`#event-end-time-1`),
+        {
+          minDate: this._data.startDate,
+          enableTime: true,
+          // eslint-disable-next-line camelcase
+          time_24hr: true,
+          allowInput: false,
+          dateFormat: `d/m/y H:i`,
+          onChange: this._endDateTimeChangeHandler
+        }
+    );
   }
 
   reset(event) {

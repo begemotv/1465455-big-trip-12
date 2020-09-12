@@ -1,4 +1,5 @@
 import AbstractView from "./abstract.js";
+import {formatEventDate, generateDuration} from "../utils/date-time.js";
 
 const createEventOffer = (event) => {
   const {name, price} = event;
@@ -23,26 +24,12 @@ const createOfferMarkup = (event) => {
   return offerMock.join(``);
 };
 
-const generateDate = (date) => {
-  let month = (date.getMonth() + 1).toString();
-  let day = date.getDate().toString();
-  let year = date.getFullYear().toString();
-
-  if (month.length < 2) {
-    month = `0` + month;
-  }
-  if (day.length < 2) {
-    day = `0` + day;
-  }
-
-  return [year, month, day].join(`-`);
-};
-
 const createEventTemplate = (event) => {
-  const {type, destination, price, startDate, endDate, startTime, endTime, duration} = event;
+  const {type, destination, price, startDate, endDate, startTime, endTime} = event;
   const offerMarkup = createOfferMarkup(event);
-  const eventStartDate = generateDate(startDate);
-  const eventEndDate = generateDate(endDate);
+  const eventStartDate = formatEventDate(startDate);
+  const eventEndDate = formatEventDate(endDate);
+  const duration = generateDuration(startDate, endDate);
 
   return (
     `<li class="trip-events__item">
