@@ -2,7 +2,7 @@ import MenuView from "./view/menu.js";
 import FilterView from "./view/filter.js";
 import TripPresenter from "./presenter/trip.js";
 import {generateEvent} from "./mock/event.js";
-// import {generateOffers} from "./mock/offers.js";
+import EventsModel from "./model/events.js";
 import {render, RenderPosition} from "./utils/render.js";
 
 const EVENTS_COUNT = 15;
@@ -22,6 +22,9 @@ const contentContainer = siteMainElement.querySelector(`.trip-events`); // То�
 render(menuElementContainer, new MenuView(), RenderPosition.BEFOREEND);
 render(menuElementContainer, new FilterView(), RenderPosition.BEFOREEND);
 
-const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer);
+const eventsModel = new EventsModel();
+eventsModel.setEvents(events);
 
-tripPresenter.init(events);
+const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, eventsModel);
+
+tripPresenter.init();
