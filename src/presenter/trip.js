@@ -11,14 +11,12 @@ import {sortByTime, sortByPrice} from "../utils/event.js";
 import {SortType} from "../const.js";
 
 export default class Trip {
-  constructor(tripContainer, destinationPriceContainer, tripDates) {
+  constructor(tripContainer, destinationPriceContainer) {
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
-    this._tripDates = tripDates;
     this._currentSortType = SortType.DEFAULT;
 
     this._sortComponent = new SortView();
-    this._eventListComponent = new EventListView(this._tripDates);
     this._noEventsComponent = new NoEventsView();
     this._tripInfoComponent = new TripInfoView();
 
