@@ -30,7 +30,6 @@ export default class Trip {
     this._sourcedTripEvents = tripEvents.slice();
 
     render(this._destinationPriceContainer, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
-    render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
     this._renderTrip();
   }
@@ -124,26 +123,39 @@ export default class Trip {
     render(this._tripInfoComponent, this._tripPriceComponent, RenderPosition.BEFOREEND);
   }
 
-  _renderEventList() { // пока моки есть не знаю как убрать эту логику показа по дням
-    for (let i = 0; i < this._tripEvents.length; i++) {
-      this._renderEvent(this._eventListComponent, this._tripEvents[i]);
+  _renderEventList() {
+    if (this._currentSortType === `default`) {
+      this._eventListComponent = new EventListView(this._tripEvents);
+      render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
+
+      const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
+
+      for (let i = 0, j = 0; i < this._tripEvents.length - 1; i++) {
+        let currentEvent = this._tripEvents[i].startDate.getDate();
+        let nextEvent = this._tripEvents[i + 1].startDate.getDate();
+        if (i === 0) {
+          this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+          i++;
+        }
+        if (currentEvent === nextEvent) {
+          this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+        } else {
+          j++;
+          this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
+        }
+      }
+    } else {
+      this._eventListComponent = new EventListView();
+      render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
+
+      const travelPointsSortContainer = this._tripContainer.querySelector(`.trip-events__list`);
+
+      for (let i = 0; i < this._tripEvents.length; i++) {
+        this._renderEvent(travelPointsSortContainer, this._tripEvents[i]);
+      }
     }
-    // let travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
-    // for (let i = 0, j = 0; i < this._tripEvents.length - 1; i++) {
-    //   let currentEvent = this._tripEvents[i].startDate.getDate();
-    //   let nextEvent = this._tripEvents[i + 1].startDate.getDate();
-    //   if (i === 0) {
-    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
-    //     i++;
-    //   }
-    //   if (currentEvent === nextEvent) {
-    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
-    //   } else {
-    //     j++;
-    //     this._renderEvent(travelPointsListContainer[j], this._tripEvents[i]);
-    //   }
-    // }
   }
+
 
   _renderTrip() {
     if (this._tripEvents.length === 0) {

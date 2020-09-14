@@ -41,21 +41,34 @@ const createEventListContainer = (date, index) => {
   </li>`);
 };
 
-const getDates = (startDate, endDate) => {
-  let beginDate = new Date(generateDatetime(startDate));
-  let finishDate = new Date(generateDatetime(endDate));
+const createEventListContainerSort = () => {
+  return (
+    `<li class="trip-days__item  day">
+    <div class="day__info">
+    </div>
+
+    <ul class="trip-events__list">
+    </ul>
+  </li>`);
+};
+
+const getDates = (events) => {
   let dates = [];
-  let currentDate = new Date(beginDate);
-  while (currentDate <= finishDate) {
-    dates.push(new Date(currentDate));
-    currentDate.setDate(currentDate.getDate() + 1);
+  for (let i = 0; i < events.length - 1; i++) {
+    let currentDate = events[i].startDate.getDate();
+    let nextDate = events[i + 1].startDate.getDate();
+    if (i === (events.length - 1) && currentDate !== nextDate) {
+      dates.push(events[events.length - 1].startDate);
+    }
+    if (currentDate !== nextDate) {
+      dates.push(events[i].startDate);
+    }
   }
   return dates;
 };
 
-const createEventListMarkup = (dates) => {
-  const {startDate, endDate} = dates;
-  let eventListDates = getDates(startDate, endDate); // возвращается массив дат (endDate-startDate)
+const createEventListMarkup = (events) => {
+  let eventListDates = getDates(events);
   let eventListMock = [];
   for (let i = 0; i < eventListDates.length; i++) {
     let eventListElement = createEventListContainer(eventListDates[i], i);
@@ -64,8 +77,13 @@ const createEventListMarkup = (dates) => {
   return eventListMock.join(``);
 };
 
-const generateEventListTemplate = (dates) => {
-  const eventListMarkup = createEventListMarkup(dates);
+const generateEventListTemplate = (events) => {
+  let eventListMarkup = ``;
+  if (events === undefined) {
+    eventListMarkup = createEventListContainerSort();
+  } else {
+    eventListMarkup = createEventListMarkup(events);
+  }
 
   return (
     `<ul class="trip-days">
@@ -75,12 +93,12 @@ const generateEventListTemplate = (dates) => {
 };
 
 export default class EventList extends AbstractView {
-  constructor(dates) {
+  constructor(events) {
     super();
-    this._dates = dates;
+    this._events = events;
   }
 
   _getTemplate() {
-    return generateEventListTemplate(this._dates);
+    return generateEventListTemplate(this._events);
   }
 }
