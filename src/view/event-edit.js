@@ -123,7 +123,7 @@ const createDestinationListMarkup = () => {
 
 const createEventEditTemplate = (data) => {
   const {type, price, startDate, endDate, startTime, endTime, offers, destination, isFavorite} = data;
-  console.log(offers)
+  // console.log(offers)
   const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(eventTypes);
   const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(eventTypes);
   const eventStartDate = formatEventInputDate(startDate);

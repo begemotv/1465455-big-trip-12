@@ -86,9 +86,9 @@ export const BLANK_DATES = {
 };
 
 export const SortType = {
-  DEFAULT: `default`,
-  TIME: `time`,
-  PRICE: `price`
+  DEFAULT: `sort-event`,
+  TIME: `sort-time`,
+  PRICE: `sort-price`
 };
 
 export const UserAction = {

@@ -17,6 +17,7 @@ export default class Trip {
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
     this._currentSortType = SortType.DEFAULT;
+    console.log(this._currentSortType)
     this._eventPresenter = {};
 
     this._sortComponent = null;
@@ -38,6 +39,7 @@ export default class Trip {
   }
 
   _getEvents() {
+    console.log(this._currentSortType)
     switch (this._currentSortType) {
       case SortType.TIME:
         return this._eventsModel.getEvents().slice().sort(sortByTime);
@@ -85,11 +87,13 @@ export default class Trip {
   }
 
   _handleSortTypeChange(sortType) {
+    console.log(sortType)
     if (this._currentSortType === sortType) {
       return;
     }
 
     this._currentSortType = sortType;
+    console.log(this._currentSortType)
     this._clearEventList();
     this._renderEventList();
   }
@@ -138,7 +142,7 @@ export default class Trip {
     const events = this._getEvents().slice();
     console.log(events)
 
-    if (this._currentSortType === `default`) {
+    if (this._currentSortType === `sort-event`) {
       this._eventListComponent = new EventListView(events);
       render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
