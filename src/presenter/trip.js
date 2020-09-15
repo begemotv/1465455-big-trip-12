@@ -89,6 +89,7 @@ export default class Trip {
   }
 
   _handleSortTypeChange(sortType) {
+    console.log(sortType)
     if (this._currentSortType === sortType) {
       return;
     }

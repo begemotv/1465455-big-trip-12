@@ -224,8 +224,6 @@ export default class EventEdit extends SmartView {
     this._startDatepicker = null;
     this._endDatepicker = null;
 
-    console.log(this._callback)
-
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._eventTypeChangeHandler = this._eventTypeChangeHandler.bind(this);

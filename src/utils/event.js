@@ -11,7 +11,8 @@ export const isEventFuture = (startDate) => {
 };
 
 export const sortByTime = (eventA, eventB) => {
-  return eventB.startDate.getTime() - eventA.startDate.getTime();
+  console.log(eventA.durationMSec)
+  return eventB.durationMSec - eventA.durationMSec;
 };
 
 export const sortByPrice = (eventA, eventB) => {

@@ -191,6 +191,7 @@ export const generateEvent = () => {
   const name = tmpCities[getRandomInteger(0, tmpCities.length - 1)];
   const description = Destinations.get(name).description;
   const photos = Destinations.get(name).photos;
+  const durationMSec = endDate.getTime() - startDate.getTime();
   let offers = [];
   const offersTemp = getOffers(type);
   for (let i = 0; i < offersTemp.length; i++) {
@@ -210,6 +211,7 @@ export const generateEvent = () => {
     endDate,
     startTime,
     endTime,
+    durationMSec,
     price: getRandomInteger(20, 200),
     offers,
     destination: {

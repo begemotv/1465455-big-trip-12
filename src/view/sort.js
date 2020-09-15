@@ -8,10 +8,10 @@ const generateSortTemplate = (currentSortType) => {
 
     <div class="trip-sort__item trip-sort__item--event">
       <input
-        id="sort-event" 
-        class="trip-sort__input visually-hidden" 
+        id="sort-event"
+        class="trip-sort__input visually-hidden"
         type="radio" name="trip-sort"
-        value="sort-event" 
+        value="sort-event"
         ${currentSortType === SortType.DEFAULT ? `checked` : ``}
       >
       <label class="trip-sort__btn" for="sort-event" data-sort-type="${SortType.DEFAULT}">
@@ -20,12 +20,12 @@ const generateSortTemplate = (currentSortType) => {
     </div>
 
     <div class="trip-sort__item trip-sort__item--time">
-      <input 
-        id="sort-time" 
-        class="trip-sort__input visually-hidden" 
-        type="radio" 
+      <input
+        id="sort-time"
+        class="trip-sort__input visually-hidden"
+        type="radio"
         name="trip-sort"
-        value="sort-time" 
+        value="sort-time"
         ${currentSortType === SortType.TIME ? `checked` : ``}
       >
       <label class="trip-sort__btn" for="sort-time" data-sort-type="${SortType.TIME}">
@@ -37,10 +37,10 @@ const generateSortTemplate = (currentSortType) => {
     </div>
 
     <div class="trip-sort__item trip-sort__item--price">
-      <input 
-        id="sort-price" 
-        class="trip-sort__input visually-hidden" 
-        type="radio" 
+      <input
+        id="sort-price"
+        class="trip-sort__input visually-hidden"
+        type="radio"
         name="trip-sort"
         value="sort-price"
         ${currentSortType === SortType.PRICE ? `checked` : ``}
@@ -63,7 +63,7 @@ export default class Sort extends AbstractView {
     super();
 
     this._currentSortType = currentSortType;
-    
+
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
 
@@ -72,6 +72,7 @@ export default class Sort extends AbstractView {
   }
 
   _sortTypeChangeHandler(evt) {
+    console.log(evt)
     if (evt.target.tagName !== `INPUT`) {
       return;
     }
