@@ -17,12 +17,14 @@ export default class Trip {
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
     this._currentSortType = SortType.DEFAULT;
-    console.log(this._currentSortType)
     this._eventPresenter = {};
 
     this._sortComponent = null;
+
     this._noEventsComponent = new NoEventsView();
     this._tripInfoComponent = new TripInfoView();
+    this._tripPriceComponent = new TripPriceView();
+    this._tripRouteDatesComponent = new TripRouteDatesView();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -33,13 +35,11 @@ export default class Trip {
   }
 
   init() {
-    render(this._destinationPriceContainer, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
-
     this._renderTrip();
   }
 
   _getEvents() {
-    console.log(this._currentSortType)
+    // console.log(this._currentSortType)
     switch (this._currentSortType) {
       case SortType.TIME:
         return this._eventsModel.getEvents().slice().sort(sortByTime);
@@ -78,31 +78,35 @@ export default class Trip {
         this._eventPresenter[data.id].init(data);
         break;
       case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
+        this._clearTrip();
+        this._renderTrip();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this._clearTrip({resetSortType: true});
+        this._renderTrip();
         break;
     }
   }
 
   _handleSortTypeChange(sortType) {
-    console.log(sortType)
     if (this._currentSortType === sortType) {
       return;
     }
 
     this._currentSortType = sortType;
-    console.log(this._currentSortType)
-    this._clearEventList();
-    this._renderEventList();
+    this._clearTrip();
+    this._renderTrip();
   }
 
   _renderSort() {
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
+    }
+
     this._sortComponent = new SortView(this._currentSortType);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
 
     render(this._tripContainer, this._sortComponent, RenderPosition.BEFOREEND);
-    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   // _handleEventChange(updatedEvent) {
@@ -118,6 +122,7 @@ export default class Trip {
   }
 
   _renderNoEvents() {
+    this._noEventsComponent = new NoEventsView();
     this._tripPriceComponent = new TripPriceView();
     this._tripRouteDatesComponent = new TripRouteDatesView();
 
@@ -126,21 +131,27 @@ export default class Trip {
     render(this._tripContainer, this._noEventsComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _clearEventList() { // есть проблема. здесь без _destroyEventList не очищаются контейнеры дней. но с _destroyEventList вызов обзервера у каждого ивента становится чрезмерным, так как и без него все очищается. как правильно подойти к этой ситуации?
+  _clearTrip({resetSortType = false} = {}) {
     Object
       .values(this._eventPresenter)
       .forEach((presenter) => presenter.destroy());
-    this._destroyEventList();
     this._eventPresenter = {};
-  }
 
-  _destroyEventList() { // добавил метод, чтобы удалять контейнеры для дней при сортировке
+
+    remove(this._sortComponent);
+    remove(this._noEventsComponent);
     remove(this._eventListComponent);
+    remove(this._tripInfoComponent);
+    remove(this._tripPriceComponent);
+    remove(this._tripRouteDatesComponent);
+
+    if (resetSortType) {
+      this._currentSortType = SortType.DEFAULT;
+    }
   }
 
   _renderEventList() {
     const events = this._getEvents().slice();
-    console.log(events)
 
     if (this._currentSortType === `sort-event`) {
       this._eventListComponent = new EventListView(events);
@@ -162,6 +173,7 @@ export default class Trip {
           this._renderEvent(travelPointsListContainer[j], events[i]);
         }
       }
+      this._renderEvent(travelPointsListContainer[travelPointsListContainer.length - 1], events[events.length - 1])
     } else {
       this._eventListComponent = new EventListView();
       render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
@@ -174,10 +186,25 @@ export default class Trip {
 
   _renderTripInfo() {
     const events = this._getEvents().slice();
+    const eventsSorted = events.sort((a, b) => (a.startDate - b.startDate));
 
-    this._tripPriceComponent = new TripPriceView(events);
-    this._tripRouteDatesComponent = new TripRouteDatesView(events);
+    if (this._tripInfoComponent !== null) {
+      this._tripInfoComponent = null;
+    }
 
+    if (this._tripPriceComponent !== null) {
+      this._tripPriceComponent = null;
+    }
+
+    if (this._tripRouteDatesComponent !== null) {
+      this._tripRouteDatesComponent = null;
+    }
+
+    this._tripInfoComponent = new TripInfoView();
+    this._tripPriceComponent = new TripPriceView(eventsSorted);
+    this._tripRouteDatesComponent = new TripRouteDatesView(eventsSorted);
+
+    render(this._destinationPriceContainer, this._tripInfoComponent, RenderPosition.AFTERBEGIN);
     render(this._tripInfoComponent, this._tripRouteDatesComponent, RenderPosition.BEFOREEND);
     render(this._tripInfoComponent, this._tripPriceComponent, RenderPosition.BEFOREEND);
   }
@@ -189,8 +216,8 @@ export default class Trip {
       return;
     }
 
-    this._renderSort();
     this._renderTripInfo();
+    this._renderSort();
     this._renderEventList();
   }
 }

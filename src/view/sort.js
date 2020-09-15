@@ -63,10 +63,10 @@ export default class Sort extends AbstractView {
     super();
 
     this._currentSortType = currentSortType;
-    console.log(currentSortType)
-
+    
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
+
   _getTemplate() {
     return generateSortTemplate(this._currentSortType);
   }
@@ -75,7 +75,6 @@ export default class Sort extends AbstractView {
     if (evt.target.tagName !== `INPUT`) {
       return;
     }
-    console.log(evt.target.value)
 
     this._callback.sortTypeChange(evt.target.value);
     // evt.preventDefault();

@@ -224,16 +224,30 @@ export default class EventEdit extends SmartView {
     this._startDatepicker = null;
     this._endDatepicker = null;
 
+    console.log(this._callback)
+
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._eventTypeChangeHandler = this._eventTypeChangeHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
     this._startDateTimeChangeHandler = this._startDateTimeChangeHandler.bind(this);
     this._endDateTimeChangeHandler = this._endDateTimeChangeHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
+    this._priceChangeHandler = this._priceChangeHandler.bind(this);
 
     this._setInnerHandlers();
     this._setStartDatepicker();
     this._setEndDatepicker();
+    // this._setPriceChangeHandler();
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this._datepicker) {
+      this._datepicker.destroy();
+      this._datepicker = null;
+    }
   }
 
   _getTemplate() {
@@ -248,6 +262,11 @@ export default class EventEdit extends SmartView {
   _favoriteClickHandler(evt) {
     evt.preventDefault();
     this._callback.favoriteClick();
+  }
+
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(this._data);
   }
 
   _eventTypeChangeHandler(evt) {
@@ -277,6 +296,14 @@ export default class EventEdit extends SmartView {
     }
   }
 
+  _priceChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      price: parseInt(evt.target.value, 10)
+    },
+    true);
+  }
+
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
@@ -287,6 +314,15 @@ export default class EventEdit extends SmartView {
     this.getElement().querySelector(`form`).addEventListener(`submit`, this._formSubmitHandler);
   }
 
+  setDeleteClickHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._formDeleteClickHandler);
+  }
+
+  _setPriceChangeHandler() {
+
+  }
+
   _setInnerHandlers() {
     this.getElement()
       .querySelector(`.event__type-list`)
@@ -294,6 +330,9 @@ export default class EventEdit extends SmartView {
     this.getElement()
       .querySelector(`#event-destination-1`)
       .addEventListener(`input`, this._destinationChangeHandler);
+    this.getElement()
+      .querySelector(`#event-price-1`)
+      .addEventListener(`change`, this._priceChangeHandler);
   }
 
   restoreHandlers() {
@@ -301,6 +340,8 @@ export default class EventEdit extends SmartView {
     this._setStartDatepicker();
     this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
+    this.setPriceChangeHandler(this._callback.priceChange);
   }
 
   _startDateTimeChangeHandler(selectedDates) {
@@ -323,6 +364,7 @@ export default class EventEdit extends SmartView {
     }, false);
 
     this._startDatepicker.config.maxDate = selectedDate;
+    console.log(this._startDatepicker.config)
   }
 
   _setStartDatepicker() {

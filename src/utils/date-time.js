@@ -72,3 +72,11 @@ export const generateDuration = (startDate, endDate) => {
 
   return duration;
 };
+
+export const areDatesEqual = (dateA, dateB) => {
+  if (dateA === null && dateB === null) {
+    return true;
+  }
+
+  return moment(dateA).isSame(dateB, `minute`);
+};

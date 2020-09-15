@@ -64,6 +64,9 @@ const getDates = (events) => {
       dates.push(events[i].startDate);
     }
   }
+  if (events[events.length - 1].startDate.getDate() !== events[events.length - 2].startDate.getDate()) {
+    dates.push(events[events.length - 1].startDate);
+  }
   return dates;
 };
 

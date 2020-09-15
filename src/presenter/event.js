@@ -2,6 +2,8 @@ import EventView from "../view/event.js";
 import EventEditView from "../view/event-edit.js";
 import {render, RenderPosition, replace, remove} from "../utils/render.js";
 import {UserAction, UpdateType} from "../const.js";
+import {areDatesEqual} from "../utils/date-time.js";
+import {arePricesEqual} from "../utils/common.js";
 
 const Mode = {
   DEFAULT: `DEFAULT`,
@@ -22,6 +24,7 @@ export default class Event {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(event) {
@@ -36,6 +39,7 @@ export default class Event {
     this._eventComponent.setEditClickHandler(this._handleEditClick);
     this._eventEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._eventEditComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._eventEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 
     if (prevEventComponent === null || prevEventEditComponent === null) {
       render(this._eventListContainer, this._eventComponent, RenderPosition.BEFOREEND);
@@ -93,7 +97,7 @@ export default class Event {
   _handleFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_EVENT,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._event,
@@ -104,12 +108,28 @@ export default class Event {
     );
   }
 
-  _handleFormSubmit(event) {
+  _handleFormSubmit(update) {
+    console.log(this._event.startDate)
+    console.log(update.startDate)
+    let isMinorUpdate = false;
+    if (!areDatesEqual(this._event.startDate, update.startDate) || (!arePricesEqual(this._event.price, update.price))) {
+      isMinorUpdate = true;
+    }
+
     this._changeData(
         UserAction.UPDATE_EVENT,
+        isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
+        update
+    );
+    this._replaceFormToEvent();
+  }
+
+  _handleDeleteClick(event) {
+    console.log(this._changeData)
+    this._changeData(
+        UserAction.DELETE_EVENT,
         UpdateType.MINOR,
         event
     );
-    this._replaceFormToEvent();
   }
 }

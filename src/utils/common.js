@@ -18,3 +18,11 @@ export const updateItem = (items, update) => {
     ...items.slice(index + 1)
   ];
 };
+
+export const arePricesEqual = (priceA, priceB) => {
+  if (priceA === null && priceB === null) {
+    return true;
+  }
+
+  return priceA === priceB;
+};

@@ -12,7 +12,7 @@ const events = new Array(EVENTS_COUNT)
   .map(generateEvent)
   .sort((a, b) => a.startDate - b.startDate);
 // const offers = generateOffers();
-console.log(events)
+// console.log(events)
 
 const siteMainElement = document.querySelector(`.page-body`);
 const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); // Маршрут и стоимость
