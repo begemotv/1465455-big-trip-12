@@ -317,10 +317,6 @@ export default class EventEdit extends SmartView {
     this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._formDeleteClickHandler);
   }
 
-  _setPriceChangeHandler() {
-
-  }
-
   _setInnerHandlers() {
     this.getElement()
       .querySelector(`.event__type-list`)
@@ -339,7 +335,6 @@ export default class EventEdit extends SmartView {
     this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
-    this.setPriceChangeHandler(this._callback.priceChange);
   }
 
   _startDateTimeChangeHandler(selectedDates) {

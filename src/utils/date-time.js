@@ -27,8 +27,8 @@ export const generateDuration = (startDate, endDate) => {
   let endMinutes = endDate.getMinutes();
 
   const month28 = 1;
-  const month30 = [0, 2, 4, 6, 8, 10];
-  const month31 = [3, 5, 7, 9, 11];
+  const month30 = [3, 5, 8, 10];
+  const month31 = [0, 2, 4, 6, 7, 9, 11];
 
   if (startDay > endDay) {
     if (startMonth === month28) {
@@ -44,10 +44,12 @@ export const generateDuration = (startDate, endDate) => {
 
   if (startHours > endHours) {
     endHours += 24;
+    startDay += 1;
   }
 
   if (startMinutes > endMinutes) {
     endMinutes += 60;
+    startHours += 1;
   }
 
   let durationDays = endDay - startDay;
@@ -63,11 +65,7 @@ export const generateDuration = (startDate, endDate) => {
       duration = `${durationHours}H ${durationMinutes}M`;
     }
   } else {
-    if (durationHours === 0) {
-      duration = `${durationDays}D ${durationMinutes}M`;
-    } else {
-      duration = `${durationDays}D ${durationHours}H ${durationMinutes}M`;
-    }
+    duration = `${durationDays}D ${durationHours}H ${durationMinutes}M`;
   }
 
   return duration;

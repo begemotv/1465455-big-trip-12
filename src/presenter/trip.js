@@ -42,6 +42,7 @@ export default class Trip {
     // console.log(this._currentSortType)
     switch (this._currentSortType) {
       case SortType.TIME:
+        console.log(this._eventsModel.getEvents().slice().sort(sortByTime))
         return this._eventsModel.getEvents().slice().sort(sortByTime);
       case SortType.PRICE:
         return this._eventsModel.getEvents().slice().sort(sortByPrice);
@@ -155,26 +156,28 @@ export default class Trip {
     const events = this._getEvents().slice();
 
     if (this._currentSortType === `sort-event`) {
-      this._eventListComponent = new EventListView(events);
+      const eventsSorted = events.sort((a, b) => (a.startDate - b.startDate));
+      console.log(eventsSorted)
+      this._eventListComponent = new EventListView(eventsSorted);
       render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
       const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
 
-      for (let i = 0, j = 0; i < events.length - 1; i++) {
-        let currentEvent = events[i].startDate.getDate();
-        let nextEvent = events[i + 1].startDate.getDate();
+      for (let i = 0, j = 0; i < eventsSorted.length - 1; i++) {
+        let currentEvent = eventsSorted[i].startDate.getDate();
+        let nextEvent = eventsSorted[i + 1].startDate.getDate();
         if (i === 0) {
-          this._renderEvent(travelPointsListContainer[j], events[i]);
+          this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
           i++;
         }
         if (currentEvent === nextEvent) {
-          this._renderEvent(travelPointsListContainer[j], events[i]);
+          this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
         } else {
           j++;
-          this._renderEvent(travelPointsListContainer[j], events[i]);
+          this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
         }
       }
-      this._renderEvent(travelPointsListContainer[travelPointsListContainer.length - 1], events[events.length - 1])
+      this._renderEvent(travelPointsListContainer[travelPointsListContainer.length - 1], eventsSorted[eventsSorted.length - 1])
     } else {
       this._eventListComponent = new EventListView();
       render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
