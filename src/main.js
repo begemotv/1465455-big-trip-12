@@ -1,9 +1,10 @@
 import MenuView from "./view/menu.js";
-import FilterView from "./view/filter.js";
 import TripPresenter from "./presenter/trip.js";
 import {generateEvent} from "./mock/event.js";
 import EventsModel from "./model/events.js";
 import {render, RenderPosition} from "./utils/render.js";
+import FilterModel from "./model/filter.js";
+import FilterPresenter from "./presenter/filter.js";
 
 const EVENTS_COUNT = 15;
 
@@ -12,7 +13,6 @@ const events = new Array(EVENTS_COUNT)
   .map(generateEvent)
   .sort((a, b) => a.startDate - b.startDate);
 // const offers = generateOffers();
-console.log(events)
 
 const siteMainElement = document.querySelector(`.page-body`);
 const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); // Маршрут и стоимость
@@ -20,11 +20,20 @@ const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-con
 const contentContainer = siteMainElement.querySelector(`.trip-events`); // Точки
 
 render(menuElementContainer, new MenuView(), RenderPosition.BEFOREEND);
-render(menuElementContainer, new FilterView(), RenderPosition.BEFOREEND);
 
 const eventsModel = new EventsModel();
 eventsModel.setEvents(events);
 
-const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, eventsModel);
+const filterModel = new FilterModel();
 
+const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, eventsModel, filterModel);
+const filterPresenter = new FilterPresenter(menuElementContainer, filterModel, eventsModel);
+
+filterPresenter.init();
 tripPresenter.init();
+
+document.querySelector(`.trip-main__event-add-btn`).addEventListener(`click`, (evt) => {
+  console.log(`CLICK`)
+  evt.preventDefault();
+  tripPresenter.createTask();
+});

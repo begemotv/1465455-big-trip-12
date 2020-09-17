@@ -1,34 +1,9 @@
-// import {EVENTTYPES} from "../const.js";
-// import {EVENTOFFERS} from "../const.js";
 import {EVENTDESCRIPTION} from "../const.js";
 import {getRandomInteger} from "../utils/common.js";
 import {EventOfferTypes} from "./offers.js";
 
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
-// const generateEventType = () => {
-//   const randomIndex = getRandomInteger(0, EVENTTYPES.length - 1);
-//   const randomType = EVENTTYPES[randomIndex].name + EVENTTYPES[randomIndex].placeholder;
-
-//   return randomType;
-// };
-
-// const generateEventOffers = () => {
-//   const randomIndex = getRandomInteger(0, 2);
-//   let randomOffers = [];
-//   for (let i = 0; i < randomIndex; i++) {
-//     randomOffers.push(EVENTOFFERS[i]);
-//   }
-//   return randomOffers;
-// };
-
-// const generateEventOffersPrice = (offers) => {
-//   let offersPrice = 0;
-//   for (let i = 0; i < offers.length; i++) {
-//     offersPrice += offers[i].price;
-//   }
-//   return offersPrice;
-// };
+export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateEventDescriptions = () => {
   const textLength = getRandomInteger(3, 5);

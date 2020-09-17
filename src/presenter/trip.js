@@ -2,18 +2,20 @@ import EventListView from "../view/event-list.js";
 import SortView from "../view/sort.js";
 import NoEventsView from "../view/no-events.js";
 import EventPresenter from "../presenter/event.js";
+import EventNewPresenter from "../presenter/event-new.js";
 import TripInfoView from "../view/trip-info.js";
 import TripPriceView from "../view/trip-price.js";
 import TripRouteDatesView from "../view/trip-route-dates.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
-import {updateItem} from "../utils/common.js";
+import {filter} from "../utils/filter.js";
 import {sortByTime, sortByPrice} from "../utils/event.js";
-import {SortType, UpdateType, UserAction} from "../const.js";
+import {SortType, UpdateType, UserAction, FilterType} from "../const.js";
 
 
 export default class Trip {
-  constructor(tripContainer, destinationPriceContainer, eventsModel) {
+  constructor(tripContainer, destinationPriceContainer, eventsModel, filterModel) {
     this._eventsModel = eventsModel;
+    this._filterModel = filterModel;
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
     this._currentSortType = SortType.DEFAULT;
@@ -32,23 +34,39 @@ export default class Trip {
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
     this._eventsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
+    // const tripList = tripContainer.querySelector(`.trip-days`);
+    // this._tripListContainer = tripList;
+
+    this._eventNewPresenter = new EventNewPresenter(this._tripContainer, this._handleViewAction);
   }
 
   init() {
     this._renderTrip();
   }
 
+  createTask() {
+    console.log(`CLICK`)
+    this._currentSortType = SortType.DEFAULT;
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    console.log(`CLICK`)
+    this._eventNewPresenter.init();
+  }
+
   _getEvents() {
-    // console.log(this._currentSortType)
+    const filterType = this._filterModel.getFilter();
+    const events = this._eventsModel.getEvents();
+    const filtredEvents = filter[filterType](events);
+
     switch (this._currentSortType) {
       case SortType.TIME:
-        console.log(this._eventsModel.getEvents().slice().sort(sortByTime))
-        return this._eventsModel.getEvents().slice().sort(sortByTime);
+        return filtredEvents.sort(sortByTime);
       case SortType.PRICE:
-        return this._eventsModel.getEvents().slice().sort(sortByPrice);
+        return filtredEvents.sort(sortByPrice);
     }
 
-    return this._eventsModel.getEvents();
+    return filtredEvents;
   }
 
   _handleModeChange() {
@@ -90,7 +108,6 @@ export default class Trip {
   }
 
   _handleSortTypeChange(sortType) {
-    console.log(sortType)
     if (this._currentSortType === sortType) {
       return;
     }
@@ -154,22 +171,31 @@ export default class Trip {
 
   _renderEventList() {
     const events = this._getEvents().slice();
+    console.log(events)
 
     if (this._currentSortType === `sort-event`) {
       const eventsSorted = events.sort((a, b) => (a.startDate - b.startDate));
-      console.log(eventsSorted)
       this._eventListComponent = new EventListView(eventsSorted);
       render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
       const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
+      console.log(travelPointsListContainer[0].querySelector(`.event`))
+      const datetime = travelPointsListContainer[0].querySelector(`.event`);
+      console.log(datetime)
+     
 
       for (let i = 0, j = 0; i < eventsSorted.length - 1; i++) {
         let currentEvent = eventsSorted[i].startDate.getDate();
         let nextEvent = eventsSorted[i + 1].startDate.getDate();
+        console.log(`i: ${i}`)
+        console.log(`j: ${j}`)
+        console.log(`Current Event: ${currentEvent}`)
+        console.log(`Next Event: ${nextEvent}`)
         if (i === 0) {
           this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
-          i++;
+          continue;
         }
+        console.log(`Event type and destination: ${eventsSorted[i].type.name} ${eventsSorted[i].destination.name}`)
         if (currentEvent === nextEvent) {
           this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
         } else {

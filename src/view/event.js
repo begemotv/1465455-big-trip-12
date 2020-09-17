@@ -1,5 +1,6 @@
 import AbstractView from "./abstract.js";
 import {formatEventDate, generateDuration} from "../utils/date-time.js";
+import moment from "moment";
 
 const createEventOffer = (event) => {
   const {name, price} = event;

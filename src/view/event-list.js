@@ -28,6 +28,7 @@ const createEventListContainer = (date, index) => {
   const datetime = generateDatetime(date);
   const dateHuman = generateDate(date);
   const indexHuman = index + 1;
+  console.log(datetime)
 
   return (
     `<li class="trip-days__item  day">

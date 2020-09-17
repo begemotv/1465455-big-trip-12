@@ -6,6 +6,7 @@ import {formatEventInputDate} from "../utils/date-time.js";
 import flatpickr from "flatpickr";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
+import {BLANK_EVENT} from "../const.js";
 
 const createOfferTemplate = (offer) => {
   const {name, price, offerClass, isActive} = offer;
@@ -217,8 +218,9 @@ const createEventEditTemplate = (data) => {
 };
 
 export default class EventEdit extends SmartView {
-  constructor(event) {
+  constructor(event = BLANK_EVENT) {
     super();
+    // console.log(event)
     this._data = EventEdit.parseEventToData(event);
 
     this._startDatepicker = null;
@@ -236,7 +238,6 @@ export default class EventEdit extends SmartView {
     this._setInnerHandlers();
     this._setStartDatepicker();
     this._setEndDatepicker();
-    // this._setPriceChangeHandler();
   }
 
   removeElement() {

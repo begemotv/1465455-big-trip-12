@@ -2,10 +2,11 @@ import AbstractView from "../view/abstract.js";
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
+  BEFOREBEGIN: `beforebegin`
 };
 
-export const render = (container, child, place) => {
+export const render = (container, child, place, reference) => {
   if (container instanceof AbstractView) {
     container = container.getElement();
   }
@@ -20,6 +21,9 @@ export const render = (container, child, place) => {
       break;
     case RenderPosition.BEFOREEND:
       container.append(child);
+      break;
+    case RenderPosition.BEFOREBEGIN:
+      container.insertBefore(child, reference);
       break;
   }
 };

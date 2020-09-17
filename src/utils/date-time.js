@@ -78,3 +78,11 @@ export const areDatesEqual = (dateA, dateB) => {
 
   return moment(dateA).isSame(dateB, `minute`);
 };
+
+export const isEventPast = (endDate) => {
+  return moment() > moment(endDate);
+};
+
+export const isEventFuture = (startDate) => {
+  return moment(startDate) > moment();
+};

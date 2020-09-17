@@ -64,19 +64,19 @@ export const EVENTDESCRIPTION = [
 ];
 
 export const BLANK_EVENT = {
-  type: ``,
-  city: ``,
+  id: ``,
+  type: `flight`,
   startDate: ``,
   endDate: ``,
   startTime: ``,
   endTime: ``,
-  duration: ``,
+  durationMSec: ``,
   price: ``,
   offers: ``,
-  offersPrice: ``,
   destination: {
+    name: ``,
     description: ``,
-    photos: ``,
+    photos: ``
   },
 };
 
@@ -103,3 +103,8 @@ export const UpdateType = {
   MAJOR: `MAJOR`
 };
 
+export const FilterType = {
+  EVERYTHING: `everything`,
+  FUTURE: `future`,
+  PAST: `past`
+};
