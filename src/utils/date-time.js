@@ -86,3 +86,11 @@ export const isEventPast = (endDate) => {
 export const isEventFuture = (startDate) => {
   return moment(startDate) > moment();
 };
+
+export const generateTime = (date) => {
+  if (!(date instanceof Date)) {
+    return ``;
+  }
+
+  return moment(date).format(`HH:MM`);
+};

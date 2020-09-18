@@ -89,20 +89,6 @@ const generateEndDate = (startDate) => {
   return randomEndDate;
 };
 
-const generateTime = (date) => {
-  let hours = date.getHours().toString();
-  let minutes = date.getMinutes().toString();
-
-  if (hours.length < 2) {
-    hours = `0` + hours;
-  }
-  if (minutes.length < 2) {
-    minutes = `0` + minutes;
-  }
-
-  return [hours, minutes].join(`:`);
-};
-
 export const Destinations = new Map([
   [`Bari`, {
     description: generateEventDescriptions(),
@@ -159,8 +145,6 @@ export const getOffers = (type) => {
 export const generateEvent = () => {
   const startDate = generateStartDate();
   const endDate = generateEndDate(startDate);
-  const startTime = generateTime(startDate);
-  const endTime = generateTime(endDate);
   const type = getRandomEventType();
   const tmpCities = Array.from(Destinations.keys());
   const name = tmpCities[getRandomInteger(0, tmpCities.length - 1)];
@@ -184,8 +168,6 @@ export const generateEvent = () => {
     type,
     startDate,
     endDate,
-    startTime,
-    endTime,
     durationMSec,
     price: getRandomInteger(20, 200),
     offers,

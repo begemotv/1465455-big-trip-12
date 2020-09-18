@@ -1,12 +1,12 @@
 import SmartView from "./smart.js";
 import {cities, getOffers, Destinations} from "../mock/event.js";
 import {eventTypes} from "../mock/offers.js";
-import {formatEventInputDate} from "../utils/date-time.js";
+import {formatEventInputDate, generateTime} from "../utils/date-time.js";
+import {BLANK_EVENT} from "../const.js";
 
 import flatpickr from "flatpickr";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
-import {BLANK_EVENT} from "../const.js";
 
 const createOfferTemplate = (offer) => {
   const {name, price, offerClass, isActive} = offer;
@@ -123,17 +123,21 @@ const createDestinationListMarkup = () => {
 };
 
 const createEventEditTemplate = (data) => {
-  const {type, price, startDate, endDate, startTime, endTime, offers, destination, isFavorite} = data;
-  // console.log(offers)
+  const {type, price, startDate, endDate, offers, destination, isFavorite} = data;
   const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(eventTypes);
   const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(eventTypes);
   const eventStartDate = formatEventInputDate(startDate);
   const eventEndDate = formatEventInputDate(endDate);
-  const eventOffers = createEventEditOffersTemplate(offers);
+  let eventOffers = ``;
+  if (offers.length !== 0) {
+    eventOffers = createEventEditOffersTemplate(offers);
+  }
   const photosMarkup = createPhotosMarkup(destination);
   const destinationList = createDestinationListMarkup();
+  const startTime = generateTime(startDate);
+  const endTime = generateTime(endDate);
   return (
-    `<li class="trip-events__item">
+    `<li style="list-style:none" class="trip-events__item">
     <form class="trip-events__item  event  event--edit" action="#" method="get">
     <header class="event__header">
     <div class="event__type-wrapper">
@@ -202,7 +206,7 @@ const createEventEditTemplate = (data) => {
     </button>
     </header>
     ${eventOffers}
-    <section class="event__section  event__section--destination">
+    ${destination.name !== `` ? `<section class="event__section  event__section--destination">
     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
     <p class="event__destination-description">${destination.description}</p>
 
@@ -211,17 +215,17 @@ const createEventEditTemplate = (data) => {
         ${photosMarkup}
       </div>
     </div>
-  </section>
+  </section>` : ``}
     </form>
     </li>`
   );
 };
 
 export default class EventEdit extends SmartView {
-  constructor(event = BLANK_EVENT) {
+  constructor(event = BLANK_EVENT, offersModel) {
     super();
-    // console.log(event)
     this._data = EventEdit.parseEventToData(event);
+    this._offersModel = offersModel;
 
     this._startDatepicker = null;
     this._endDatepicker = null;
@@ -234,6 +238,7 @@ export default class EventEdit extends SmartView {
     this._endDateTimeChangeHandler = this._endDateTimeChangeHandler.bind(this);
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._priceChangeHandler = this._priceChangeHandler.bind(this);
+    this._arrowCloseHandler = this._arrowCloseHandler.bind(this);
 
     this._setInnerHandlers();
     this._setStartDatepicker();
@@ -303,6 +308,11 @@ export default class EventEdit extends SmartView {
     true);
   }
 
+  _arrowCloseHandler(evt) {
+    evt.preventDefault();
+    this._callback.arrowClose();
+  }
+
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
     this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
@@ -316,6 +326,11 @@ export default class EventEdit extends SmartView {
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
     this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._formDeleteClickHandler);
+  }
+
+  setArrowCloseHandler(callback) {
+    this._callback.arrowClose = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._arrowCloseHandler);
   }
 
   _setInnerHandlers() {
@@ -336,6 +351,7 @@ export default class EventEdit extends SmartView {
     this._setEndDatepicker();
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
+    this.setArrowCloseHandler(this._callback.arrowClose);
   }
 
   _startDateTimeChangeHandler(selectedDates) {
@@ -358,7 +374,6 @@ export default class EventEdit extends SmartView {
     }, false);
 
     this._startDatepicker.config.maxDate = selectedDate;
-    console.log(this._startDatepicker.config)
   }
 
   _setStartDatepicker() {

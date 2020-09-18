@@ -4,7 +4,9 @@ import {remove, render, RenderPosition} from "../utils/render.js";
 import {UserAction, UpdateType} from "../const.js";
 
 export default class EventNew {
-  constructor(tripContainer, changeData) {
+  constructor(tripContainer, changeData, offersModel) {
+    this._offersModel = offersModel;
+    console.log(this._offersModel)
     this._tripContainer = tripContainer;
     this._changeData = changeData;
 
@@ -20,15 +22,13 @@ export default class EventNew {
       return;
     }
     const eventList = this._tripContainer.querySelector(`.trip-days`);
-    console.log(eventList) 
 
     this._eventEditComponent = new EventEditView();
-    console.log(this._eventEditComponent);
+
     this._eventEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._eventEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 
     render(this._tripContainer, this._eventEditComponent, RenderPosition.BEFOREBEGIN, eventList);
-    console.log(`CLICK2`)
     document.addEventListener(`keydown`, this._escKeyDownHandler);
   }
 

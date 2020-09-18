@@ -11,8 +11,10 @@ const Mode = {
 };
 
 export default class Event {
-  constructor(eventListContainer, changeData, changeMode) {
+  constructor(eventListContainer, changeData, changeMode, offersModel) {
     this._eventListContainer = eventListContainer;
+    this._offersModel = offersModel;
+    console.log(this._offersModel)
     this._changeData = changeData;
     this._changeMode = changeMode;
 
@@ -25,6 +27,7 @@ export default class Event {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
+    this._arrowCloseHandler = this._arrowCloseHandler.bind(this);
   }
 
   init(event) {
@@ -34,12 +37,13 @@ export default class Event {
     const prevEventEditComponent = this._eventEditComponent;
 
     this._eventComponent = new EventView(event);
-    this._eventEditComponent = new EventEditView(event);
+    this._eventEditComponent = new EventEditView(event, this._offersModel);
 
     this._eventComponent.setEditClickHandler(this._handleEditClick);
     this._eventEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._eventEditComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._eventEditComponent.setDeleteClickHandler(this._handleDeleteClick);
+    this._eventEditComponent.setArrowCloseHandler(this._arrowCloseHandler);
 
     if (prevEventComponent === null || prevEventEditComponent === null) {
       render(this._eventListContainer, this._eventComponent, RenderPosition.BEFOREEND);
@@ -72,6 +76,7 @@ export default class Event {
   _replaceEventToForm() {
     replace(this._eventEditComponent, this._eventComponent);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+
     this._changeMode();
     this._mode = Mode.EDITING;
   }
@@ -82,10 +87,15 @@ export default class Event {
     this._mode = Mode.DEFAULT;
   }
 
+  _arrowCloseHandler() {
+    // this._eventEditComponent.reset(this._event);
+    this._replaceFormToEvent();
+  }
+
   _escKeyDownHandler(evt) {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
-      this._eventEditComponent.reset(this._task);
+      this._eventEditComponent.reset(this._event);
       this._replaceFormToEvent();
     }
   }
@@ -109,8 +119,6 @@ export default class Event {
   }
 
   _handleFormSubmit(update) {
-    console.log(this._event.startDate)
-    console.log(update.startDate)
     let isMinorUpdate = false;
     if (!areDatesEqual(this._event.startDate, update.startDate) || (!arePricesEqual(this._event.price, update.price))) {
       isMinorUpdate = true;

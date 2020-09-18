@@ -28,7 +28,6 @@ const createEventListContainer = (date, index) => {
   const datetime = generateDatetime(date);
   const dateHuman = generateDate(date);
   const indexHuman = index + 1;
-  console.log(datetime)
 
   return (
     `<li class="trip-days__item  day">
@@ -55,18 +54,19 @@ const createEventListContainerSort = () => {
 
 const getDates = (events) => {
   let dates = [];
-  for (let i = 0; i < events.length - 1; i++) {
-    let currentDate = events[i].startDate.getDate();
-    let nextDate = events[i + 1].startDate.getDate();
-    if (i === (events.length - 1) && currentDate !== nextDate) {
-      dates.push(events[events.length - 1].startDate);
+  let currentDate = events[0].startDate.getDate();
+  for (let i = 0; i < events.length; i++) {
+    if (i === 0) {
+      dates.push(events[i].startDate);
+      continue;
     }
-    if (currentDate !== nextDate) {
+    if (currentDate === events[i].startDate.getDate()) {
+      continue;
+    }
+    if (currentDate !== events[i].startDate.getDate()) {
+      currentDate = events[i].startDate.getDate();
       dates.push(events[i].startDate);
     }
-  }
-  if (events[events.length - 1].startDate.getDate() !== events[events.length - 2].startDate.getDate()) {
-    dates.push(events[events.length - 1].startDate);
   }
   return dates;
 };

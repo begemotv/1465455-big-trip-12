@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const EVENTTYPES = [
   {name: `Taxi`, placeholder: ` to`, type: `transfer`},
   {name: `Bus`, placeholder: ` to`, type: `transfer`},
@@ -24,31 +26,31 @@ export const EVENTCITIES = [
   `Helsinki`
 ];
 
-export const EVENTOFFERCLASS = {
-  taxi: ``,
-  bus: ``,
-  train: [`upgrade`],
-  ship: [`upgrade`],
-  transport: ``,
-  drive: ``,
-  flight: [`upgrade`, `flight`],
-  checkin: [`sightseeing`],
-  sightseeing: [`sightseeing`],
-  restaurant: [`restaurant`]
-};
+// export const EVENTOFFERCLASS = {
+//   taxi: ``,
+//   bus: ``,
+//   train: [`upgrade`],
+//   ship: [`upgrade`],
+//   transport: ``,
+//   drive: ``,
+//   flight: [`upgrade`, `flight`],
+//   checkin: [`sightseeing`],
+//   sightseeing: [`sightseeing`],
+//   restaurant: [`restaurant`]
+// };
 
-export const EVENTOFFERS = [
-  {name: `Add luggage`, price: 30, offerClass: `flight`},
-  {name: `Non-smoking driver`, price: 20, offerClass: `taxi`},
-  {name: `Add sport inventory`, price: 50, offerClass: `flight`},
-  {name: `Add excursion`, price: 45, offerClass: `sightseeing`},
-  {name: `Switch to first class`, price: 100, offerClass: `upgrade`},
-  {name: `Add meal`, price: 15, offerClass: `upgrade`},
-  {name: `Choose seats`, price: 5, offerClass: `upgrade`},
-  {name: `Book a table`, price: 5, offerClass: `restaurant`},
-  {name: `Buy a rose`, price: 15, offerClass: `restaurant`},
-  {name: `Buy city guide`, price: 5, offerClass: `sightseeing`},
-];
+// export const EVENTOFFERS = [
+//   {name: `Add luggage`, price: 30, offerClass: `flight`},
+//   {name: `Non-smoking driver`, price: 20, offerClass: `taxi`},
+//   {name: `Add sport inventory`, price: 50, offerClass: `flight`},
+//   {name: `Add excursion`, price: 45, offerClass: `sightseeing`},
+//   {name: `Switch to first class`, price: 100, offerClass: `upgrade`},
+//   {name: `Add meal`, price: 15, offerClass: `upgrade`},
+//   {name: `Choose seats`, price: 5, offerClass: `upgrade`},
+//   {name: `Book a table`, price: 5, offerClass: `restaurant`},
+//   {name: `Buy a rose`, price: 15, offerClass: `restaurant`},
+//   {name: `Buy city guide`, price: 5, offerClass: `sightseeing`},
+// ];
 
 export const EVENTDESCRIPTION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
@@ -65,14 +67,18 @@ export const EVENTDESCRIPTION = [
 
 export const BLANK_EVENT = {
   id: ``,
-  type: `flight`,
-  startDate: ``,
-  endDate: ``,
-  startTime: ``,
-  endTime: ``,
-  durationMSec: ``,
-  price: ``,
-  offers: ``,
+  isFavorite: false,
+  type: {
+    name: `Bus`,
+    icon: `img/icons/bus.png`,
+    placeholder: ` to`,
+    type: `transfer`,
+  },
+  startDate: moment()._d,
+  endDate: moment().add(1, `days`)._d,
+  durationMSec: 0,
+  price: 0,
+  offers: [],
   destination: {
     name: ``,
     description: ``,
@@ -80,10 +86,10 @@ export const BLANK_EVENT = {
   },
 };
 
-export const BLANK_DATES = {
-  startDate: ``,
-  endDate: ``
-};
+// export const BLANK_DATES = {
+//   startDate: ``,
+//   endDate: ``
+// };
 
 export const SortType = {
   DEFAULT: `sort-event`,
