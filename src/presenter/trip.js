@@ -17,7 +17,6 @@ export default class Trip {
     this._eventsModel = eventsModel;
     this._filterModel = filterModel;
     this._offersModel = offersModel;
-    console.log(this._offersModel)
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
     this._currentSortType = SortType.DEFAULT;
@@ -49,10 +48,8 @@ export default class Trip {
   }
 
   createTask() {
-    console.log(`CLICK`)
     this._currentSortType = SortType.DEFAULT;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    console.log(`CLICK`)
     this._eventNewPresenter.init();
   }
 
@@ -173,7 +170,6 @@ export default class Trip {
 
   _renderEventList() {
     const events = this._getEvents().slice();
-    console.log(events)
 
     if (this._currentSortType === `sort-event`) {
       const eventsSorted = events.sort((a, b) => (a.startDate - b.startDate));
@@ -181,7 +177,7 @@ export default class Trip {
       render(this._tripContainer, this._eventListComponent, RenderPosition.BEFOREEND);
 
       const travelPointsListContainer = this._tripContainer.querySelectorAll(`.trip-events__list`);
-     
+
       let currentDate = eventsSorted[0].startDate.getDate();
       for (let i = 0, j = 0; i < eventsSorted.length; i++) {
         if (currentDate === eventsSorted[i].startDate.getDate()) {

@@ -72,7 +72,6 @@ export default class Sort extends AbstractView {
   }
 
   _sortTypeChangeHandler(evt) {
-    console.log(evt)
     if (evt.target.tagName !== `INPUT`) {
       return;
     }

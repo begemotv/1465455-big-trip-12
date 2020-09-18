@@ -7,7 +7,6 @@ import {BLANK_EVENT} from "../const.js";
 export default class EventNew {
   constructor(tripContainer, changeData, offersModel) {
     this._offersModel = offersModel;
-    console.log(this._offersModel)
     this._tripContainer = tripContainer;
     this._changeData = changeData;
 

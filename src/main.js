@@ -16,9 +16,7 @@ const events = new Array(EVENTS_COUNT)
   .sort((a, b) => a.startDate - b.startDate);
 
 const offersModel = new OffersModel();
-console.log(offersModel)
 offersModel.setOffers(EventOfferTypes);
-console.log(offersModel)
 
 const siteMainElement = document.querySelector(`.page-body`);
 const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); // Маршрут и стоимость
@@ -39,7 +37,6 @@ filterPresenter.init();
 tripPresenter.init();
 
 document.querySelector(`.trip-main__event-add-btn`).addEventListener(`click`, (evt) => {
-  console.log(`CLICK`)
   evt.preventDefault();
   tripPresenter.createTask();
 });

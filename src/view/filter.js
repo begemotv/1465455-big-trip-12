@@ -45,7 +45,6 @@ export default class Filter extends AbstractView {
 
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
-    console.log(evt.target.value)
     this._callback.filterTypeChange(evt.target.value);
   }
 

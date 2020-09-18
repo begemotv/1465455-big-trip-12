@@ -14,7 +14,6 @@ export default class Event {
   constructor(eventListContainer, changeData, changeMode, offersModel) {
     this._eventListContainer = eventListContainer;
     this._offersModel = offersModel;
-    console.log(this._offersModel)
     this._changeData = changeData;
     this._changeMode = changeMode;
 
@@ -133,7 +132,6 @@ export default class Event {
   }
 
   _handleDeleteClick(event) {
-    console.log(this._changeData)
     this._changeData(
         UserAction.DELETE_EVENT,
         UpdateType.MINOR,
