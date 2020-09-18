@@ -2,6 +2,8 @@ import AbstractView from "./abstract.js";
 import {formatEventDate, generateDuration} from "../utils/date-time.js";
 import {generateTime} from "../utils/date-time.js";
 
+import he from "he";
+
 const createEventOffer = (event) => {
   const {name, price} = event;
 
@@ -40,7 +42,7 @@ const createEventTemplate = (event) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="${type.icon}" alt="${type.type}">
       </div>
-      <h3 class="event__title">${type.name}${type.placeholder} ${destination.name}</h3>
+      <h3 class="event__title">${type.name}${type.placeholder} ${he.encode(destination.name)}</h3>
 
       <div class="event__schedule">
         <p class="event__time">

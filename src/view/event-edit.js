@@ -1,10 +1,12 @@
 import SmartView from "./smart.js";
-import {cities, getOffers, Destinations} from "../mock/event.js";
+import {cities, Destinations} from "../mock/event.js";
 import {eventTypes} from "../mock/offers.js";
 import {formatEventInputDate, generateTime} from "../utils/date-time.js";
 import {BLANK_EVENT} from "../const.js";
+import {getOffers} from "../utils/event.js";
 
 import flatpickr from "flatpickr";
+import he from "he";
 
 import "../../node_modules/flatpickr/dist/flatpickr.min.css";
 
@@ -164,7 +166,7 @@ const createEventEditTemplate = (data) => {
       <label class="event__label  event__type-output" for="event-destination-1">
       ${type.name}${type.placeholder}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destination.name)}" list="destination-list-1">
       <datalist id="destination-list-1">
       ${destinationList}
       </datalist>
@@ -275,7 +277,7 @@ export default class EventEdit extends SmartView {
 
   _eventTypeChangeHandler(evt) {
     evt.preventDefault();
-    const tmpEventType = eventTypes.find((eventType) => eventType.name === evt.target.value);
+    const tmpEventType = this._offersModel.eventTypes.find((eventType) => eventType.name === evt.target.value);
     const tmpOffers = getOffers(tmpEventType);
     this.updateData({
       type: tmpEventType,

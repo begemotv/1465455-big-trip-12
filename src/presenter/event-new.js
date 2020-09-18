@@ -2,6 +2,7 @@ import EventEditView from "../view/event-edit.js";
 import {generateId} from "../mock/event.js";
 import {remove, render, RenderPosition} from "../utils/render.js";
 import {UserAction, UpdateType} from "../const.js";
+import {BLANK_EVENT} from "../const.js";
 
 export default class EventNew {
   constructor(tripContainer, changeData, offersModel) {
@@ -23,7 +24,7 @@ export default class EventNew {
     }
     const eventList = this._tripContainer.querySelector(`.trip-days`);
 
-    this._eventEditComponent = new EventEditView();
+    this._eventEditComponent = new EventEditView(BLANK_EVENT, this._offersModel);
 
     this._eventEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._eventEditComponent.setDeleteClickHandler(this._handleDeleteClick);

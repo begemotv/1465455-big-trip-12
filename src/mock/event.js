@@ -1,6 +1,7 @@
 import {EVENTDESCRIPTION} from "../const.js";
 import {getRandomInteger} from "../utils/common.js";
 import {EventOfferTypes} from "./offers.js";
+import {getOffers} from "../utils/event.js";
 
 
 export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
@@ -134,12 +135,6 @@ export const eventTypes = Array.from(EventOfferTypes.keys());
 
 const getRandomEventType = () => {
   return eventTypes[getRandomInteger(0, eventTypes.length - 1)];
-};
-
-export const getOffers = (type) => {
-  return EventOfferTypes.has(type)
-    ? EventOfferTypes.get(type)
-    : null;
 };
 
 export const generateEvent = () => {
