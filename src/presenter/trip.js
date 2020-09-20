@@ -13,10 +13,11 @@ import {SortType, UpdateType, UserAction, FilterType} from "../const.js";
 
 
 export default class Trip {
-  constructor(tripContainer, destinationPriceContainer, eventsModel, filterModel, offersModel) {
+  constructor(tripContainer, destinationPriceContainer, eventsModel, filterModel, offersModel, menuModel) {
     this._eventsModel = eventsModel;
     this._filterModel = filterModel;
     this._offersModel = offersModel;
+    this._menuModel = menuModel;
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
     this._currentSortType = SortType.DEFAULT;
@@ -34,17 +35,32 @@ export default class Trip {
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
-    this._eventsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
-
-    // const tripList = tripContainer.querySelector(`.trip-days`);
-    // this._tripListContainer = tripList;
-
     this._eventNewPresenter = new EventNewPresenter(this._tripContainer, this._handleViewAction, this._offersModel);
   }
 
   init() {
+    if (this._tripInfoComponent !== null) {
+      remove(this._tripInfoComponent);
+    }
+    if (this._tripPriceComponent !== null) {
+      remove(this._tripPriceComponent);
+    }
+    if (this._tripRouteDatesComponent !== null) {
+      remove(this._tripRouteDatesComponent);
+    }
+
+    this._eventsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+    this._menuModel.addObserver(this._handleModelEvent);
+
     this._renderTrip();
+  }
+
+  destroy() {
+    this._clearTrip({resetSortType: true});
+
+    this._eventsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
   }
 
   createTask() {
@@ -127,12 +143,6 @@ export default class Trip {
     render(this._tripContainer, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
-  // _handleEventChange(updatedEvent) {
-  //   // this._tripEvents = updateItem(this._tripEvents, updatedEvent);
-  //   // this._sourcedTripEvents = updateItem(this._sourcedTripEvents, updatedEvent);
-  //   this._eventPresenter[updatedEvent.id].init(updatedEvent);
-  // }
-
   _renderEvent(eventListContainer, event) {
     const eventPresenter = new EventPresenter(eventListContainer, this._handleViewAction, this._handleModeChange, this._offersModel);
     eventPresenter.init(event);
@@ -159,9 +169,9 @@ export default class Trip {
     remove(this._sortComponent);
     remove(this._noEventsComponent);
     remove(this._eventListComponent);
-    remove(this._tripInfoComponent);
-    remove(this._tripPriceComponent);
-    remove(this._tripRouteDatesComponent);
+    // remove(this._tripInfoComponent);
+    // remove(this._tripPriceComponent);
+    // remove(this._tripRouteDatesComponent);
 
     if (resetSortType) {
       this._currentSortType = SortType.DEFAULT;
@@ -199,27 +209,6 @@ export default class Trip {
       events.forEach((event) => this._renderEvent(travelPointsSortContainer, event));
     }
   }
-
-
-  //   let currentEvent = eventsSorted[i].startDate.getDate();
-  //   let nextEvent = eventsSorted[i + 1].startDate.getDate();
-  //   console.log(`i: ${i}`)
-  //   console.log(`j: ${j}`)
-  //   console.log(`Current Event: ${currentEvent}`)
-  //   console.log(`Next Event: ${nextEvent}`)
-  //   if (i === 0) {
-  //     this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
-  //     continue;
-  //   }
-  //   console.log(`Event type and destination: ${eventsSorted[i].type.name} ${eventsSorted[i].destination.name}`)
-  //   if (currentEvent === nextEvent) {
-  //     this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
-  //   } else {
-  //     j++;
-  //     this._renderEvent(travelPointsListContainer[j], eventsSorted[i]);
-  //   }
-  // }
-  // this._renderEvent(travelPointsListContainer[travelPointsListContainer.length - 1], eventsSorted[eventsSorted.length - 1])
 
   _renderTripInfo() {
     const events = this._getEvents().slice();
