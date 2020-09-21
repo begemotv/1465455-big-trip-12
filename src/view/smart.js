@@ -7,7 +7,6 @@ export default class Smart extends Abstract {
   }
 
   updateData(update, justDataUpdating) {
-    console.log(update)
     if (!update) {
       return;
     }

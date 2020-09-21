@@ -185,7 +185,6 @@ export default class Trip {
   }
 
   _renderEventList() {
-    console.log (this._eventListComponent)
     if (this._eventListComponent !== null || this._eventListComponent !== undefined) {
       this._eventListComponent = null;
     }

@@ -2,7 +2,6 @@ import SmartView from "./smart.js";
 import {UpdateType, MenuItem} from "../const.js";
 
 const generateMenuTemplate = (selectedMenuItem) => {
-  console.log(selectedMenuItem)
   return (
     `<nav class="trip-controls__trip-tabs  trip-tabs">
       <a 
@@ -43,10 +42,8 @@ export default class Menu extends SmartView {
   }
 
   newTaskHandler(change, menuItem) {
-    console.log(menuItem)
     this._menuModel.setMenuItem(UpdateType.MAJOR, menuItem);
     this._data = this._menuModel.getMenuItem();
-    console.log(this._data)
     this.updateData(this._data);
     change(menuItem);
   }

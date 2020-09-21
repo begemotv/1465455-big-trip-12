@@ -71,6 +71,22 @@ export const generateDuration = (startDate, endDate) => {
   return duration;
 };
 
+export const generateHumanDuration = (days, hours, minutes) => {
+  let humanDuration = ``;
+
+  if (days === 0) {
+    if (hours === 0) {
+      humanDuration = `${minutes}M`;
+    } else {
+      humanDuration = `${hours}H ${minutes}M`;
+    }
+  } else {
+    humanDuration = `${days}D ${hours}H ${minutes}M`;
+  }
+
+  return humanDuration;
+};
+
 export const areDatesEqual = (dateA, dateB) => {
   if (dateA === null && dateB === null) {
     return true;

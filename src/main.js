@@ -1,14 +1,15 @@
 import MenuView from "./view/menu.js";
-import MenuModel from "./model/menu.js"
+import MenuModel from "./model/menu.js";
 import TripPresenter from "./presenter/trip.js";
 import {generateEvent} from "./mock/event.js";
 import {EventOfferTypes} from "./mock/offers.js";
 import EventsModel from "./model/events.js";
-import {render, RenderPosition} from "./utils/render.js";
+import {render, RenderPosition, remove} from "./utils/render.js";
 import FilterModel from "./model/filter.js";
 import FilterPresenter from "./presenter/filter.js";
 import OffersModel from "./model/offers.js";
-import {SortType, MenuItem, UpdateType} from "./const.js";
+import {SortType, MenuItem} from "./const.js";
+import StatsView from "./view/stats.js";
 
 const EVENTS_COUNT = 15;
 
@@ -36,15 +37,23 @@ const filterModel = new FilterModel();
 
 const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, eventsModel, filterModel, offersModel, menuModel);
 
+const statsContainer = document.querySelector(`.page-body__page-main .page-body__container`);
+
+let statsComponent = null;
+
 const handleSiteMenuClick = (menuItem) => {
   tripPresenter.currentSortType = SortType.DEFAULT;
   switch (menuItem) {
     case MenuItem.TABLE:
+      remove(statsComponent);
       tripPresenter.destroy();
       tripPresenter.init();
       break;
     case MenuItem.STATS:
       tripPresenter.destroy();
+
+      statsComponent = new StatsView(eventsModel.getEvents());
+      render(statsContainer, statsComponent, RenderPosition.BEFOREEND);
       break;
   }
 };
