@@ -8,7 +8,7 @@ import {render, RenderPosition} from "./utils/render.js";
 import FilterModel from "./model/filter.js";
 import FilterPresenter from "./presenter/filter.js";
 import OffersModel from "./model/offers.js";
-import {SortType, MenuItem} from "./const.js";
+import {SortType, MenuItem, UpdateType} from "./const.js";
 
 const EVENTS_COUNT = 15;
 
@@ -40,6 +40,7 @@ const handleSiteMenuClick = (menuItem) => {
   tripPresenter.currentSortType = SortType.DEFAULT;
   switch (menuItem) {
     case MenuItem.TABLE:
+      tripPresenter.destroy();
       tripPresenter.init();
       break;
     case MenuItem.STATS:
@@ -58,6 +59,5 @@ tripPresenter.init();
 document.querySelector(`.trip-main__event-add-btn`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
   tripPresenter.createTask(`TABLE`);
-  // handleSiteMenuClick(`TABLE`);
-  // menuComponent.newTaskHandler(`TABLE`);
+  menuComponent.newTaskHandler(handleSiteMenuClick, `TABLE`);
 });

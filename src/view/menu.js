@@ -34,22 +34,22 @@ export default class Menu extends SmartView {
 
   _menuClickHandler(evt) {
     evt.preventDefault();
-    console.log(evt.target.dataset.menu)
     if (evt.target.tagName === `A`) {
       this._menuModel.setMenuItem(UpdateType.MAJOR, evt.target.dataset.menu);
       this._data = this._menuModel.getMenuItem();
       this.updateData(this._data);
       this._callback.menuClick(evt.target.dataset.menu);
-      // this.restoreHandlers();
     }
   }
 
-  // newTaskHandler(state) {
-  //   this._menuModel.setMenuItem(state);
-  //   this._data = this._menuModel.getMenuItem();
-  //   this.updateData(this._data);
-  //   this._callback.menuClick(state);
-  // }
+  newTaskHandler(change, menuItem) {
+    console.log(menuItem)
+    this._menuModel.setMenuItem(UpdateType.MAJOR, menuItem);
+    this._data = this._menuModel.getMenuItem();
+    console.log(this._data)
+    this.updateData(this._data);
+    change(menuItem);
+  }
 
   setMenuClickHandler(callback) {
     this._callback.menuClick = callback;

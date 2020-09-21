@@ -65,11 +65,9 @@ export default class Trip {
     this._menuModel.removeObserver(this._handleModelEvent);
   }
 
-  createTask(menuItem) {
+  createTask() {
     this._currentSortType = SortType.DEFAULT;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this._menuModel.setMenuItem(UpdateType.MAJOR, menuItem);
-    // this._MenuPresenter.init();
     this._eventNewPresenter.init();
   }
 
@@ -187,10 +185,10 @@ export default class Trip {
   }
 
   _renderEventList() {
-    // console.log (this._eventListComponent)
-    // if (this._eventListComponent !== null || this._eventListComponent !== undefined) {
-    //   remove(this._eventListComponent);
-    // }
+    console.log (this._eventListComponent)
+    if (this._eventListComponent !== null || this._eventListComponent !== undefined) {
+      this._eventListComponent = null;
+    }
 
     const events = this._getEvents().slice();
 
