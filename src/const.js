@@ -26,32 +26,6 @@ export const EVENTCITIES = [
   `Helsinki`
 ];
 
-// export const EVENTOFFERCLASS = {
-//   taxi: ``,
-//   bus: ``,
-//   train: [`upgrade`],
-//   ship: [`upgrade`],
-//   transport: ``,
-//   drive: ``,
-//   flight: [`upgrade`, `flight`],
-//   checkin: [`sightseeing`],
-//   sightseeing: [`sightseeing`],
-//   restaurant: [`restaurant`]
-// };
-
-// export const EVENTOFFERS = [
-//   {name: `Add luggage`, price: 30, offerClass: `flight`},
-//   {name: `Non-smoking driver`, price: 20, offerClass: `taxi`},
-//   {name: `Add sport inventory`, price: 50, offerClass: `flight`},
-//   {name: `Add excursion`, price: 45, offerClass: `sightseeing`},
-//   {name: `Switch to first class`, price: 100, offerClass: `upgrade`},
-//   {name: `Add meal`, price: 15, offerClass: `upgrade`},
-//   {name: `Choose seats`, price: 5, offerClass: `upgrade`},
-//   {name: `Book a table`, price: 5, offerClass: `restaurant`},
-//   {name: `Buy a rose`, price: 15, offerClass: `restaurant`},
-//   {name: `Buy city guide`, price: 5, offerClass: `sightseeing`},
-// ];
-
 export const EVENTDESCRIPTION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -85,11 +59,6 @@ export const BLANK_EVENT = {
     photos: ``
   },
 };
-
-// export const BLANK_DATES = {
-//   startDate: ``,
-//   endDate: ``
-// };
 
 export const SortType = {
   DEFAULT: `sort-event`,

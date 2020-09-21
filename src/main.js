@@ -8,7 +8,7 @@ import {render, RenderPosition} from "./utils/render.js";
 import FilterModel from "./model/filter.js";
 import FilterPresenter from "./presenter/filter.js";
 import OffersModel from "./model/offers.js";
-import {MenuItem} from "./const.js";
+import {SortType, MenuItem} from "./const.js";
 
 const EVENTS_COUNT = 15;
 
@@ -21,15 +21,23 @@ const offersModel = new OffersModel();
 offersModel.setOffers(EventOfferTypes);
 
 const siteMainElement = document.querySelector(`.page-body`);
-const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`); // Маршрут и стоимость
-const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-controls`); // Меню
-const contentContainer = siteMainElement.querySelector(`.trip-events`); // Точки
+const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`);
+const menuElementContainer = siteMainElement.querySelector(`.trip-main__trip-controls`);
+const contentContainer = siteMainElement.querySelector(`.trip-events`);
 
 const menuModel = new MenuModel();
 const menuComponent = new MenuView(menuModel);
 render(menuElementContainer, menuComponent, RenderPosition.BEFOREEND);
 
+const eventsModel = new EventsModel();
+eventsModel.setEvents(events);
+
+const filterModel = new FilterModel();
+
+const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, eventsModel, filterModel, offersModel, menuModel);
+
 const handleSiteMenuClick = (menuItem) => {
+  tripPresenter.currentSortType = SortType.DEFAULT;
   switch (menuItem) {
     case MenuItem.TABLE:
       tripPresenter.init();
@@ -42,12 +50,6 @@ const handleSiteMenuClick = (menuItem) => {
 
 menuComponent.setMenuClickHandler(handleSiteMenuClick);
 
-const eventsModel = new EventsModel();
-eventsModel.setEvents(events);
-
-const filterModel = new FilterModel();
-
-const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, eventsModel, filterModel, offersModel, menuModel);
 const filterPresenter = new FilterPresenter(menuElementContainer, filterModel, eventsModel);
 
 filterPresenter.init();
@@ -55,6 +57,7 @@ tripPresenter.init();
 
 document.querySelector(`.trip-main__event-add-btn`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  tripPresenter.createTask();
-  handleSiteMenuClick(`TABLE`);
+  tripPresenter.createTask(`TABLE`);
+  // handleSiteMenuClick(`TABLE`);
+  // menuComponent.newTaskHandler(`TABLE`);
 });

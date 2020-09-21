@@ -10,6 +10,7 @@ import {render, RenderPosition, remove} from "../utils/render.js";
 import {filter} from "../utils/filter.js";
 import {sortByTime, sortByPrice} from "../utils/event.js";
 import {SortType, UpdateType, UserAction, FilterType} from "../const.js";
+// import MenuPresenter from "../presenter/menu.js"
 
 
 export default class Trip {
@@ -61,11 +62,14 @@ export default class Trip {
 
     this._eventsModel.removeObserver(this._handleModelEvent);
     this._filterModel.removeObserver(this._handleModelEvent);
+    this._menuModel.removeObserver(this._handleModelEvent);
   }
 
-  createTask() {
+  createTask(menuItem) {
     this._currentSortType = SortType.DEFAULT;
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this._menuModel.setMenuItem(UpdateType.MAJOR, menuItem);
+    // this._MenuPresenter.init();
     this._eventNewPresenter.init();
   }
 
@@ -122,6 +126,10 @@ export default class Trip {
     }
   }
 
+  _handleMenuChange() {
+
+  }
+
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
       return;
@@ -134,7 +142,7 @@ export default class Trip {
 
   _renderSort() {
     if (this._sortComponent !== null) {
-      this._sortComponent = null;
+      remove(this._sortComponent);
     }
 
     this._sortComponent = new SortView(this._currentSortType);
@@ -179,6 +187,11 @@ export default class Trip {
   }
 
   _renderEventList() {
+    // console.log (this._eventListComponent)
+    // if (this._eventListComponent !== null || this._eventListComponent !== undefined) {
+    //   remove(this._eventListComponent);
+    // }
+
     const events = this._getEvents().slice();
 
     if (this._currentSortType === `sort-event`) {
@@ -215,15 +228,13 @@ export default class Trip {
     const eventsSorted = events.sort((a, b) => (a.startDate - b.startDate));
 
     if (this._tripInfoComponent !== null) {
-      this._tripInfoComponent = null;
+      remove(this._tripInfoComponent);
     }
-
     if (this._tripPriceComponent !== null) {
-      this._tripPriceComponent = null;
+      remove(this._tripPriceComponent);
     }
-
     if (this._tripRouteDatesComponent !== null) {
-      this._tripRouteDatesComponent = null;
+      remove(this._tripRouteDatesComponent);
     }
 
     this._tripInfoComponent = new TripInfoView();
