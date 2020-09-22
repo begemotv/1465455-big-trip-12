@@ -1,4 +1,5 @@
 import AbstractView from "./abstract.js";
+import {generateDuration} from "../utils/event.js";
 
 const createEventOffer = (event) => {
   const {name, price} = event;
@@ -38,12 +39,13 @@ const generateDate = (date) => {
 };
 
 const createEventTemplate = (event) => {
-  const {type, city, price, startDate, endDate, startTime, endTime, duration} = event;
+  const {type, city, price, startDate, endDate, startTime, endTime} = event;
   const offerMarkup = createOfferMarkup(event);
   const eventStartDate = generateDate(startDate);
   const eventEndDate = generateDate(endDate);
   const eventTypeUpper = type.slice(0, -3);
   const eventType = eventTypeUpper.toLowerCase();
+  const duration = generateDuration(startDate, endDate)
 
   return (
     `<li class="trip-events__item">
