@@ -57,7 +57,42 @@ const generateStartDate = () => {
 };
 
 const generateEndDate = (startDate) => {
-  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + getRandomInteger(3, 5), getRandomInteger(0, 23), getRandomInteger(0, 59));
+  const randomEndDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), startDate.getHours() + getRandomInteger(0, 23), getRandomInteger(0, 59));
+
+  const month28 = 1;
+  const month30 = [0, 2, 4, 6, 8, 10];
+  const month31 = [3, 5, 7, 9, 11];
+
+  if (randomEndDate.getMinutes() > 59) {
+    randomEndDate.setHours(randomEndDate.getHours() + 1);
+    randomEndDate.setMinutes(randomEndDate.getMinutes() - 60);
+  }
+  if (randomEndDate.getHours() > 23) {
+    randomEndDate.setDay(randomEndDate.getDay() + 1);
+    randomEndDate.setHours(randomEndDate.setHours() - 24);
+  }
+
+  if (randomEndDate.getMonth() === month28) {
+    if (randomEndDate.getDay() > 28) {
+      randomEndDate.setMonth(randomEndDate.getMonth() + 1);
+      randomEndDate.setDay(randomEndDate.getDay() - 28);
+    }
+  }
+
+  if (month30.includes(randomEndDate.getMonth())) {
+    if (randomEndDate.getDay() > 30) {
+      randomEndDate.setMonth(randomEndDate.getMonth() + 1);
+      randomEndDate.setDay(randomEndDate.getDay() - 30);
+    }
+  }
+
+  if (month31.includes(randomEndDate.getMonth())) {
+    if (randomEndDate.getDay() > 31) {
+      randomEndDate.setMonth(randomEndDate.getMonth() + 1);
+      randomEndDate.setDay(randomEndDate.getDay() - 31);
+    }
+  }
+
   return randomEndDate;
 };
 
