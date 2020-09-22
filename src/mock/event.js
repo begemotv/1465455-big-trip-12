@@ -109,6 +109,7 @@ export const generateEvent = () => {
   const startTime = generateTime(startDate);
   const endTime = generateTime(endDate);
   const duration = generateDuration(startDate, endDate);
+  const durationMSec = endDate.getTime() - startDate.getTime();
   const offers = generateEventOffers();
   const offersPrice = generateEventOffersPrice(offers);
 
@@ -120,6 +121,7 @@ export const generateEvent = () => {
     startTime,
     endTime,
     duration,
+    durationMSec,
     price: getRandomInteger(20, 200),
     offers,
     offersPrice,

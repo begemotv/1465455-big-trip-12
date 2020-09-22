@@ -1,5 +1,5 @@
 export const sortByTime = (eventA, eventB) => {
-  return eventB.startDate.getTime() - eventA.startDate.getTime();
+  return eventB.durationMSec - eventA.durationMSec;
 };
 
 export const sortByPrice = (eventA, eventB) => {
