@@ -1,25 +1,38 @@
 import MenuView from "./view/menu.js";
 import MenuModel from "./model/menu.js";
 import TripPresenter from "./presenter/trip.js";
-import {generateEvent} from "./mock/event.js";
-import {EventOfferTypes} from "./mock/offers.js";
-import EventsModel from "./model/events.js";
+import {generatePoint} from "./mock/point.js";
+import {PointOfferTypes} from "./mock/offers.js";
+import PointsModel from "./model/points.js";
 import {render, RenderPosition, remove} from "./utils/render.js";
 import FilterModel from "./model/filter.js";
 import FilterPresenter from "./presenter/filter.js";
 import OffersModel from "./model/offers.js";
 import {SortType, MenuItem} from "./const.js";
 import StatsView from "./view/stats.js";
+import Api from "./api.js";
 
-const EVENTS_COUNT = 15;
+const POINTS_COUNT = 15;
+const AUTHORIZATION = `Basic kTerw22Idsz2317rD`;
+const END_POINT = `https://12.ecmascript.pages.academy/big-trip`;
 
-const events = new Array(EVENTS_COUNT)
+const points = new Array(POINTS_COUNT)
   .fill()
-  .map(generateEvent)
+  .map(generatePoint)
   .sort((a, b) => a.startDate - b.startDate);
 
+const api = new Api(END_POINT, AUTHORIZATION);
+
+api.getPoints().then((points) => {
+  console.log(points);
+  // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
+  // а ещё на сервере используется snake_case, а у нас camelCase.
+  // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
+  // Есть вариант получше - паттерн "Адаптер"
+});
+
 const offersModel = new OffersModel();
-offersModel.setOffers(EventOfferTypes);
+offersModel.setOffers(PointOfferTypes);
 
 const siteMainElement = document.querySelector(`.page-body`);
 const destinationPriceContainer = siteMainElement.querySelector(`.trip-main`);
@@ -30,12 +43,12 @@ const menuModel = new MenuModel();
 const menuComponent = new MenuView(menuModel);
 render(menuElementContainer, menuComponent, RenderPosition.BEFOREEND);
 
-const eventsModel = new EventsModel();
-eventsModel.setEvents(events);
+const pointsModel = new PointsModel();
+pointsModel.setPoints(points);
 
 const filterModel = new FilterModel();
 
-const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, eventsModel, filterModel, offersModel, menuModel);
+const tripPresenter = new TripPresenter(contentContainer, destinationPriceContainer, pointsModel, filterModel, offersModel, menuModel);
 
 const statsContainer = document.querySelector(`.page-body__page-main .page-body__container`);
 
@@ -52,7 +65,7 @@ const handleSiteMenuClick = (menuItem) => {
     case MenuItem.STATS:
       tripPresenter.destroy();
 
-      statsComponent = new StatsView(eventsModel.getEvents());
+      statsComponent = new StatsView(pointsModel.getPoints());
       render(statsContainer, statsComponent, RenderPosition.BEFOREEND);
       break;
   }
@@ -60,13 +73,13 @@ const handleSiteMenuClick = (menuItem) => {
 
 menuComponent.setMenuClickHandler(handleSiteMenuClick);
 
-const filterPresenter = new FilterPresenter(menuElementContainer, filterModel, eventsModel);
+const filterPresenter = new FilterPresenter(menuElementContainer, filterModel, pointsModel);
 
 filterPresenter.init();
 tripPresenter.init();
 
 document.querySelector(`.trip-main__event-add-btn`).addEventListener(`click`, (evt) => {
   evt.preventDefault();
-  tripPresenter.createTask(`TABLE`);
+  tripPresenter.createPoint(`TABLE`);
   menuComponent.newTaskHandler(handleSiteMenuClick, `TABLE`);
 });

@@ -1,9 +1,9 @@
 import SmartView from "./smart.js";
-import {cities, Destinations} from "../mock/event.js";
-import {eventTypes} from "../mock/offers.js";
-import {formatEventInputDate, generateTime} from "../utils/date-time.js";
-import {BLANK_EVENT} from "../const.js";
-import {getOffers} from "../utils/event.js";
+import {cities, Destinations} from "../mock/point.js";
+import {pointTypes} from "../mock/offers.js";
+import {formatPointInputDate, generateTime} from "../utils/date-time.js";
+import {BLANK_POINT} from "../const.js";
+import {getOffers} from "../utils/point.js";
 
 import flatpickr from "flatpickr";
 import he from "he";
@@ -33,8 +33,8 @@ const createOfferTemplateMarkup = (offers) => {
   return offerMock.join(``);
 };
 
-const createEventEditOffersTemplate = (offers) => {
-  const eventOffersTemplate = createOfferTemplateMarkup(offers);
+const createPointEditOffersTemplate = (offers) => {
+  const pointOffersTemplate = createOfferTemplateMarkup(offers);
 
   return (
     `<section class="event__details">
@@ -42,7 +42,7 @@ const createEventEditOffersTemplate = (offers) => {
                 <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                 <div class="event__available-offers">
-                ${eventOffersTemplate}
+                ${pointOffersTemplate}
                 </div>
               </section>
             </section>`
@@ -124,15 +124,15 @@ const createDestinationListMarkup = () => {
   return citiesMock.join(``);
 };
 
-const createEventEditTemplate = (data) => {
+const createPointEditTemplate = (data) => {
   const {type, price, startDate, endDate, offers, destination, isFavorite} = data;
-  const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(eventTypes);
-  const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(eventTypes);
-  const eventStartDate = formatEventInputDate(startDate);
-  const eventEndDate = formatEventInputDate(endDate);
-  let eventOffers = ``;
+  const pointTypesTransferTemplate = createTypeTransferTemplateMarkup(pointTypes);
+  const pointTypesActivityTemplate = createTypeActivityTemplateMarkup(pointTypes);
+  const pointStartDate = formatPointInputDate(startDate);
+  const pointEndDate = formatPointInputDate(endDate);
+  let pointOffers = ``;
   if (offers.length !== 0) {
-    eventOffers = createEventEditOffersTemplate(offers);
+    pointOffers = createPointEditOffersTemplate(offers);
   }
   const photosMarkup = createPhotosMarkup(destination);
   const destinationList = createDestinationListMarkup();
@@ -152,12 +152,12 @@ const createEventEditTemplate = (data) => {
       <div class="event__type-list">
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Transfer</legend>
-          ${eventTypesTransferTemplate}
+          ${pointTypesTransferTemplate}
         </fieldset>
 
         <fieldset class="event__type-group">
           <legend class="visually-hidden">Activity</legend>
-          ${eventTypesActivityTemplate}
+          ${pointTypesActivityTemplate}
         </fieldset>
       </div>
     </div>
@@ -176,12 +176,12 @@ const createEventEditTemplate = (data) => {
       <label class="visually-hidden" for="event-start-time-1">
         From
       </label>
-      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${eventStartDate} ${startTime}">
+      <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${pointStartDate} ${startTime}">
       &mdash;
       <label class="visually-hidden" for="event-end-time-1">
         To
       </label>
-      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${eventEndDate} ${endTime}">
+      <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${pointEndDate} ${endTime}">
     </div>
 
     <div class="event__field-group  event__field-group--price">
@@ -207,7 +207,7 @@ const createEventEditTemplate = (data) => {
       <span class="visually-hidden">Open event</span>
     </button>
     </header>
-    ${eventOffers}
+    ${pointOffers}
     ${destination.name !== `` ? `<section class="event__section  event__section--destination">
     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
     <p class="event__destination-description">${destination.description}</p>
@@ -223,10 +223,10 @@ const createEventEditTemplate = (data) => {
   );
 };
 
-export default class EventEdit extends SmartView {
-  constructor(event = BLANK_EVENT, offersModel) {
+export default class PointEdit extends SmartView {
+  constructor(point = BLANK_POINT, offersModel) {
     super();
-    this._data = EventEdit.parseEventToData(event);
+    this._data = PointEdit.parsePointToData(point);
     this._offersModel = offersModel;
 
     this._startDatepicker = null;
@@ -234,7 +234,7 @@ export default class EventEdit extends SmartView {
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
-    this._eventTypeChangeHandler = this._eventTypeChangeHandler.bind(this);
+    this._pointTypeChangeHandler = this._pointTypeChangeHandler.bind(this);
     this._destinationChangeHandler = this._destinationChangeHandler.bind(this);
     this._startDateTimeChangeHandler = this._startDateTimeChangeHandler.bind(this);
     this._endDateTimeChangeHandler = this._endDateTimeChangeHandler.bind(this);
@@ -257,7 +257,7 @@ export default class EventEdit extends SmartView {
   }
 
   _getTemplate() {
-    return createEventEditTemplate(this._data);
+    return createPointEditTemplate(this._data);
   }
 
   _formSubmitHandler(evt) {
@@ -275,12 +275,12 @@ export default class EventEdit extends SmartView {
     this._callback.deleteClick(this._data);
   }
 
-  _eventTypeChangeHandler(evt) {
+  _pointTypeChangeHandler(evt) {
     evt.preventDefault();
-    const tmpEventType = this._offersModel.eventTypes.find((eventType) => eventType.name === evt.target.value);
-    const tmpOffers = getOffers(tmpEventType);
+    const tmpPointType = this._offersModel.pointTypes.find((pointType) => pointType.name === evt.target.value);
+    const tmpOffers = getOffers(tmpPointType);
     this.updateData({
-      type: tmpEventType,
+      type: tmpPointType,
       offers: tmpOffers
     },
     false);
@@ -338,7 +338,7 @@ export default class EventEdit extends SmartView {
   _setInnerHandlers() {
     this.getElement()
       .querySelector(`.event__type-list`)
-      .addEventListener(`change`, this._eventTypeChangeHandler);
+      .addEventListener(`change`, this._pointTypeChangeHandler);
     this.getElement()
       .querySelector(`#event-destination-1`)
       .addEventListener(`input`, this._destinationChangeHandler);
@@ -418,16 +418,16 @@ export default class EventEdit extends SmartView {
     );
   }
 
-  reset(event) {
+  reset(point) {
     this.updateData(
-        EventEdit.parseEventToData(event)
+        PointEdit.parsePointToData(point)
     );
   }
 
-  static parseEventToData(event) {
+  static parsePointToData(point) {
     return Object.assign(
         {},
-        event,
+        point,
         {}
     );
   }

@@ -1,4 +1,4 @@
-export const EventOfferTypes = new Map([
+export const PointOfferTypes = new Map([
   [
     {
       name: `Taxi`,
@@ -106,4 +106,4 @@ export const EventOfferTypes = new Map([
   ]
 ]);
 
-export const eventTypes = Array.from(EventOfferTypes.keys());
+export const pointTypes = Array.from(PointOfferTypes.keys());

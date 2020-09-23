@@ -24,9 +24,9 @@ const createOfferTemplateMarkup = (offers) => {
   return offerMock.join(``);
 };
 
-const createEventEditOffersTemplate = (event) => {
-  const {offers} = event;
-  const eventOffersTemplate = createOfferTemplateMarkup(offers);
+const createPointEditOffersTemplate = (point) => {
+  const {offers} = point;
+  const pointOffersTemplate = createOfferTemplateMarkup(offers);
 
   return (
     `<section class="event__details">
@@ -34,20 +34,20 @@ const createEventEditOffersTemplate = (event) => {
                 <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
                 <div class="event__available-offers">
-                ${eventOffersTemplate}
+                ${pointOffersTemplate}
                 </div>
               </section>
             </section>`
   );
 };
 
-export default class EventEditOffers extends AbstractView {
-  constructor(event) {
+export default class PointEditOffers extends AbstractView {
+  constructor(point) {
     super();
-    this._event = event;
+    this._point = point;
   }
 
   _getTemplate() {
-    return createEventEditOffersTemplate(this._event);
+    return createPointEditOffersTemplate(this._point);
   }
 }

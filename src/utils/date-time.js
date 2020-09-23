@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const formatEventDate = (date) => {
+export const formatPointDate = (date) => {
   if (!(date instanceof Date)) {
     return ``;
   }
@@ -8,7 +8,7 @@ export const formatEventDate = (date) => {
   return moment(date).format(`YYYY-MM-DD`);
 };
 
-export const formatEventInputDate = (date) => {
+export const formatPointInputDate = (date) => {
   if (!(date instanceof Date)) {
     return ``;
   }
@@ -95,11 +95,11 @@ export const areDatesEqual = (dateA, dateB) => {
   return moment(dateA).isSame(dateB, `minute`);
 };
 
-export const isEventPast = (endDate) => {
+export const isPointPast = (endDate) => {
   return moment() > moment(endDate);
 };
 
-export const isEventFuture = (startDate) => {
+export const isPointFuture = (startDate) => {
   return moment(startDate) > moment();
 };
 

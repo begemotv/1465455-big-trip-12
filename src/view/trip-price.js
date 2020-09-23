@@ -1,32 +1,18 @@
 import AbstractView from "./abstract.js";
-import {BLANK_EVENT} from "../const.js";
+import {BLANK_POINT} from "../const.js";
 
-const calculateEventsPrice = (events) => {
-  let priceEvents = 0;
-  for (let i = 0; i < events.length; i++) {
-    priceEvents += events[i].price;
+const calculatePointsPrice = (points) => {
+  let pricePoints = 0;
+  for (let i = 0; i < points.length; i++) {
+    pricePoints += points[i].price;
   }
-  return priceEvents;
+  return pricePoints;
 };
 
-// const calculateOfferPrice = (event) => {
-//   const {offers} = event;
-//   console.log(offers)
-//   let priceOffers = 0;
-//   for (let i = 0; i < events.length; i++) {
-//     priceOffers += events[i].offersPrice;
-//   }
-//   return priceOffers;
-// };
-
-const createTripPriceTemplate = (events) => {
+const createTripPriceTemplate = (points) => {
   let price = 0;
-  // let offerPrice = 0;
-  // for (let i = 0; i < events.length; i++) {
-  //   offerPrice += calculateOfferPrice(events[i]);
-  // }
-  if (events !== BLANK_EVENT) {
-    price = calculateEventsPrice(events); // + offerPrice;
+  if (points !== BLANK_POINT) {
+    price = calculatePointsPrice(points); // + offerPrice;
   }
 
   return (
@@ -37,13 +23,13 @@ const createTripPriceTemplate = (events) => {
 };
 
 export default class TripPrice extends AbstractView {
-  constructor(events) {
+  constructor(points) {
     super();
-    this._events = events || BLANK_EVENT;
+    this._points = points || BLANK_POINT;
   }
 
   _getTemplate() {
-    return createTripPriceTemplate(this._events);
+    return createTripPriceTemplate(this._points);
   }
 }
 

@@ -24,7 +24,7 @@ const generateDate = (date) => {
   return `${month} ${day}`;
 };
 
-const createEventListContainer = (date, index) => {
+const createPointListContainer = (date, index) => {
   const datetime = generateDatetime(date);
   const dateHuman = generateDate(date);
   const indexHuman = index + 1;
@@ -41,7 +41,7 @@ const createEventListContainer = (date, index) => {
   </li>`);
 };
 
-const createEventListContainerSort = () => {
+const createPointListContainerSort = () => {
   return (
     `<li class="trip-days__item  day">
     <div class="day__info">
@@ -52,57 +52,57 @@ const createEventListContainerSort = () => {
   </li>`);
 };
 
-const getDates = (events) => {
+const getDates = (points) => {
   let dates = [];
-  let currentDate = events[0].startDate.getDate();
-  for (let i = 0; i < events.length; i++) {
+  let currentDate = points[0].startDate.getDate();
+  for (let i = 0; i < points.length; i++) {
     if (i === 0) {
-      dates.push(events[i].startDate);
+      dates.push(points[i].startDate);
       continue;
     }
-    if (currentDate === events[i].startDate.getDate()) {
+    if (currentDate === points[i].startDate.getDate()) {
       continue;
     }
-    if (currentDate !== events[i].startDate.getDate()) {
-      currentDate = events[i].startDate.getDate();
-      dates.push(events[i].startDate);
+    if (currentDate !== points[i].startDate.getDate()) {
+      currentDate = points[i].startDate.getDate();
+      dates.push(points[i].startDate);
     }
   }
   return dates;
 };
 
-const createEventListMarkup = (events) => {
-  let eventListDates = getDates(events);
-  let eventListMock = [];
-  for (let i = 0; i < eventListDates.length; i++) {
-    let eventListElement = createEventListContainer(eventListDates[i], i);
-    eventListMock.push(eventListElement);
+const createPointListMarkup = (points) => {
+  let pointListDates = getDates(points);
+  let pointListMock = [];
+  for (let i = 0; i < pointListDates.length; i++) {
+    let pointListElement = createPointListContainer(pointListDates[i], i);
+    pointListMock.push(pointListElement);
   }
-  return eventListMock.join(``);
+  return pointListMock.join(``);
 };
 
-const generateEventListTemplate = (events) => {
-  let eventListMarkup = ``;
-  if (events === undefined) {
-    eventListMarkup = createEventListContainerSort();
+const generatePointListTemplate = (points) => {
+  let pointListMarkup = ``;
+  if (points === undefined) {
+    pointListMarkup = createPointListContainerSort();
   } else {
-    eventListMarkup = createEventListMarkup(events);
+    pointListMarkup = createPointListMarkup(points);
   }
 
   return (
     `<ul class="trip-days">
-    ${eventListMarkup}
+    ${pointListMarkup}
   </ul>`
   );
 };
 
-export default class EventList extends AbstractView {
-  constructor(events) {
+export default class PointList extends AbstractView {
+  constructor(points) {
     super();
-    this._events = events;
+    this._points = points;
   }
 
   _getTemplate() {
-    return generateEventListTemplate(this._events);
+    return generatePointListTemplate(this._points);
   }
 }

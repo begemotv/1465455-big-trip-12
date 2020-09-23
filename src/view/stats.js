@@ -1,5 +1,5 @@
 import SmartView from "./smart.js";
-import {getEventTypeMoneyMap, getTransportUsageMap, getTimeSpentMap} from "../utils/stats.js";
+import {getPointTypeMoneyMap, getTransportUsageMap, getTimeSpentMap} from "../utils/stats.js";
 import {generateHumanDuration} from "../utils/date-time.js";
 
 import Chart from "chart.js";
@@ -26,10 +26,10 @@ const createStatsTemplate = () =>
   </section>`;
 
 export default class Stats extends SmartView {
-  constructor(events) {
+  constructor(points) {
     super();
 
-    this._events = events;
+    this._points = points;
 
     this._moneyChart = null;
     this._transportChart = null;
@@ -43,17 +43,17 @@ export default class Stats extends SmartView {
   }
 
   _renderMoneyChart(moneyCtx) {
-    const eventTypeMoneyMap = getEventTypeMoneyMap(this._events);
+    const pointTypeMoneyMap = getPointTypeMoneyMap(this._points);
 
-    moneyCtx.height = BAR_HEIGHT * eventTypeMoneyMap.size;
+    moneyCtx.height = BAR_HEIGHT * pointTypeMoneyMap.size;
 
     const moneyChart = new Chart(moneyCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
       data: {
-        labels: Array.from(eventTypeMoneyMap.keys()).map((name) => name.toUpperCase()),
+        labels: Array.from(pointTypeMoneyMap.keys()).map((name) => name.toUpperCase()),
         datasets: [{
-          data: Array.from(eventTypeMoneyMap.values()),
+          data: Array.from(pointTypeMoneyMap.values()),
           backgroundColor: `#ffffff`,
           hoverBackgroundColor: `#ffffff`,
           anchor: `start`
@@ -116,7 +116,7 @@ export default class Stats extends SmartView {
   }
 
   _renderTransportChart(transportCtx) {
-    const transportUsageMap = getTransportUsageMap(this._events);
+    const transportUsageMap = getTransportUsageMap(this._points);
 
     transportCtx.height = BAR_HEIGHT * transportUsageMap.size;
 
@@ -190,7 +190,7 @@ export default class Stats extends SmartView {
   }
 
   _renderTimeSpentChart(timeSpentCtx) {
-    const timeSpentMap = getTimeSpentMap(this._events);
+    const timeSpentMap = getTimeSpentMap(this._points);
     timeSpentCtx.height = BAR_HEIGHT * timeSpentMap.size;
     const tmpLabels = Array.from(timeSpentMap.keys()).map((name) => name.toUpperCase());
 
@@ -278,8 +278,8 @@ export default class Stats extends SmartView {
     const transportCtx = this.getElement().querySelector(`.statistics__chart--transport`);
     const timeSpentCtx = this.getElement().querySelector(`.statistics__chart--time`);
 
-    this._moneyChart = this._renderMoneyChart(moneyCtx, this._events);
-    this._transportChart = this._renderTransportChart(transportCtx, this._events);
-    this._timeSpentChart = this._renderTimeSpentChart(timeSpentCtx, this._events);
+    this._moneyChart = this._renderMoneyChart(moneyCtx, this._points);
+    this._transportChart = this._renderTransportChart(transportCtx, this._points);
+    this._timeSpentChart = this._renderTimeSpentChart(timeSpentCtx, this._points);
   }
 }

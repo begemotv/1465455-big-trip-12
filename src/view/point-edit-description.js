@@ -3,11 +3,11 @@ import AbstractView from "./abstract.js";
 const createPhoto = (photo) => {
 
   return (
-    `<img class="event__photo" src="${photo}" alt="Event photo">`);
+    `<img class="event__photo" src="${photo}" alt="Point photo">`);
 };
 
-const createPhotosMarkup = (event) => {
-  const {destination} = event;
+const createPhotosMarkup = (point) => {
+  const {destination} = point;
   let photosMock = [];
   for (let i = 0; i < destination.photos.length; i++) {
     let photo = createPhoto(destination.photos[i]);
@@ -16,9 +16,9 @@ const createPhotosMarkup = (event) => {
   return photosMock.join(``);
 };
 
-const createEventEditDestinationDescription = (event) => {
-  const {destination} = event;
-  const photosMarkup = createPhotosMarkup(event);
+const createPointEditDestinationDescription = (point) => {
+  const {destination} = point;
+  const photosMarkup = createPhotosMarkup(point);
 
   return (
     `<section class="event__section  event__section--destination">
@@ -34,13 +34,13 @@ const createEventEditDestinationDescription = (event) => {
   );
 };
 
-export default class EventEditDescription extends AbstractView {
-  constructor(event) {
+export default class PointEditDescription extends AbstractView {
+  constructor(point) {
     super();
-    this._event = event;
+    this._point = point;
   }
 
   _getTemplate() {
-    return createEventEditDestinationDescription(this._event);
+    return createPointEditDestinationDescription(this._point);
   }
 }

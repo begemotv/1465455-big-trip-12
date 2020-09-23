@@ -1,17 +1,17 @@
-import {EVENTDESCRIPTION} from "../const.js";
+import {POINTDESCRIPTION} from "../const.js";
 import {getRandomInteger} from "../utils/common.js";
-import {EventOfferTypes} from "./offers.js";
-import {getOffers} from "../utils/event.js";
+import {PointOfferTypes} from "./offers.js";
+import {getOffers} from "../utils/point.js";
 
 
 export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
-const generateEventDescriptions = () => {
+const generatePointDescriptions = () => {
   const textLength = getRandomInteger(3, 5);
 
   let description = ``;
   for (let i = 0; i < textLength; i++) {
-    description += ` ${EVENTDESCRIPTION[getRandomInteger(0, EVENTDESCRIPTION.length - 1)]}`;
+    description += ` ${POINTDESCRIPTION[getRandomInteger(0, POINTDESCRIPTION.length - 1)]}`;
   }
 
   return description;
@@ -19,7 +19,7 @@ const generateEventDescriptions = () => {
 
 const generatePhoto = () => {
   const src = `http://picsum.photos/248/152?r=${Math.random()}`;
-  const description = EVENTDESCRIPTION[getRandomInteger(0, EVENTDESCRIPTION.length - 1)];
+  const description = POINTDESCRIPTION[getRandomInteger(0, POINTDESCRIPTION.length - 1)];
 
   return {
     src,
@@ -27,15 +27,15 @@ const generatePhoto = () => {
   };
 };
 
-const generateEventPhotos = () => {
+const generatePointPhotos = () => {
   const photosCount = getRandomInteger(3, 5);
-  let eventPhotos = [];
+  let pointPhotos = [];
 
   for (let i = 0; i < photosCount; i++) {
-    eventPhotos.push(generatePhoto());
+    pointPhotos.push(generatePhoto());
   }
 
-  return eventPhotos;
+  return pointPhotos;
 };
 
 const generateStartDate = () => {
@@ -92,55 +92,55 @@ const generateEndDate = (startDate) => {
 
 export const Destinations = new Map([
   [`Bari`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Catania`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Bologna`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Oslo`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Paris`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Lisbon`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Porto`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Prague`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }],
   [`Helsinki`, {
-    description: generateEventDescriptions(),
-    photos: generateEventPhotos(),
+    description: generatePointDescriptions(),
+    photos: generatePointPhotos(),
   }]
 ]);
 
 export const cities = Array.from(Destinations.keys());
 
-export const eventTypes = Array.from(EventOfferTypes.keys());
+export const pointTypes = Array.from(PointOfferTypes.keys());
 
-const getRandomEventType = () => {
-  return eventTypes[getRandomInteger(0, eventTypes.length - 1)];
+const getRandomPointType = () => {
+  return pointTypes[getRandomInteger(0, pointTypes.length - 1)];
 };
 
-export const generateEvent = () => {
+export const generatePoint = () => {
   const startDate = generateStartDate();
   const endDate = generateEndDate(startDate);
-  const type = getRandomEventType();
+  const type = getRandomPointType();
   const tmpCities = Array.from(Destinations.keys());
   const name = tmpCities[getRandomInteger(0, tmpCities.length - 1)];
   const description = Destinations.get(name).description;

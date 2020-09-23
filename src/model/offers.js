@@ -10,13 +10,13 @@ export default class Offers extends Observer {
     this._typeOffers = typeOffers;
   }
 
-  getOffers(eventType) {
-    return this._typeOffers.has(eventType)
-      ? this._typeOffers.get(eventType)
+  getOffers(pointType) {
+    return this._typeOffers.has(pointType)
+      ? this._typeOffers.get(pointType)
       : null;
   }
 
-  get eventTypes() {
+  get pointTypes() {
     return Array.from(this._typeOffers.keys());
   }
 }

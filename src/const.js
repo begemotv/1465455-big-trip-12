@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const EVENTTYPES = [
+export const POINTTYPES = [
   {name: `Taxi`, placeholder: ` to`, type: `transfer`},
   {name: `Bus`, placeholder: ` to`, type: `transfer`},
   {name: `Train`, placeholder: ` to`, type: `transfer`},
@@ -13,7 +13,7 @@ export const EVENTTYPES = [
   {name: `Restaurant`, placeholder: ` in`, type: `activity`},
 ];
 
-export const EVENTCITIES = [
+export const POINTCITIES = [
   `Bari`,
   `Catania`,
   `Bologna`,
@@ -26,7 +26,7 @@ export const EVENTCITIES = [
   `Helsinki`
 ];
 
-export const EVENTDESCRIPTION = [
+export const POINTDESCRIPTION = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
   `Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.`,
@@ -39,7 +39,7 @@ export const EVENTDESCRIPTION = [
   `In rutrum ac purus sit amet tempus.`,
 ];
 
-export const BLANK_EVENT = {
+export const BLANK_POINT = {
   id: ``,
   isFavorite: false,
   type: {
@@ -67,9 +67,9 @@ export const SortType = {
 };
 
 export const UserAction = {
-  UPDATE_EVENT: `UPDATE_EVENT`,
-  ADD_EVENT: `ADD_EVENT`,
-  DELETE_EVENT: `DELETE_EVENT`
+  UPDATE_POINT: `UPDATE_POINT`,
+  ADD_POINT: `ADD_POINT`,
+  DELETE_POINT: `DELETE_POINT`
 };
 
 export const UpdateType = {

@@ -1,11 +1,11 @@
 import AbstractView from "./abstract.js";
-import {formatEventDate, generateDuration} from "../utils/date-time.js";
+import {formatPointDate, generateDuration} from "../utils/date-time.js";
 import {generateTime} from "../utils/date-time.js";
 
 import he from "he";
 
-const createEventOffer = (event) => {
-  const {name, price} = event;
+const createPointOffer = (point) => {
+  const {name, price} = point;
 
   return (
     `<li class="event__offer">
@@ -15,25 +15,25 @@ const createEventOffer = (event) => {
   </li>`);
 };
 
-const createOfferMarkup = (event) => {
-  const {offers} = event;
+const createOfferMarkup = (point) => {
+  const {offers} = point;
   const offersActive = offers.filter((offer) => offer.isActive === true);
 
   let offerMock = [];
   for (let i = 0; i < offersActive.length; i++) {
-    let offer = createEventOffer(offersActive[i]);
+    let offer = createPointOffer(offersActive[i]);
     offerMock.push(offer);
   }
   return offerMock.join(``);
 };
 
-const createEventTemplate = (event) => {
-  const {type, destination, price, startDate, endDate} = event;
+const createPointTemplate = (point) => {
+  const {type, destination, price, startDate, endDate} = point;
   const startTime = generateTime(startDate);
   const endTime = generateTime(endDate);
-  const offerMarkup = createOfferMarkup(event);
-  const eventStartDate = formatEventDate(startDate);
-  const eventEndDate = formatEventDate(endDate);
+  const offerMarkup = createOfferMarkup(point);
+  const pointStartDate = formatPointDate(startDate);
+  const pointEndDate = formatPointDate(endDate);
   const duration = generateDuration(startDate, endDate);
 
   return (
@@ -46,9 +46,9 @@ const createEventTemplate = (event) => {
 
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${eventStartDate}T${startTime}">${startTime}</time>
+          <time class="event__start-time" datetime="${pointStartDate}T${startTime}">${startTime}</time>
           &mdash;
-          <time class="event__end-time" datetime="${eventEndDate}T${endTime}">${endTime}</time>
+          <time class="event__end-time" datetime="${pointEndDate}T${endTime}">${endTime}</time>
         </p>
         <p class="event__duration">${duration}</p>
       </div>
@@ -72,15 +72,15 @@ const createEventTemplate = (event) => {
 
 
 export default class Event extends AbstractView {
-  constructor(event) {
+  constructor(point) {
     super();
-    this._event = event;
+    this._point = point;
 
     this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   _getTemplate() {
-    return createEventTemplate(this._event);
+    return createPointTemplate(this._point);
   }
 
   _editClickHandler(evt) {

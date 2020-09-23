@@ -1,48 +1,47 @@
-export const getEventTypeMoneyMap = (events) => {
+export const getPointTypeMoneyMap = (points) => {
   const total = new Map();
 
-  for (const event of events) {
-    if (!total.has(event.type.name)) {
-      total.set(event.type.name, 0);
+  for (const point of points) {
+    if (!total.has(point.type.name)) {
+      total.set(point.type.name, 0);
     }
 
-    const price = total.get(event.type.name) + event.price;
-    total.set(event.type.name, price);
+    const price = total.get(point.type.name) + point.price;
+    total.set(point.type.name, price);
   }
   return total;
 };
 
-export const getTransportUsageMap = (events) => {
+export const getTransportUsageMap = (points) => {
   const total = new Map();
 
-  for (const event of events) {
-    if (event.type.placeholder !== ` to`) {
+  for (const point of points) {
+    if (point.type.placeholder !== ` to`) {
       continue;
     }
 
-    if (!total.has(event.type.name)) {
-      total.set(event.type.name, 0);
+    if (!total.has(point.type.name)) {
+      total.set(point.type.name, 0);
     }
 
-    const count = total.get(event.type.name) + 1;
-    total.set(event.type.name, count);
+    const count = total.get(point.type.name) + 1;
+    total.set(point.type.name, count);
   }
 
   return total;
 };
 
-export const getTimeSpentMap = (events) => {
+export const getTimeSpentMap = (points) => {
   const total = new Map();
 
-  // Подсчет количества времени для каждого типа точки маршрута
-  for (const event of events) {
-    if (!total.has(event.type.name)) {
-      total.set(event.type.name, 0);
+  for (const point of points) {
+    if (!total.has(point.type.name)) {
+      total.set(point.type.name, 0);
     }
 
-    const value = total.get(event.type.name);
-    const difValue = event.endDate - event.startDate;
-    total.set(event.type.name, value + difValue);
+    const value = total.get(point.type.name);
+    const difValue = point.endDate - point.startDate;
+    total.set(point.type.name, value + difValue);
   }
 
   return total;

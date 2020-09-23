@@ -1,5 +1,5 @@
 import AbstractView from "./abstract.js";
-import {EVENTTYPES} from "../const.js";
+import {POINTTYPES} from "../const.js";
 
 const createTypeTransferTemplate = (type) => {
   const {name} = type;
@@ -65,12 +65,12 @@ const generateDate = (date) => {
   return [day, month, year].join(`/`);
 };
 
-const createEventEditHeaderTemplate = (event) => {
-  const {type, destination, price, startDate, endDate, startTime, endTime} = event;
-  const eventTypesTransferTemplate = createTypeTransferTemplateMarkup(EVENTTYPES);
-  const eventTypesActivityTemplate = createTypeActivityTemplateMarkup(EVENTTYPES);
-  const eventStartDate = generateDate(startDate);
-  const eventEndDate = generateDate(endDate);
+const createPointEditHeaderTemplate = (point) => {
+  const {type, destination, price, startDate, endDate, startTime, endTime} = point;
+  const pointTypesTransferTemplate = createTypeTransferTemplateMarkup(POINTTYPES);
+  const pointTypesActivityTemplate = createTypeActivityTemplateMarkup(POINTTYPES);
+  const pointStartDate = generateDate(startDate);
+  const pointEndDate = generateDate(endDate);
   const typeName = type.slice(0, -3).toLowerCase();
 
   return (`<header class="event__header">
@@ -84,12 +84,12 @@ const createEventEditHeaderTemplate = (event) => {
     <div class="event__type-list">
       <fieldset class="event__type-group">
         <legend class="visually-hidden">Transfer</legend>
-        ${eventTypesTransferTemplate}
+        ${pointTypesTransferTemplate}
       </fieldset>
   
       <fieldset class="event__type-group">
         <legend class="visually-hidden">Activity</legend>
-        ${eventTypesActivityTemplate}
+        ${pointTypesActivityTemplate}
       </fieldset>
     </div>
   </div>
@@ -111,12 +111,12 @@ const createEventEditHeaderTemplate = (event) => {
     <label class="visually-hidden" for="event-start-time-1">
       From
     </label>
-    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${eventStartDate} ${startTime}">
+    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${pointStartDate} ${startTime}">
     &mdash;
     <label class="visually-hidden" for="event-end-time-1">
       To
     </label>
-    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${eventEndDate} ${endTime}">
+    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${pointEndDate} ${endTime}">
   </div>
   
   <div class="event__field-group  event__field-group--price">
@@ -132,13 +132,13 @@ const createEventEditHeaderTemplate = (event) => {
   </header>`);
 };
 
-export default class EditEventHeader extends AbstractView {
-  constructor(event) {
+export default class EditPointHeader extends AbstractView {
+  constructor(point) {
     super();
-    this._event = event;
+    this._point = point;
   }
 
   _getTemplate() {
-    return createEventEditHeaderTemplate(this._event);
+    return createPointEditHeaderTemplate(this._point);
   }
 }
