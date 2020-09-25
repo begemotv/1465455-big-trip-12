@@ -59,39 +59,28 @@ export default class Points extends Observer {
         {},
         point,
         {
-          dueDate: task.due_date !== null ? new Date(task.due_date) : task.due_date, // На клиенте дата хранится как экземпляр Date
-          isArchive: task.is_archived,
-          isFavorite: task.is_favorite,
-          repeating: task.repeating_days
+          price: point.base_price,
+          destination: {
+            name: point.destination.name,
+            description: point.destination.description,
+            photos: point.destination.pictures.map((picture) => ({
+              href: picture.src,
+              description: picture.description,
+            }))
+          },
+          services: point.offers,
+          startDate: new Date(point.date_from),
+          endDate: new Date(point.date_to),
+          isFavorite: Boolean(point.is_favorite),
         }
     );
 
-    // Ненужные ключи мы удаляем
-    delete adaptedPoint.due_date;
-    delete adaptedPoint.is_archived;
+    delete adaptedPoint.base_price;
+    delete adaptedPoint.date_from;
+    delete adaptedPoint.date_to;
     delete adaptedPoint.is_favorite;
-    delete adaptedPoint.repeating_days;
-
-    return adaptedPoint;
-  }
-
-  static adaptToServer(point) {
-    const adaptedPoint = Object.assign(
-        {},
-        point,
-        {
-          "due_date": task.dueDate instanceof Date ? task.dueDate.toISOString() : null, // На сервере дата хранится в ISO формате
-          "is_archived": task.isArchive,
-          "is_favorite": task.isFavorite,
-          "repeating_days": task.repeating
-        }
-    );
-
-    // Ненужные ключи мы удаляем
-    delete adaptedPoint.dueDate;
-    delete adaptedPoint.isArchive;
-    delete adaptedPoint.isFavorite;
-    delete adaptedPoint.repeating;
+    delete adaptedPoint.offers;
+    delete adaptedPoint.destination.pictures;
 
     return adaptedPoint;
   }

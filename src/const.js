@@ -88,3 +88,86 @@ export const MenuItem = {
   TABLE: `TABLE`,
   STATS: `STATS`
 };
+
+export const PointTypes = new Map([
+  [
+    {
+      name: `Taxi`,
+      icon: `img/icons/taxi.png`,
+      placeholder: ` to`,
+      type: `transfer`,
+    }, []
+  ],
+  [
+    {
+      name: `Bus`,
+      icon: `img/icons/bus.png`,
+      placeholder: ` to`,
+      type: `transfer`,
+    }, []
+  ],
+  [
+    {
+      name: `Train`,
+      icon: `img/icons/train.png`,
+      placeholder: ` to`,
+      type: `transfer`,
+    }, []
+  ],
+  [
+    {
+      name: `Ship`,
+      icon: `img/icons/ship.png`,
+      placeholder: ` to`,
+      type: `transfer`,
+    }, []
+  ],
+  [
+    {
+      name: `Transport`,
+      icon: `img/icons/transport.png`,
+      placeholder: ` to`,
+      type: `transfer`,
+    }, []
+  ],
+  [
+    {
+      name: `Drive`,
+      icon: `img/icons/drive.png`,
+      placeholder: ` to`,
+      type: `transfer`,
+    }, []
+  ],
+  [
+    {
+      name: `Flight`,
+      icon: `img/icons/flight.png`,
+      placeholder: ` to`,
+      type: `transfer`,
+    }, []
+  ],
+  [
+    {
+      name: `Check-in`,
+      icon: `img/icons/check-in.png`,
+      placeholder: ` in`,
+      type: `activity`,
+    }, []
+  ],
+  [
+    {
+      name: `Sightseeing`,
+      icon: `img/icons/sightseeing.png`,
+      placeholder: ` in`,
+      type: `activity`,
+    }, []
+  ],
+  [
+    {
+      name: `Restaurant`,
+      icon: `img/icons/restaurant.png`,
+      placeholder: ` in`,
+      type: `activity`,
+    }, []
+  ]
+]);
