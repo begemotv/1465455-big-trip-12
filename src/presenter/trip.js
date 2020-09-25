@@ -6,16 +6,18 @@ import PointNewPresenter from "../presenter/point-new.js";
 import TripInfoView from "../view/trip-info.js";
 import TripPriceView from "../view/trip-price.js";
 import TripRouteDatesView from "../view/trip-route-dates.js";
+import LoadingView from "../view/loading.js";
 import {render, RenderPosition, remove} from "../utils/render.js";
 import {filter} from "../utils/filter.js";
 import {sortByTime, sortByPrice} from "../utils/point.js";
 import {SortType, UpdateType, UserAction, FilterType} from "../const.js";
 
 export default class Trip {
-  constructor(tripContainer, destinationPriceContainer, pointsModel, filterModel, offersModel, menuModel) {
+  constructor(tripContainer, destinationPriceContainer, pointsModel, filterModel, offersModel, menuModel, destinationsModel, api) {
     this._pointsModel = pointsModel;
     this._filterModel = filterModel;
     this._offersModel = offersModel;
+    this._destinationsModel = destinationsModel;
     this._menuModel = menuModel;
     this._tripContainer = tripContainer;
     this._destinationPriceContainer = destinationPriceContainer;
@@ -23,11 +25,15 @@ export default class Trip {
     this._pointPresenter = {};
 
     this._sortComponent = null;
+    this._isLoading = true;
+    this._api = api;
+    
 
     this._noPointsComponent = new NoPointsView();
     this._tripInfoComponent = new TripInfoView();
     this._tripPriceComponent = new TripPriceView();
     this._tripRouteDatesComponent = new TripRouteDatesView();
+    this._loadingComponent = new LoadingView();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -84,6 +90,14 @@ export default class Trip {
     return filtredPoints;
   }
 
+  _getDestinations() {
+    return this._destinationsModel.getDestinations();
+  }
+
+  _getOffers() {
+    return this._offersModel.getOffers();
+  }
+
   _handleModeChange() {
     Object
       .values(this._pointPresenter)
@@ -93,23 +107,34 @@ export default class Trip {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this._pointsModel.updatePoint(updateType, update);
+        this._api.updatePoint(update)
+          .then((response) => {
+            this._pointsModel.update(updateType, response);
+          });
         break;
       case UserAction.ADD_POINT:
-        this._pointsModel.addPoint(updateType, update);
+        this._api.addPoint(update)
+          .then((response) => {
+            this._pointsModel.add(updateType, response);
+          });
         break;
       case UserAction.DELETE_POINT:
-        this._pointsModel.deletePoint(updateType, update);
+        this._api.deletePoint(update)
+          .then(() => {
+            this._pointsModel.delete(updateType, update);
+          });
         break;
     }
   }
 
   _handleModelEvent(updateType, data) {
-    // В зависимости от типа изменений решаем, что делать:
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
-        this._pointPresenter[data.id].init(data);
+        this._pointPresenter[data.id].init(
+            data,
+            this._getDestinations(),
+            this._getOffers()
+        );
         break;
       case UpdateType.MINOR:
         this._clearTrip();
@@ -117,6 +142,11 @@ export default class Trip {
         break;
       case UpdateType.MAJOR:
         this._clearTrip({resetSortType: true});
+        this._renderTrip();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
         this._renderTrip();
         break;
     }

@@ -4,30 +4,33 @@ import {PointTypes} from "../const.js";
 export default class Offers extends Observer {
   constructor() {
     super();
-    this._typeOffers = null;
-    console.log(PointTypes)
+    // this._typeOffers = null;
+    this._offers = null;
   }
 
-  setTempOffers(typeOffers) {
-    console.log(typeOffers)
-    this._typeOffers = typeOffers;
-    PointTypes.forEach
+  setOffers(offers) {
+    this._offers = offers;
+    console.log(this._offers)
   }
 
-  setOffers(typeOffers) {
-    this._typeOffers = typeOffers;
-    // console.log(typeOffers)
+  getOffers() {
+    return this._offers;
   }
 
-  getOffers(pointType) {
-    return this._typeOffers.has(pointType)
-      ? this._typeOffers.get(pointType)
-      : null;
-  }
+  // setOffers(typeOffers) {
+  //   this._typeOffers = typeOffers;
+  //   // console.log(typeOffers)
+  // }
 
-  get pointTypes() {
-    return Array.from(this._typeOffers.keys());
-  }
+  // getOffers(pointType) {
+  //   return this._typeOffers.has(pointType)
+  //     ? this._typeOffers.get(pointType)
+  //     : null;
+  // }
+
+  // get pointTypes() {
+  //   return Array.from(this._typeOffers.keys());
+  // }
 
   static adaptToClient(offers) {
     return offers.reduce((mapOffer, offer) => {

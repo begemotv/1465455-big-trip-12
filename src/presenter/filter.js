@@ -11,7 +11,7 @@ export default class Filter {
 
     this._filterComponent = null;
 
-    this._handleModelPoint = this._handleModelEvent.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleFilterTypeChange = this._handleFilterTypeChange.bind(this);
 
     this._pointsModel.addObserver(this._handleModelEvent);
